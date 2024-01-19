@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1>Products page</h1>
-      <div v-for="product in products" :key="product.id">
+      <div v-for="product in products" :key="product.id" class="bg-primary-darken-1">
         {{ product }}
         <!-- <img :src="product.imageUrl" alt="" /> -->
       </div>
