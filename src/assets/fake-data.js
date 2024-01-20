@@ -6,7 +6,7 @@ import bookImage4 from './books/Mentats_of_Dune.jpg';
 export const products = [
   {
     id: '123',
-    name: 'Running Shoes',
+    name: 'Dune',
     price: '6.00',
     description: 'Dune is a 1965 epic science fiction novel book by American author Frank Herbert',
     imageUrl: bookImage1,
