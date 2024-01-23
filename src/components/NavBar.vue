@@ -4,7 +4,7 @@
       <template v-slot:prepend>
         <v-menu>
           <template v-slot:activator="{ props }">
-            <i v-bind="props"><v-icon icon="fas fa-bars" /></i>
+            <i class="d-flex d-sm-none" v-bind="props"><v-icon icon="fas fa-bars" /></i>
           </template>
 
           <v-list class="mt-6">
@@ -21,8 +21,12 @@
 
       <v-app-bar-title> <router-link to="/">SwiftCart</router-link></v-app-bar-title>
       <div class="menu-links d-flex flex-wrap">
-        <router-link to="/products"><v-btn color="black">Products</v-btn></router-link>
-        <router-link to="/cart"><v-btn color="black">Shopping Cart</v-btn></router-link>
+        <router-link to="/products" class="d-none d-sm-flex"
+          ><v-btn color="black">Products</v-btn></router-link
+        >
+        <router-link to="/cart" class="d-none d-sm-flex"
+          ><v-btn color="black">Shopping Cart</v-btn></router-link
+        >
       </div>
     </v-app-bar>
   </header>
