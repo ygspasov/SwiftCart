@@ -1,5 +1,5 @@
 <template>
-  <v-container class="bg-surface">
+  <v-container v-if="product" class="bg-surface">
     <v-row no-gutters>
       <v-col cols="12">
         <v-img
@@ -11,8 +11,6 @@
         ></v-img>
       </v-col>
     </v-row>
-  </v-container>
-  <v-container class="">
     <v-row class="d-flex justify-center">
       <v-col class="" md="3"
         ><div class="text-left text-h6">{{ product.name }}</div></v-col
@@ -41,8 +39,10 @@
       </v-col>
     </v-row>
   </v-container>
+  <NotFoundPage v-else />
 </template>
 <script setup>
+import NotFoundPage from '@/views/NotFoundPage.vue';
 import { useRoute } from 'vue-router';
 // const router = useRouter();
 const route = useRoute();
