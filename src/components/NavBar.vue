@@ -9,7 +9,7 @@
 
           <v-list class="mt-6">
             <v-list-item v-for="(item, i) in items" :key="i">
-              <v-list-item-title
+              <v-list-item-title class="text-center"
                 ><router-link :to="{ path: item.to }">
                   <v-btn color="">{{ item.title }}</v-btn></router-link
                 ></v-list-item-title
@@ -38,4 +38,9 @@ const items = [
   { title: 'Shopping Cart', to: '/cart' },
 ];
 </script>
-<style scoped></style>
+<style>
+.v-menu .v-overlay__content {
+  left: 50% !important;
+  transform: translate(-50%, 0%);
+}
+</style>
