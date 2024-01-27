@@ -48,7 +48,7 @@ const products = [
   },
 ];
 
-const cartItems = [products[0], products[2], products[3]];
+let cartItems = [products[0], products[2], products[3]];
 
 app.get('/api/products', (req, res) => {
   res.status(200).json(products);
@@ -65,7 +65,22 @@ app.get('/api/products/:productId', (req, res) => {
     res.status(404).json('Could not find the product!');
   }
 });
-
+app.post('/api/users/:userId/cart', (req, res) => {
+  const { productId } = req.body;
+  const product = products.find((product) => product.id === productId);
+  if (product) {
+    cartItems.push(product);
+    res.status(200).json(cartItems);
+  } else {
+    res.status(404).json('Could not find the product!');
+  }
+});
+app.delete('/api/users/:userId/cart/:productId', (req, res) => {
+  const { productId } = req.params;
+  console.log('productId', productId);
+  cartItems = cartItems.filter((product) => product.id !== productId);
+  res.status(200).json(cartItems);
+});
 const port = 8000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}.`);
