@@ -1,0 +1,7 @@
+{
+  "ignore": ["*.env"],
+  "execMap": {
+    "js": "node -r dotenv/config"
+  },
+  "ext": "js json"
+}

@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import mongoConnect from '../util/database.js';
+// console.log('process.env', process.env);
 const app = express();
 
 app.use(bodyParser.json());
@@ -81,7 +83,8 @@ app.delete('/api/users/:userId/cart/:productId', (req, res) => {
   cartItems = cartItems.filter((product) => product.id !== productId);
   res.status(200).json(cartItems);
 });
-const port = 8000;
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}.`);
+const port = process.env.PORT;
+mongoConnect((client) => {
+  // console.log(client);
+  app.listen(port);
 });
