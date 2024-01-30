@@ -1,16 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import mongoConnect from '../util/database.js';
+import { mongoConnect, getDb } from '../util/database.js';
 // console.log('process.env', process.env);
 const app = express();
 
 app.use(bodyParser.json());
-
-// import bookImage1 from './books/Dune.jpg';
-// import bookImage2 from './books/Dune_The_Battle_of_Corrin.jpg';
-// import bookImage3 from './books/Dune_The_Machine_Crusade.jpg';
-// import bookImage4 from './books/Mentats_of_Dune.jpg';
 
 const products = [
   {
@@ -52,8 +47,18 @@ const products = [
 
 let cartItems = [products[0], products[2], products[3]];
 
-app.get('/api/products', (req, res) => {
-  res.status(200).json(products);
+app.get('/api/products', async (req, res) => {
+  // res.status(200).json(products);
+  try {
+    await mongoConnect();
+    const db = getDb();
+    const productsCollection = db.collection('products');
+    const productsFromDB = await productsCollection.find().toArray();
+    res.status(200).json(productsFromDB);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 app.get('/api/users/:userId/cart', (req, res) => {
   res.status(200).json(cartItems);
@@ -84,7 +89,6 @@ app.delete('/api/users/:userId/cart/:productId', (req, res) => {
   res.status(200).json(cartItems);
 });
 const port = process.env.PORT;
-mongoConnect((client) => {
-  // console.log(client);
+mongoConnect(() => {
   app.listen(port);
 });
