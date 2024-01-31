@@ -12,7 +12,7 @@ const mongoConnect = (callback) => {
     .then((client) => {
       console.log('Connected');
       _db = client.db();
-      if (callback && typeof callback === 'function') {
+      if (callback) {
         callback();
       }
     })
