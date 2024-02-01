@@ -1,33 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import { mongoConnect, getDb } from '../util/database.js';
+import { getProductsController, getProductIdController } from '../controllers/products.js';
 import { products, cartItems } from '../assets/fake-data.js';
 
-router.get('/api/products', async (req, res) => {
-  try {
-    await mongoConnect();
-    const db = getDb();
-    const productsCollection = db.collection('products');
-    const productsFromDB = await productsCollection.find().toArray();
-    res.status(200).json(productsFromDB);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+router.get('/api/products', getProductsController);
 
 router.get('/api/users/:userId/cart', (req, res) => {
   res.status(200).json(cartItems);
 });
-router.get('/api/products/:productId', (req, res) => {
-  const { productId } = req.params;
-  const product = products.find((product) => product.id === productId);
-  if (product) {
-    res.status(200).json(product);
-  } else {
-    res.status(404).json('Could not find the product!');
-  }
-});
+router.get('/api/products/:productId', getProductIdController);
 
 router.post('/api/users/:userId/cart', (req, res) => {
   const { productId } = req.body;
