@@ -3,6 +3,7 @@ const router = express.Router();
 import {
   getProductsController,
   getProductIdController,
+  postProductController,
   getCartController,
   postCartController,
   deleteCartItem,
@@ -11,6 +12,7 @@ import {
 router.get('/api/products', getProductsController);
 
 router.get('/api/products/:productId', getProductIdController);
+router.post('/api/products/:productId', postProductController);
 
 router.get('/api/users/:userId/cart', getCartController);
 router.post('/api/users/:userId/cart', postCartController);

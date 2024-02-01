@@ -24,6 +24,16 @@ const getProductIdController = (req, res) => {
   }
 };
 
+const postProductController = (req, res) => {
+  const product = req.body;
+  if (product) {
+    products.push(product);
+    res.status(200).json(products);
+  } else {
+    res.status(404).json('Could not find the product.');
+  }
+};
+
 const getCartController = (req, res) => {
   res.status(200).json(cartItems);
 };
@@ -49,6 +59,7 @@ const deleteCartItem = (req, res) => {
 export {
   getProductsController,
   getProductIdController,
+  postProductController,
   getCartController,
   postCartController,
   deleteCartItem,
