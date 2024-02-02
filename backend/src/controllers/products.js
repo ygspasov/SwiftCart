@@ -1,17 +1,25 @@
-import { mongoConnect, getDb } from '../util/database.js';
+// import { mongoConnect, getDb } from '../util/database.js';
 import { products, cartItems } from '../assets/fake-data.js';
+import { Product } from '../models/product.js';
 
 const getProductsController = async (req, res) => {
   try {
-    await mongoConnect();
-    const db = getDb();
-    const productsCollection = db.collection('products');
-    const productsFromDB = await productsCollection.find().toArray();
-    res.status(200).json(productsFromDB);
+    const products = Product.fetchAll();
+    res.status(200).json(products);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: 'Cannot get products' });
   }
+
+  // try {
+  //   await mongoConnect();
+  //   const db = getDb();
+  //   const productsCollection = db.collection('products');
+  //   const productsFromDB = await productsCollection.find().toArray();
+  //   res.status(200).json(productsFromDB);
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json({ error: 'Internal Server Error' });
+  // }
 };
 
 const getProductIdController = (req, res) => {
@@ -25,9 +33,9 @@ const getProductIdController = (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const product = req.body;
+  const product = new Product(req.body.name);
   if (product) {
-    products.push(product);
+    product.save();
     res.status(200).json(products);
   } else {
     res.status(404).json('Could not find the product.');
@@ -40,10 +48,11 @@ const getCartController = (req, res) => {
 
 const postCartController = (req, res) => {
   const { productId } = req.body;
+  console.log('productId', productId);
   const product = products.find((product) => product.id === productId);
   if (product) {
     cartItems.push(product);
-    res.status(200).json(cartItems);
+    res.status(200).json(products);
   } else {
     res.status(404).json('Could not find the product.');
   }
