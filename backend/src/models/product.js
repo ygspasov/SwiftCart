@@ -5,8 +5,16 @@ const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
 const assetsPath = path.join(currentModuleDir, '../../src/assets', 'products.json');
-// import { products } from '../assets/fake-data.js';
-let products = [];
+
+const getProductsFromFile = (cb) => {
+  fs.readFile(assetsPath, (err, fileContent) => {
+    if (err) {
+      cb([]);
+    } else {
+      cb(JSON.parse(fileContent));
+    }
+  });
+};
 
 class Product {
   constructor(name) {
@@ -14,10 +22,7 @@ class Product {
   }
 
   save() {
-    fs.readFile(assetsPath, (err, fileContent) => {
-      if (!err) {
-        products = JSON.parse(fileContent);
-      }
+    getProductsFromFile((products) => {
       products.push(this);
       fs.writeFile(assetsPath, JSON.stringify(products), (err) => {
         if (err) {
@@ -26,17 +31,10 @@ class Product {
           console.log('Products saved successfully!');
         }
       });
-      console.log('products', products);
     });
   }
   static fetchAll(cb) {
-    fs.readFile(assetsPath, (err, fileContent) => {
-      if (err) {
-        cb([]);
-      }
-      console.log('fileContent', JSON.parse(fileContent));
-      cb(JSON.parse(fileContent));
-    });
+    getProductsFromFile(cb);
   }
 }
 
