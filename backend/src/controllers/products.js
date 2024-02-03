@@ -4,8 +4,9 @@ import { Product } from '../models/product.js';
 
 const getProductsController = async (req, res) => {
   try {
-    const products = Product.fetchAll();
-    res.status(200).json(products);
+    Product.fetchAll((products) => {
+      res.status(200).json(products);
+    });
   } catch (err) {
     res.status(400).json({ error: 'Cannot get products' });
   }
