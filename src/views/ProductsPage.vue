@@ -8,7 +8,15 @@
   </div>
 </template>
 <script setup>
-import { products } from '../assets/fake-data';
+import { onMounted } from 'vue';
+import axios from 'axios';
+// import { products } from '../assets/fake-data';
 import ProductsGrid from '@/components/ProductsGrid.vue';
+let products = [];
+onMounted(async () => {
+  const result = await axios.get('/api/products');
+  products.value = result.data;
+  console.log('products', products);
+});
 </script>
 <style scoped></style>

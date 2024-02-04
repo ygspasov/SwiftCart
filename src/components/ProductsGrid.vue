@@ -7,5 +7,6 @@
 import ProductsGridItem from '@/components/ProductsGridItem.vue';
 const props = defineProps(['products']);
 const products = props.products;
+console.log('props.products', products);
 </script>
 <style scoped></style>
