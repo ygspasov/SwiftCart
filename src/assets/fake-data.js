@@ -1,7 +1,7 @@
-import bookImage1 from './books/Dune.jpg';
-import bookImage2 from './books/Dune_The_Battle_of_Corrin.jpg';
-import bookImage3 from './books/Dune_The_Machine_Crusade.jpg';
-import bookImage4 from './books/Mentats_of_Dune.jpg';
+import bookImage1 from './images/Dune.jpg';
+import bookImage2 from './images/Dune_The_Battle_of_Corrin.jpg';
+import bookImage3 from './images/Dune_The_Machine_Crusade.jpg';
+import bookImage4 from './images/Mentats_of_Dune.jpg';
 
 export const products = [
   {
