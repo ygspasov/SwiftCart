@@ -3,10 +3,9 @@
     <ProductsGridItem :product="product" />
   </v-col>
 </template>
+
 <script setup>
+import { defineProps } from 'vue';
 import ProductsGridItem from '@/components/ProductsGridItem.vue';
-const props = defineProps(['products']);
-const products = props.products;
-console.log('props.products', products);
+defineProps(['products']);
 </script>
-<style scoped></style>
