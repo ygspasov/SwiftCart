@@ -14,8 +14,13 @@ import axios from 'axios';
 import ProductsGrid from '@/components/ProductsGrid.vue';
 let products = ref([]);
 onMounted(async () => {
-  const result = await axios.get('/api/products');
-  products.value = result.data;
+  try {
+    const result = await axios.get('http://localhost:8000/api/products');
+    products.value = result.data;
+    console.log(result.data);
+  } catch (err) {
+    console.log('err', err);
+  }
 });
 </script>
 <style scoped></style>
