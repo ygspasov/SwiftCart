@@ -30,11 +30,7 @@
       <v-col md="6"
         ><p class="text-left font-weight-bold mb-2 text-subtitle-1">Description</p>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos nostrum voluptates
-          cupiditate at nemo omnis. Deleniti dicta illo facere? Veniam nihil reiciendis soluta
-          quibusdam at facilis sed asperiores animi quisquam in perferendis repellendus, porro
-          ducimus qui laboriosam. Quam aspernatur necessitatibus architecto omnis veritatis,
-          facilis, fugit excepturi quas voluptate odio ducimus!
+          {{ product.description }}
         </p>
       </v-col>
     </v-row>
@@ -42,12 +38,18 @@
   <NotFoundPage v-else />
 </template>
 <script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 import NotFoundPage from '@/views/NotFoundPage.vue';
 import { useRoute } from 'vue-router';
-// const router = useRouter();
 const route = useRoute();
-import { products } from '../assets/fake-data';
-const product = products.find((p) => p.id === route.params.id);
-console.log('product', product);
+const product = ref(null);
+const getProduct = async () => {
+  const result = await axios.get(`/api/products/${route.params.id}`);
+  product.value = result.data;
+};
+onMounted(() => {
+  getProduct();
+});
 </script>
 <style scoped></style>

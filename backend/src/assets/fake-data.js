@@ -9,7 +9,7 @@ let products = [
     name: 'Dune',
     price: '6.00',
     description: 'Dune is a 1965 epic science fiction novel book by American author Frank Herbert',
-    imageUrl: './images/Dune.jpg',
+    imageUrl: '/images/Dune.jpg',
     averageRating: '5.0',
   },
   {
@@ -18,7 +18,7 @@ let products = [
     price: '12.00',
     description:
       'Mentats of Dune is a 2014 science fiction novel by Brian Herbert and Kevin J. Anderson, set in the Dune universe created by Frank Herbert.',
-    imageUrl: './images/Dune_The_Battle_of_Corrin.jpg',
+    imageUrl: '/images/Mentats_of_Dune.jpg',
     averageRating: '5.0',
   },
   {
@@ -27,7 +27,7 @@ let products = [
     price: '9.00',
     description:
       'The Battle of Corrin is a 2004 science fiction novel by Brian Herbert and Kevin J. Anderson, set in the fictional Dune universe created by Frank Herbert',
-    imageUrl: './images/Dune_The_Machine_Crusade.jpg',
+    imageUrl: '/images/Dune_The_Battle_of_Corrin.jpg',
     averageRating: '5.0',
   },
   {
@@ -36,7 +36,7 @@ let products = [
     price: '19.00',
     description:
       'Dune: The Machine Crusade is a 2003 science fiction novel by Brian Herbert and Kevin J. Anderson, set in the fictional Dune universe created by Frank Herbert.',
-    imageUrl: './images/Mentats_of_Dune.jpg',
+    imageUrl: '/images/Dune_The_Machine_Crusade.jpg',
     averageRating: '5.0',
   },
 ];

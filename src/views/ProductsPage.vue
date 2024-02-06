@@ -10,7 +10,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-// import { products } from '../assets/fake-data';
 import ProductsGrid from '@/components/ProductsGrid.vue';
 let products = ref([]);
 
