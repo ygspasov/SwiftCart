@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/images', express.static('src/assets/images'));
+app.use('/images', express.static('backend/src/assets/images'));
 app.use(router);
 
 const port = process.env.PORT || 8000;
