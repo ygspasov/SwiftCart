@@ -12,9 +12,27 @@
   </v-container>
 </template>
 <script setup>
-import { computed } from 'vue';
-import { cartItems } from '../assets/fake-data';
+import { computed, onMounted, ref } from 'vue';
+import axios from 'axios';
+const cartItems = ref([]);
 import ProductList from '@/components/ProductList.vue';
-const totalPrice = computed(() => cartItems.reduce((sum, item) => sum + Number(item.price), 0));
+const totalPrice = ref(0);
+
+const getCartItems = async () => {
+  try {
+    const result = await axios.get('/api/users/1/cart');
+    cartItems.value = result.data;
+    console.log(result.data);
+    totalPrice.value = computed(() =>
+      cartItems.value.reduce((sum, item) => sum + Number(item.price), 0)
+    );
+  } catch (err) {
+    console.log('err', err);
+  }
+};
+
+onMounted(() => {
+  getCartItems();
+});
 </script>
 <style scoped></style>

@@ -10,7 +10,6 @@
 </template>
 <script setup>
 import ProductListItem from '@/components/ProductListItem.vue';
-const props = defineProps(['cartItems']);
-const cartItems = props.cartItems;
+defineProps(['cartItems']);
 </script>
 <style scoped></style>
