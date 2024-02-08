@@ -24,6 +24,12 @@
         <router-link to="/" class="d-none d-sm-flex"
           ><v-btn color="black">Products</v-btn></router-link
         >
+        <router-link to="/admin/add-product" class="d-none d-sm-flex"
+          ><v-btn color="black">Add product</v-btn></router-link
+        >
+        <router-link to="/admin/admin-products" class="d-none d-sm-flex"
+          ><v-btn color="black">Admin products</v-btn></router-link
+        >
         <router-link to="/cart" class="d-none d-sm-flex"
           ><v-btn color="black">Shopping Cart</v-btn></router-link
         >
@@ -35,6 +41,8 @@
 <script setup>
 const items = [
   { title: 'Products', to: '/products' },
+  { title: 'Add Product', to: '/add-product' },
+  { title: 'Admin Products', to: '/admin-products' },
   { title: 'Shopping Cart', to: '/cart' },
 ];
 </script>
