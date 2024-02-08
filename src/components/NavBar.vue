@@ -21,7 +21,7 @@
 
       <v-app-bar-title> <router-link to="/">SwiftCart</router-link></v-app-bar-title>
       <div class="menu-links d-flex flex-wrap">
-        <router-link to="/products" class="d-none d-sm-flex"
+        <router-link to="/" class="d-none d-sm-flex"
           ><v-btn color="black">Products</v-btn></router-link
         >
         <router-link to="/cart" class="d-none d-sm-flex"

@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CartPage from '@/views/CartPage.vue';
 import ProductDetailPage from '@/views/ProductDetailPage.vue';
-import ProductsPage from '@/views/ProductsPage.vue';
+import ProductsPage from '@/views/shop/ProductsPage.vue';
 import NotFoundPage from '@/views/NotFoundPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/products',
+      path: '/',
       name: 'Products',
       component: ProductsPage,
     },
@@ -21,10 +21,6 @@ const router = createRouter({
       path: '/cart/',
       name: 'Cart',
       component: CartPage,
-    },
-    {
-      path: '/',
-      redirect: '/products',
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],
