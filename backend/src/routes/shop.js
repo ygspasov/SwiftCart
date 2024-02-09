@@ -6,8 +6,8 @@ import {
   postProductController,
   getCartController,
   postCartController,
-  deleteCartItem,
-} from '../controllers/products.js';
+  deleteCartItemController,
+} from '../controllers/shop.js';
 
 router.get('/api/products', getProductsController);
 
@@ -17,7 +17,14 @@ router.post('/api/products/:productId', postProductController);
 router.get('/api/users/:userId/cart', getCartController);
 router.post('/api/users/:userId/cart', postCartController);
 
-router.delete('/api/users/:userId/cart/:productId', deleteCartItem);
+router.delete('/api/users/:userId/cart/:productId', deleteCartItemController);
+
+router.get('/api/cart', (req, res) => {
+  res.send('Cart');
+});
+router.get('/api/checkout', (req, res) => {
+  res.send('Checkout');
+});
 
 router.get('/', (req, res) => {
   res.send('Home page');

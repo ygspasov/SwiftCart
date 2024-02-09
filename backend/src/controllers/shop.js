@@ -59,7 +59,7 @@ const postCartController = (req, res) => {
   }
 };
 
-const deleteCartItem = (req, res) => {
+const deleteCartItemController = (req, res) => {
   const { productId } = req.params;
   console.log('productId', productId);
   const newCartItems = cartItems.filter((product) => product.id !== productId);
@@ -72,5 +72,5 @@ export {
   postProductController,
   getCartController,
   postCartController,
-  deleteCartItem,
+  deleteCartItemController,
 };
