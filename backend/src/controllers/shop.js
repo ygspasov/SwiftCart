@@ -34,7 +34,12 @@ const getProductIdController = (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const product = new Product(req.body.name);
+  const name = req.body.name;
+  const imageUrl = req.body.imageUrl;
+  const description = req.body.description;
+  const price = req.body.price;
+  const averageRating = req.body.averageRating;
+  const product = new Product(name, imageUrl, description, price, averageRating);
   if (product) {
     product.save();
     res.status(200).json(products);
