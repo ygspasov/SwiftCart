@@ -3,7 +3,7 @@ import CartPage from '@/views/CartPage.vue';
 import ProductDetailPage from '@/views/ProductDetailPage.vue';
 import ProductsPage from '@/views/shop/ProductsPage.vue';
 import NotFoundPage from '@/views/NotFoundPage.vue';
-import AddProductPage from '@/views/AddProductPage.vue';
+import AddProductPage from '@/views/admin/AddProductPage.vue';
 import AddProductAdminPage from '@/views/admin/ProductsPage.vue';
 
 const router = createRouter({
