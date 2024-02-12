@@ -27,11 +27,11 @@ let averageRating = ref(0);
 const postProduct = async () => {
   try {
     axios.post("/api/products/123", {
-      name,
-      imageUrl,
-      description,
-      price,
-      averageRating,
+      name: name.value,
+      imageUrl: imageUrl.value,
+      description: description.value,
+      price: price.value,
+      averageRating: averageRating.value,
     });
   } catch (err) {
     console.log("err", err);
