@@ -23,10 +23,13 @@ let imageUrl = ref("");
 let description = ref("");
 let price = ref(0);
 let averageRating = ref(0);
-
+function generateRandomId() {
+  return Math.floor(Math.random() * 900) + 100;
+}
 const postProduct = async () => {
   try {
     axios.post("/api/products/123", {
+      id: generateRandomId(),
       name: name.value,
       imageUrl: imageUrl.value,
       description: description.value,

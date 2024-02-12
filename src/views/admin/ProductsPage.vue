@@ -9,18 +9,18 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import axios from 'axios';
-import ProductsGrid from '@/components/ProductsGrid.vue';
+import { onMounted, ref, provide } from "vue";
+import axios from "axios";
+import ProductsGrid from "@/components/ProductsGrid.vue";
 let products = ref([]);
-
+provide(/* key */ "admin", /* value */ true);
 const getProducts = async () => {
   try {
-    const result = await axios.get('http://localhost:8000/api/products');
+    const result = await axios.get("http://localhost:8000/api/products");
     products.value = result.data;
     console.log(result.data);
   } catch (err) {
-    console.log('err', err);
+    console.log("err", err);
   }
 };
 
