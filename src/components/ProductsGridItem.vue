@@ -4,25 +4,28 @@
     </v-img>
 
     <v-card-title
-      ><div class="text-center">{{ product.name }}</div></v-card-title
+      ><div class="text-center text-h5">{{ product.name }}</div></v-card-title
     >
 
     <v-card-text>
-      <div class="text-center">${{ product.price }}</div>
+      <div class="text-center text-h6">${{ product.price }}</div>
     </v-card-text>
 
-    <v-card-actions class="d-flex flex-column flex-md-row justify-center">
+    <v-card-actions class="d-flex flex-wrap justify-center px-0">
       <router-link
         v-if="admin"
-        class="bg-black pa-1 mb-2"
+        class="bg-black pa-1 mb-2 mx-1 rounded"
         :to="'/admin/edit-product/' + product.id"
       >
         <v-btn class="radius-"> Edit </v-btn>
       </router-link>
-      <router-link v-if="admin" class="bg-black pa-1 mb-2" :to="''">
+      <router-link v-if="admin" class="bg-black pa-1 mb-2 mx-1 rounded" :to="''">
         <v-btn class="radius-"> Delete </v-btn>
       </router-link>
-      <router-link class="bg-black pa-1 mb-2" :to="'/products/' + product.id">
+      <router-link
+        class="bg-black pa-1 mb-2 mx-1 rounded"
+        :to="'/products/' + product.id"
+      >
         <v-btn class="radius-"> View Details </v-btn>
       </router-link>
     </v-card-actions>
