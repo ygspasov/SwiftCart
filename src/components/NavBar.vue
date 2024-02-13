@@ -40,10 +40,10 @@
 
 <script setup>
 const items = [
-  { title: 'Products', to: '/products' },
-  { title: 'Add Product', to: '/add-product' },
-  { title: 'Admin Products', to: '/admin-products' },
-  { title: 'Shopping Cart', to: '/cart' },
+  { title: "Products", to: "/products" },
+  { title: "Add Product", to: "/add-product" },
+  { title: "Admin Products", to: "/admin/admin-products" },
+  { title: "Shopping Cart", to: "/cart" },
 ];
 </script>
 <style>

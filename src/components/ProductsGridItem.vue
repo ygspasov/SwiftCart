@@ -1,12 +1,6 @@
 <template>
-  <v-card class="mx-auto" max-width="400">
-    <v-img
-      class="align-end text-white"
-      height="430"
-      width="300"
-      :src="product.imageUrl"
-      cover
-    >
+  <v-card class="mx-auto" min-width="280">
+    <v-img class="align-end text-white" height="450" :src="product.imageUrl" cover>
     </v-img>
 
     <v-card-title
@@ -17,15 +11,18 @@
       <div class="text-center">${{ product.price }}</div>
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions class="d-flex flex-column flex-md-row justify-center">
       <router-link
         v-if="admin"
-        class="bg-black mx-auto pa-1 mb-2"
-        :to="'/products/' + product.id"
+        class="bg-black pa-1 mb-2"
+        :to="'/admin/edit-product/' + product.id"
       >
-        <v-btn class="radius-" v-if="admin"> Edit </v-btn>
+        <v-btn class="radius-"> Edit </v-btn>
       </router-link>
-      <router-link class="bg-black mx-auto pa-1 mb-2" :to="'/products/' + product.id">
+      <router-link v-if="admin" class="bg-black pa-1 mb-2" :to="''">
+        <v-btn class="radius-"> Delete </v-btn>
+      </router-link>
+      <router-link class="bg-black pa-1 mb-2" :to="'/products/' + product.id">
         <v-btn class="radius-"> View Details </v-btn>
       </router-link>
     </v-card-actions>

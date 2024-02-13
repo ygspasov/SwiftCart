@@ -5,6 +5,6 @@
 </template>
 
 <script setup>
-import ProductsGridItem from '@/components/ProductsGridItem.vue';
-defineProps(['products']);
+import ProductsGridItem from "@/components/ProductsGridItem.vue";
+defineProps(["products"]);
 </script>
