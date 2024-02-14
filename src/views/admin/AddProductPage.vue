@@ -18,6 +18,9 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 let name = ref("");
 let imageUrl = ref("");
 let description = ref("");
@@ -36,6 +39,7 @@ const postProduct = async () => {
       price: price.value,
       averageRating: averageRating.value,
     });
+    router.push("/");
   } catch (err) {
     console.log("err", err);
   }
