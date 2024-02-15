@@ -5,6 +5,7 @@ const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
 const assetsPath = path.join(currentModuleDir, '../../src/assets', 'cart.json');
+
 class Cart {
   static addProduct(id, productPrice) {
     fs.readFile(assetsPath, (err, fileContent) => {
@@ -21,13 +22,10 @@ class Cart {
         cart.products = [...cart.products];
         cart.products[existingProductIndex] = updatedProduct;
       } else {
-        updatedProduct = {
-          id: id,
-          qty: 1,
-        };
+        updatedProduct = { id: id, qty: 1 };
+        cart.products = [...cart.products, updatedProduct];
       }
-      cart.totalPrice = cart.totalPrice + productPrice;
-      cart.products = { ...cart.products, updatedProduct };
+      cart.totalPrice = +cart.totalPrice + +productPrice;
       fs.writeFile(assetsPath, JSON.stringify(cart), (err) => {
         console.log(err);
       });

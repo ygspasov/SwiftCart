@@ -1,6 +1,7 @@
 // import { mongoConnect, getDb } from '../util/database.js';
 import { products, cartItems } from '../assets/fake-data.js';
 import { Product } from '../models/product.js';
+import { Cart } from '../models/cart.js';
 
 const getProductsController = async (req, res) => {
   try {
@@ -54,9 +55,12 @@ const getCartController = (req, res) => {
 };
 
 const postCartController = (req, res) => {
-  const { productId } = req.body;
-  console.log('productId', productId);
-  const product = products.find((product) => product.id === productId);
+  const { prodId } = req.body;
+  console.log('prodId', prodId);
+  Product.findById(prodId, (product) => {
+    Cart.addProduct(prodId, product.price);
+  });
+  const product = products.find((product) => product.id === prodId);
   if (product) {
     cartItems.push(product);
     res.status(200).json(products);
