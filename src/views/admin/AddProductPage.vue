@@ -16,32 +16,31 @@
   </v-sheet>
 </template>
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-let name = ref("");
-let imageUrl = ref("");
-let description = ref("");
+let name = ref('');
+let imageUrl = ref('');
+let description = ref('');
 let price = ref(0);
 let averageRating = ref(0);
-function generateRandomId() {
-  return Math.floor(Math.random() * 900) + 100;
-}
+const generateRandomId = () => Math.floor(Math.random() * 900) + 100;
 const postProduct = async () => {
+  const id = generateRandomId().toString();
   try {
-    axios.post("/api/products/123", {
-      id: generateRandomId(),
+    axios.post(`/api/products/${id}`, {
+      id: id,
       name: name.value,
       imageUrl: imageUrl.value,
       description: description.value,
       price: price.value,
       averageRating: averageRating.value,
     });
-    router.push("/");
+    router.push('/');
   } catch (err) {
-    console.log("err", err);
+    console.log('err', err);
   }
 };
 </script>

@@ -24,7 +24,9 @@
       >
     </v-row>
     <v-row class="d-flex justify-center my-3" no-gutters
-      ><v-col class="" md="6"><v-btn class="w-100" color="black">Add to Cart</v-btn></v-col></v-row
+      ><v-col class="" md="6"
+        ><v-btn class="w-100" color="black" @click="addToCart">Add to Cart</v-btn></v-col
+      ></v-row
     >
     <v-row class="d-flex justify-center my-3" no-gutters>
       <v-col md="6"
@@ -41,12 +43,24 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import NotFoundPage from '@/views/NotFoundPage.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
+const router = useRouter();
 const product = ref(null);
 const getProduct = async () => {
   const result = await axios.get(`/api/products/${route.params.id}`);
   product.value = result.data;
+};
+const addToCart = () => {
+  try {
+    axios.post(`/api/users/456/cart`, {
+      prodId: product.value.id,
+      product,
+    });
+    router.push('/cart');
+  } catch (err) {
+    console.log('err', err);
+  }
 };
 onMounted(() => {
   getProduct();
