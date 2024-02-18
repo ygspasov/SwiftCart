@@ -34,22 +34,6 @@ const getProductIdController = (req, res) => {
   }
 };
 
-const postProductController = (req, res) => {
-  const id = req.body.id;
-  const name = req.body.name;
-  const imageUrl = req.body.imageUrl;
-  const description = req.body.description;
-  const price = req.body.price;
-  const averageRating = req.body.averageRating;
-  const product = new Product(id, name, imageUrl, description, price, averageRating);
-  if (product) {
-    product.save();
-    res.status(200).json(products);
-  } else {
-    res.status(404).json('Could not find the product.');
-  }
-};
-
 const getCartController = (req, res) => {
   res.status(200).json(cartItems);
 };
@@ -78,7 +62,6 @@ const deleteCartItemController = (req, res) => {
 export {
   getProductsController,
   getProductIdController,
-  postProductController,
   getCartController,
   postCartController,
   deleteCartItemController,
