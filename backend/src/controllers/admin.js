@@ -11,12 +11,7 @@ const getProductsController = async (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const id = req.body.id;
-  const name = req.body.name;
-  const imageUrl = req.body.imageUrl;
-  const description = req.body.description;
-  const price = req.body.price;
-  const averageRating = req.body.averageRating;
+  const { id, name, imageUrl, description, price, averageRating } = req.body;
   const product = new Product(id, name, imageUrl, description, price, averageRating);
   if (product) {
     product.save();
@@ -26,4 +21,9 @@ const postProductController = (req, res) => {
   }
 };
 
-export { getProductsController, postProductController };
+const editProductController = (req, res) => {
+  // const { id, name, imageUrl, description, price, averageRating } = req.body;
+  res.send('editProductController');
+};
+
+export { getProductsController, postProductController, editProductController };
