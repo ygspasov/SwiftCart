@@ -22,8 +22,10 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  // const { id, name, imageUrl, description, price, averageRating } = req.body;
-  res.send('editProductController');
+  const { id, product } = req.body;
+  // Product.findById(id, (product) => {});
+  console.log(id, product);
+  res.send(id);
 };
 
 export { getProductsController, postProductController, editProductController };

@@ -14,7 +14,7 @@
       <router-link
         v-if="admin"
         class="bg-black pa-1 mb-2 mx-1 rounded"
-        :to="'/admin/edit-product/' + product.id"
+        :to="'/admin/products/edit-product/' + product.id"
       >
         <v-btn class="radius-"> Edit </v-btn>
       </router-link>

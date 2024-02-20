@@ -5,6 +5,7 @@ import ProductsPage from '@/views/shop/ProductsPage.vue';
 import NotFoundPage from '@/views/NotFoundPage.vue';
 import AddProductPage from '@/views/admin/AddProductPage.vue';
 import AddProductAdminPage from '@/views/admin/ProductsPage.vue';
+import EditProduct from '@/views/admin/EditProduct.vue';
 import OrdersPage from '@/views/shop/OrdersPage.vue';
 
 const router = createRouter({
@@ -29,6 +30,11 @@ const router = createRouter({
       path: '/admin/admin-products/',
       name: 'AdminProduct',
       component: AddProductAdminPage,
+    },
+    {
+      path: '/admin/products/edit-product/:id',
+      name: 'EditProduct',
+      component: EditProduct,
     },
     {
       path: '/cart/',
