@@ -22,9 +22,9 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  const { id, product } = req.body;
-  // Product.findById(id, (product) => {});
-  console.log(id, product);
+  const { id, name, imageUrl, description, price, averageRating } = req.body;
+  const updatedProduct = new Product(id, name, imageUrl, description, price, averageRating);
+  updatedProduct.save();
   res.send(id);
 };
 

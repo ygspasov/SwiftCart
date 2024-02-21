@@ -28,14 +28,27 @@ class Product {
 
   save() {
     getProductsFromFile((products) => {
-      products.push(this);
-      fs.writeFile(assetsPath, JSON.stringify(products), (err) => {
-        if (err) {
-          console.log('Error writing to file:', err);
-        } else {
-          console.log('Products saved successfully!');
-        }
-      });
+      const existingProductIndex = products.findIndex((prod) => prod.id === this.id);
+      if (existingProductIndex != -1) {
+        const updatedProducts = [...products];
+        updatedProducts[existingProductIndex] = this;
+        fs.writeFile(assetsPath, JSON.stringify(updatedProducts), (err) => {
+          if (err) {
+            console.log('Error writing to file:', err);
+          } else {
+            console.log('Products updated successfully!');
+          }
+        });
+      } else {
+        products.push(this);
+        fs.writeFile(assetsPath, JSON.stringify(products), (err) => {
+          if (err) {
+            console.log('Error writing to file:', err);
+          } else {
+            console.log('Products saved successfully!');
+          }
+        });
+      }
     });
   }
   static fetchAll(cb) {

@@ -1,11 +1,11 @@
 [
   {
     "id": "123",
-    "name": "Dune",
-    "price": "6.00",
-    "description": "Dune is a 1965 epic science fiction novel book by American author Frank Herbert",
+    "name": "Dune 2",
     "imageUrl": "/images/Dune.jpg",
-    "averageRating": "5.0"
+    "description": "test description",
+    "price": 3,
+    "averageRating": 5
   },
   {
     "id": "234",
@@ -32,11 +32,12 @@
     "averageRating": "5.0"
   },
   {
-    "id": 416,
-    "name": "Dune",
+    "id": "416",
+    "name": "Dune Edited",
     "imageUrl": "/images/Dune.jpg",
-    "description": "desc",
-    "price": "2",
-    "averageRating": "2"
-  }
+    "description": "test description",
+    "price": 2,
+    "averageRating": 5
+  },
+  { "id": "417", "name": "Test product" }
 ]
