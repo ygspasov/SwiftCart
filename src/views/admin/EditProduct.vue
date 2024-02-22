@@ -11,34 +11,33 @@
       <v-textarea v-model="description" label="Description"></v-textarea>
       <v-text-field v-model="price" label="Price"></v-text-field>
       <v-text-field v-model="averageRating" label="Averate Rating"></v-text-field>
-      <v-btn type="submit" block class="mt-2" @click="postProduct">Edit product</v-btn>
+      <v-btn type="submit" block class="mt-2" @click="editProduct">Edit product</v-btn>
     </v-form>
   </v-sheet>
 </template>
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 let name = ref('');
 let imageUrl = ref('');
 let description = ref('');
 let price = ref(0);
 let averageRating = ref(0);
-const generateRandomId = () => Math.floor(Math.random() * 900) + 100;
-const postProduct = async () => {
-  const id = generateRandomId().toString();
+const editProduct = async () => {
   try {
-    axios.post(`/api/products/${id}`, {
-      id: id,
+    axios.patch(`/api/admin/products/edit-product/${route.params.id}`, {
+      id: route.params.id,
       name: name.value,
       imageUrl: imageUrl.value,
       description: description.value,
       price: price.value,
       averageRating: averageRating.value,
     });
-    router.push('/');
+    router.push('/admin/admin-products');
   } catch (err) {
     console.log('err', err);
   }
