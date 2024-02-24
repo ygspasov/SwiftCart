@@ -26,8 +26,7 @@ const getProductsController = async (req, res) => {
 
 const getProductIdController = (req, res) => {
   const { productId } = req.params;
-  Product.fetchAll((products) => {
-    const product = products.find((product) => product.id === productId);
+  Product.findById(productId, (product) => {
     if (product) {
       res.status(200).json(product);
     } else {
