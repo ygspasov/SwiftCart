@@ -1,4 +1,4 @@
-import { products } from '../assets/fake-data.js';
+// import { products } from '../assets/fake-data.js';
 import { Product } from '../models/product.js';
 const getProductsController = async (req, res) => {
   try {
@@ -15,7 +15,8 @@ const postProductController = (req, res) => {
   const product = new Product(id, name, imageUrl, description, price, averageRating);
   if (product) {
     product.save();
-    res.status(200).json(products);
+    // res.status(200).json(products);
+    res.status(200);
   } else {
     res.status(404).json('Could not find the product.');
   }

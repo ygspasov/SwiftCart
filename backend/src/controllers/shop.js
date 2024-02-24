@@ -1,5 +1,5 @@
 // import { mongoConnect, getDb } from '../util/database.js';
-import { products, cartItems } from '../assets/fake-data.js';
+import { cartItems } from '../assets/fake-data.js';
 import { Product } from '../models/product.js';
 import { Cart } from '../models/cart.js';
 
@@ -26,12 +26,14 @@ const getProductsController = async (req, res) => {
 
 const getProductIdController = (req, res) => {
   const { productId } = req.params;
-  const product = products.find((product) => product.id === productId);
-  if (product) {
-    res.status(200).json(product);
-  } else {
-    res.status(404).json('Could not find the product!');
-  }
+  Product.fetchAll((products) => {
+    const product = products.find((product) => product.id === productId);
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(404).json('Could not find the product!');
+    }
+  });
 };
 
 const getCartController = (req, res) => {
@@ -43,13 +45,15 @@ const postCartController = (req, res) => {
   Product.findById(prodId, (product) => {
     Cart.addProduct(prodId, product.price);
   });
-  const product = products.find((product) => product.id === prodId);
-  if (product) {
-    cartItems.push(product);
-    res.status(200).json(products);
-  } else {
-    res.status(404).json('Could not find the product.');
-  }
+  Product.fetchAll((products) => {
+    const product = products.find((product) => product.id === prodId);
+    if (product) {
+      cartItems.push(product);
+      res.status(200).json(products);
+    } else {
+      res.status(404).json('Could not find the product.');
+    }
+  });
 };
 
 const deleteCartItemController = (req, res) => {
