@@ -38,6 +38,5 @@
     "description": "test description",
     "price": 2,
     "averageRating": 5
-  },
-  { "id": "417", "name": "Test product" }
+  }
 ]
