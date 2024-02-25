@@ -15,8 +15,7 @@ const postProductController = (req, res) => {
   const product = new Product(id, name, imageUrl, description, price, averageRating);
   if (product) {
     product.save();
-    // res.status(200).json(products);
-    res.status(200);
+    res.status(200).send(product);
   } else {
     res.status(404).json('Could not find the product.');
   }
