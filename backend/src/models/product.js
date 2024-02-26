@@ -60,6 +60,19 @@ class Product {
       cb(product);
     });
   }
+  static deleteById(id) {
+    getProductsFromFile((products) => {
+      const newProducts = products.filter((product) => product.id !== id);
+      console.log('newProducts', newProducts);
+      fs.writeFile(assetsPath, JSON.stringify(newProducts), (err) => {
+        if (err) {
+          console.log('Error deleting the file:', err);
+        } else {
+          console.log('Product deleted successfully!');
+        }
+      });
+    });
+  }
 }
 
 export { Product };

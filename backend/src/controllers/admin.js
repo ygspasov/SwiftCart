@@ -28,4 +28,15 @@ const editProductController = (req, res) => {
   res.send(id);
 };
 
-export { getProductsController, postProductController, editProductController };
+const deleteProductController = (req, res) => {
+  const { productId } = req.params;
+  Product.deleteById(productId);
+  res.status(200).json(productId);
+};
+
+export {
+  getProductsController,
+  postProductController,
+  editProductController,
+  deleteProductController,
+};
