@@ -5,6 +5,7 @@ const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
 const assetsPath = path.join(currentModuleDir, '../../src/assets', 'products.json');
+import { Cart } from './cart.js';
 
 const getProductsFromFile = (cb) => {
   fs.readFile(assetsPath, (err, fileContent) => {
@@ -62,12 +63,14 @@ class Product {
   }
   static deleteById(id) {
     getProductsFromFile((products) => {
+      const product = products.find((product) => product.id !== id);
       const newProducts = products.filter((product) => product.id !== id);
       console.log('newProducts', newProducts);
       fs.writeFile(assetsPath, JSON.stringify(newProducts), (err) => {
         if (err) {
           console.log('Error deleting the file:', err);
         } else {
+          Cart.deleteProduct(id, product.price);
           console.log('Product deleted successfully!');
         }
       });

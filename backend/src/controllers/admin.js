@@ -25,13 +25,15 @@ const editProductController = (req, res) => {
   const { id, name, imageUrl, description, price, averageRating } = req.body;
   const updatedProduct = new Product(id, name, imageUrl, description, price, averageRating);
   updatedProduct.save();
-  res.send(id);
+  res.status(200).send(id);
+  res.redirect('/admin/admin-products');
 };
 
 const deleteProductController = (req, res) => {
   const { productId } = req.params;
   Product.deleteById(productId);
   res.status(200).json(productId);
+  res.redirect('/admin/admin-products');
 };
 
 export {
