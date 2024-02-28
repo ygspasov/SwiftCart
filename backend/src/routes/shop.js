@@ -12,14 +12,11 @@ router.get('/api/products', getProductsController);
 
 router.get('/api/products/:productId', getProductIdController);
 
-router.get('/api/users/:userId/cart', getCartController);
+router.get('/api/cart', getCartController);
 router.post('/api/users/:userId/cart', postCartController);
 
 router.delete('/api/users/:userId/cart/:productId', deleteCartItemController);
 
-router.get('/api/cart', (req, res) => {
-  res.send('Cart');
-});
 router.get('/api/checkout', (req, res) => {
   res.send('Checkout');
 });

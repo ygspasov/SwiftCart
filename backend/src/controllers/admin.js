@@ -1,4 +1,3 @@
-// import { products } from '../assets/fake-data.js';
 import { Product } from '../models/product.js';
 const getProductsController = async (req, res) => {
   try {

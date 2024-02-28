@@ -1,5 +1,4 @@
 // import { mongoConnect, getDb } from '../util/database.js';
-import { cartItems } from '../assets/fake-data.js';
 import { Product } from '../models/product.js';
 import { Cart } from '../models/cart.js';
 
@@ -36,7 +35,15 @@ const getProductIdController = (req, res) => {
 };
 
 const getCartController = (req, res) => {
-  res.status(200).json(cartItems);
+  // res.status(200).json(cartItems);
+  try {
+    Cart.getCart((cartItems) => {
+      console.log('cartItems', cartItems);
+      res.status(200).json(cartItems);
+    });
+  } catch (err) {
+    res.status(400).json({ error: 'Cannot get cart items' });
+  }
 };
 
 const postCartController = (req, res) => {

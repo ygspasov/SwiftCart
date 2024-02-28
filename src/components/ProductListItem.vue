@@ -5,6 +5,7 @@
 
   <div class="d-flex flex-column text-h6 mx-2 my-2 my-md-0 flex-grow-1 text-center text-md-left">
     <span class="flex-grow-1 text-h5">{{ item.name }}</span>
+    <span class="flex-grow-1 text-h5">{{ item.qty }}</span>
     <span class="flex-grow-1 text-h5">${{ item.price }}</span>
   </div>
   <div class="d-flex align-start mx-auto mx-md-0">
