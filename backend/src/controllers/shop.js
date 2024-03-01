@@ -35,11 +35,19 @@ const getProductIdController = (req, res) => {
 };
 
 const getCartController = (req, res) => {
-  // res.status(200).json(cartItems);
   try {
     Cart.getCart((cartItems) => {
-      console.log('cartItems', cartItems);
-      res.status(200).json(cartItems);
+      Product.fetchAll((products) => {
+        const cartProducts = [];
+        for (const product of products) {
+          const cartProductData = cartItems.products.find((prod) => prod.id === product.id);
+          if (cartProductData) {
+            cartProducts.push({ productData: product, qty: cartProductData.qty });
+          }
+        }
+        console.log('cartProducts', cartProducts);
+        res.status(200).json(cartProducts);
+      });
     });
   } catch (err) {
     res.status(400).json({ error: 'Cannot get cart items' });
