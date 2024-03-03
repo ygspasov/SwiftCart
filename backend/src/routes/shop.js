@@ -13,9 +13,9 @@ router.get('/api/products', getProductsController);
 router.get('/api/products/:productId', getProductIdController);
 
 router.get('/api/cart', getCartController);
-router.post('/api/users/:userId/cart', postCartController);
+router.post('/api/cart/:productId', postCartController);
 
-router.delete('/api/users/:userId/cart/:productId', deleteCartItemController);
+router.delete('/api/cart/:productId', deleteCartItemController);
 
 router.get('/api/checkout', (req, res) => {
   res.send('Checkout');

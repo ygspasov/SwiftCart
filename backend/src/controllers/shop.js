@@ -57,13 +57,9 @@ const getCartController = (req, res) => {
 const postCartController = (req, res) => {
   const { prodId } = req.body;
   Product.findById(prodId, (product) => {
-    Cart.addProduct(prodId, product.price);
-  });
-  Product.fetchAll((products) => {
-    const product = products.find((product) => product.id === prodId);
     if (product) {
-      cartItems.push(product);
-      res.status(200).json(products);
+      Cart.addProduct(prodId, product.price);
+      res.status(200).json(product);
     } else {
       res.status(404).json('Could not find the product.');
     }
