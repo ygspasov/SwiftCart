@@ -69,8 +69,14 @@ const postCartController = (req, res) => {
 const deleteCartItemController = (req, res) => {
   const { productId } = req.params;
   console.log('productId', productId);
-  const newCartItems = cartItems.filter((product) => product.id !== productId);
-  res.status(200).json(newCartItems);
+  Product.findById(productId, (product) => {
+    if (product) {
+      Cart.deleteProduct(productId, product.price);
+      res.status(200).json(product);
+    } else {
+      res.status(404).json('Could not find the product.');
+    }
+  });
 };
 
 export {
