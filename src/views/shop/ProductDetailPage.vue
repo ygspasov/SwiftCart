@@ -52,10 +52,10 @@ const getProduct = async () => {
   product.value = result.data;
 };
 const addToCart = () => {
+  const prodId = product.value.id;
   try {
-    axios.post(`/api/users/456/cart`, {
-      prodId: product.value.id,
-      product,
+    axios.post(`/api/cart/${prodId}`, {
+      prodId,
     });
     router.push('/cart');
   } catch (err) {
