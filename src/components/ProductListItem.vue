@@ -9,11 +9,23 @@
     <span class="flex-grow-1 text-h5">Price: ${{ item.productData.price }}</span>
   </div>
   <div class="d-flex align-start mx-auto mx-md-0">
-    <v-btn class="" color="black">Remove From Cart</v-btn>
+    <v-btn class="" color="black" @click="RemoveCartItem">Remove From Cart</v-btn>
   </div>
 </template>
 <script setup>
+import axios from 'axios';
 const props = defineProps(['item']);
 const item = props.item;
+
+const RemoveCartItem = () => {
+  const productId = item.productData.id;
+  try {
+    axios.delete(`/api/cart/${productId}`, {
+      productId,
+    });
+  } catch (err) {
+    console.log('err', err);
+  }
+};
 </script>
 <style scoped></style>
