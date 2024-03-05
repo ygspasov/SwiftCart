@@ -47,17 +47,29 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 const product = ref(null);
+const cartItems = ref([]);
 const getProduct = async () => {
   const result = await axios.get(`/api/products/${route.params.id}`);
   product.value = result.data;
 };
-const addToCart = () => {
+const addToCart = async () => {
   const prodId = product.value.id;
   try {
     axios.post(`/api/cart/${prodId}`, {
       prodId,
     });
+    await updateCartItems();
     router.push('/cart');
+  } catch (err) {
+    console.log('err', err);
+  }
+};
+
+const updateCartItems = async () => {
+  //Updates the cart products after a new product is added to the cart
+  try {
+    const result = await axios.get('/api/cart');
+    cartItems.value = result.data;
   } catch (err) {
     console.log('err', err);
   }
