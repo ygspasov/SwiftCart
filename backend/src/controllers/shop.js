@@ -42,7 +42,10 @@ const getCartController = (req, res) => {
         for (const product of products) {
           const cartProductData = cartItems.products.find((prod) => prod.id === product.id);
           if (cartProductData) {
-            cartProducts.push({ productData: product, qty: cartProductData.qty });
+            cartProducts.push({
+              productData: product,
+              qty: cartProductData.qty,
+            });
           }
         }
         console.log('cartProducts', cartProducts);
@@ -72,9 +75,9 @@ const deleteCartItemController = (req, res) => {
   Product.findById(productId, (product) => {
     if (product) {
       Cart.deleteProduct(productId, product.price);
-      res.status(200).json(product);
+      res.status(200).json({ message: 'Product deleted successfully' });
     } else {
-      res.status(404).json('Could not find the product.');
+      res.status(404).json({ error: 'Could not find the product.' });
     }
   });
 };

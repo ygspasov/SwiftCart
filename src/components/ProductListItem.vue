@@ -14,17 +14,22 @@
 </template>
 <script setup>
 import axios from 'axios';
+import { useCartStore } from '@/stores/cart';
+const store = useCartStore();
+const { loadCart } = store;
 const props = defineProps(['item']);
 const item = props.item;
 
 const RemoveCartItem = () => {
   const productId = item.productData.id;
+  console.log('productId', productId);
   try {
     axios.delete(`/api/cart/${productId}`, {
       productId,
     });
+    loadCart();
   } catch (err) {
-    console.log('err', err);
+    console.log('Error removing item:', err);
   }
 };
 </script>
