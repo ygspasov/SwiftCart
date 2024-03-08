@@ -10,37 +10,53 @@
       ></v-text-field>
       <v-textarea v-model="description" label="Description"></v-textarea>
       <v-text-field v-model="price" label="Price"></v-text-field>
-      <v-text-field v-model="averageRating" label="Averate Rating"></v-text-field>
       <v-btn type="submit" block class="mt-2" @click="editProduct">Edit product</v-btn>
     </v-form>
   </v-sheet>
 </template>
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
-let name = ref('');
-let imageUrl = ref('');
-let description = ref('');
+let name = ref("");
+let imageUrl = ref("");
+let description = ref("");
 let price = ref(0);
-let averageRating = ref(0);
+
+const getProduct = async () => {
+  try {
+    const product = await axios.get(`/api/products/${route.params.id}`);
+    console.log("product", product);
+    name.value = product.data.name;
+    description.value = product.data.description;
+    imageUrl.value = product.data.imageUrl;
+    price.value = product.data.price;
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
 const editProduct = async () => {
   try {
-    axios.patch(`/api/admin/products/edit-product/${route.params.id}`, {
+    await axios.patch(`/api/admin/products/edit-product/${route.params.id}`, {
       id: route.params.id,
       name: name.value,
       imageUrl: imageUrl.value,
       description: description.value,
       price: price.value,
-      averageRating: averageRating.value,
     });
-    router.push('/admin/admin-products');
+    //setTimeout fixes a problem with the product image not loaded on router redirect
+    setTimeout(() => {
+      router.push("/admin/admin-products");
+    }, 200);
   } catch (err) {
-    console.log('err', err);
+    console.log("Error editing product:", err);
   }
 };
+onMounted(() => {
+  getProduct();
+});
 </script>
-<style scoped></style>

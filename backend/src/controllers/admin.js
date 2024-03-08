@@ -25,7 +25,7 @@ const editProductController = (req, res) => {
   const updatedProduct = new Product(id, name, imageUrl, description, price, averageRating);
   updatedProduct.save();
   res.status(200).send(id);
-  res.redirect('/admin/admin-products');
+  // res.redirect('/admin/admin-products');
 };
 
 const deleteProductController = (req, res) => {
