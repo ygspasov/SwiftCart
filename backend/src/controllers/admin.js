@@ -10,8 +10,8 @@ const getProductsController = async (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const { id, name, imageUrl, description, price, averageRating } = req.body;
-  const product = new Product(id, name, imageUrl, description, price, averageRating);
+  const { id, name, imageUrl, description, price } = req.body;
+  const product = new Product(id, name, imageUrl, description, price);
   if (product) {
     product.save();
     res.status(200).send(product);
@@ -21,8 +21,8 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  const { id, name, imageUrl, description, price, averageRating } = req.body;
-  const updatedProduct = new Product(id, name, imageUrl, description, price, averageRating);
+  const { id, name, imageUrl, description, price } = req.body;
+  const updatedProduct = new Product(id, name, imageUrl, description, price);
   updatedProduct.save();
   res.status(200).send(id);
   // res.redirect('/admin/admin-products');
