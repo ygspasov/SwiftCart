@@ -10,7 +10,6 @@
       ></v-text-field>
       <v-textarea v-model="description" label="Description"></v-textarea>
       <v-text-field v-model="price" label="Price"></v-text-field>
-      <v-text-field v-model="averageRating" label="Averate Rating"></v-text-field>
       <v-btn type="submit" block class="mt-2" @click="postProduct">Add product</v-btn>
     </v-form>
   </v-sheet>
@@ -25,7 +24,6 @@ let name = ref('');
 let imageUrl = ref('');
 let description = ref('');
 let price = ref(0);
-let averageRating = ref(0);
 const generateRandomId = () => Math.floor(Math.random() * 900) + 100;
 const postProduct = async () => {
   const id = generateRandomId().toString();
@@ -36,7 +34,6 @@ const postProduct = async () => {
       imageUrl: imageUrl.value,
       description: description.value,
       price: price.value,
-      averageRating: averageRating.value,
     });
     router.push('/');
   } catch (err) {
