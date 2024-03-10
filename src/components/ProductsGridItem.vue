@@ -30,14 +30,15 @@
 <script setup>
 import { inject } from 'vue';
 import axios from 'axios';
+import { useCartStore } from '@/stores/cart';
 const admin = inject('admin');
-
+const store = useCartStore();
 const props = defineProps(['product']);
 const product = props.product;
-console.log('product', product);
 const deleteProduct = async () => {
   try {
     await axios.delete(`/api/admin/products/delete-product/${product.id}`);
+    store.loadProducts = true;
   } catch (err) {
     console.log('err', err);
   }
