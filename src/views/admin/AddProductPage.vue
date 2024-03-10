@@ -35,7 +35,9 @@ const postProduct = async () => {
       description: description.value,
       price: price.value,
     });
-    router.push('/');
+    setTimeout(() => {
+      router.push('/admin/admin-products');
+    }, 200);
   } catch (err) {
     console.log('err', err);
   }
