@@ -19,7 +19,7 @@
         <v-btn class="radius-"> Edit </v-btn>
       </router-link>
       <router-link v-if="admin" class="bg-black pa-1 mb-2 mx-1 rounded" :to="''">
-        <v-btn class="radius-"> Delete </v-btn>
+        <v-btn class="radius-" @click="deleteProduct"> Delete </v-btn>
       </router-link>
       <router-link class="bg-black pa-1 mb-2 mx-1 rounded" :to="'/products/' + product.id">
         <v-btn class="radius-"> View Details </v-btn>
@@ -29,10 +29,18 @@
 </template>
 <script setup>
 import { inject } from 'vue';
+import axios from 'axios';
 const admin = inject('admin');
 
 const props = defineProps(['product']);
 const product = props.product;
 console.log('product', product);
+const deleteProduct = async () => {
+  try {
+    await axios.delete(`/api/admin/products/delete-product/${product.id}`);
+  } catch (err) {
+    console.log('err', err);
+  }
+};
 </script>
 <style scoped></style>

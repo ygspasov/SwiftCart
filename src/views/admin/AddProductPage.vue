@@ -28,7 +28,7 @@ const generateRandomId = () => Math.floor(Math.random() * 900) + 100;
 const postProduct = async () => {
   const id = generateRandomId().toString();
   try {
-    axios.post(`/api/products/${id}`, {
+    await axios.post(`/api/products/${id}`, {
       id: id,
       name: name.value,
       imageUrl: imageUrl.value,
