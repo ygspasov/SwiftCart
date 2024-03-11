@@ -38,11 +38,11 @@ const getCartController = (req, res) => {
   try {
     Cart.getCart((cartItems) => {
       Product.fetchAll((products) => {
-        const cartProducts = [];
+        const cartProducts = { products: [], totalPrice: cartItems.totalPrice };
         for (const product of products) {
           const cartProductData = cartItems.products.find((prod) => prod.id === product.id);
           if (cartProductData) {
-            cartProducts.push({
+            cartProducts.products.push({
               productData: product,
               qty: cartProductData.qty,
             });

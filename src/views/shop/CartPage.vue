@@ -24,11 +24,8 @@ const getCartItems = async () => {
   try {
     cartItems.value = [];
     const result = await axios.get('/api/cart');
-    cartItems.value = result.data;
-    console.log('cartItems value', cartItems.value);
-    totalPrice.value = computed(() =>
-      cartItems.value.reduce((sum, item) => sum + Number(item.productData.price * item.qty), 0)
-    );
+    cartItems.value = result.data.products;
+    totalPrice.value = result.data.totalPrice;
   } catch (err) {
     console.log('err', err);
   }
@@ -38,9 +35,7 @@ const loadProducts = computed(() => store.loadProducts);
 console.log('store.loadProducts', store.loadProducts);
 watch(loadProducts, (newVal) => {
   if (newVal) {
-    console.log('Before getCartItems - cartItems:', cartItems.value);
     getCartItems();
-    console.log('After getCartItems - cartItems:', cartItems.value);
     store.loadProducts = false;
   }
 });
