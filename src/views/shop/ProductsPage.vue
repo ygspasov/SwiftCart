@@ -8,26 +8,23 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeMount } from "vue";
-import axios from "axios";
-import ProductsGrid from "@/components/ProductsGrid.vue";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import ProductsGrid from '@/components/ProductsGrid.vue';
 let products = ref([]);
 
 const getProducts = async () => {
   try {
-    const result = await axios.get("/api/products");
+    const result = await axios.get('/api/products');
     products.value = result.data;
     console.log(result.data);
   } catch (err) {
-    console.log("err", err);
+    console.log('err', err);
   }
 };
-const beforeRouteEnter = async () => {
+
+onMounted(async () => {
   await getProducts();
-};
-onBeforeMount(beforeRouteEnter);
-onMounted(() => {
-  getProducts();
 });
 </script>
 <style scoped></style>
