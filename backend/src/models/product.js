@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getDb } from '../util/database.js';
 const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
@@ -27,29 +28,38 @@ class Product {
   }
 
   save() {
-    getProductsFromFile((products) => {
-      const existingProductIndex = products.findIndex((prod) => prod.id === this.id);
-      if (existingProductIndex != -1) {
-        const updatedProducts = [...products];
-        updatedProducts[existingProductIndex] = this;
-        fs.writeFile(assetsPath, JSON.stringify(updatedProducts), (err) => {
-          if (err) {
-            console.log('Error writing to file:', err);
-          } else {
-            console.log('Products updated successfully!');
-          }
-        });
-      } else {
-        products.push(this);
-        fs.writeFile(assetsPath, JSON.stringify(products), (err) => {
-          if (err) {
-            console.log('Error writing to file:', err);
-          } else {
-            console.log('Products saved successfully!');
-          }
-        });
-      }
-    });
+    // getProductsFromFile((products) => {
+    //   const existingProductIndex = products.findIndex((prod) => prod.id === this.id);
+    //   if (existingProductIndex != -1) {
+    //     const updatedProducts = [...products];
+    //     updatedProducts[existingProductIndex] = this;
+    //     fs.writeFile(assetsPath, JSON.stringify(updatedProducts), (err) => {
+    //       if (err) {
+    //         console.log('Error writing to file:', err);
+    //       } else {
+    //         console.log('Products updated successfully!');
+    //       }
+    //     });
+    //   } else {
+    //     products.push(this);
+    //     fs.writeFile(assetsPath, JSON.stringify(products), (err) => {
+    //       if (err) {
+    //         console.log('Error writing to file:', err);
+    //       } else {
+    //         console.log('Products saved successfully!');
+    //       }
+    //     });
+    //   }
+    // });
+    const db = getDb();
+    db.collection('products')
+      .insertOne(this)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   static fetchAll(cb) {
     getProductsFromFile(cb);
