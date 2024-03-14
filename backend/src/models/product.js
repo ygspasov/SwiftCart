@@ -19,8 +19,7 @@ const getProductsFromFile = (cb) => {
 };
 
 class Product {
-  constructor(id, name, imageUrl, description, price) {
-    this.id = id;
+  constructor(name, imageUrl, description, price) {
     this.name = name;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -52,7 +51,8 @@ class Product {
     //   }
     // });
     const db = getDb();
-    db.collection('products')
+    return db
+      .collection('products')
       .insertOne(this)
       .then((result) => {
         console.log(result);
