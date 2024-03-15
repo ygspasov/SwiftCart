@@ -4,23 +4,13 @@ import { Cart } from '../models/cart.js';
 
 const getProductsController = async (req, res) => {
   try {
-    Product.fetchAll((products) => {
-      res.status(200).json(products);
-    });
+    const products = await Product.fetchAll();
+    console.log('products', products);
+    res.status(200).json(products);
   } catch (err) {
+    console.log('Error fetching products:', err);
     res.status(400).json({ error: 'Cannot get products' });
   }
-
-  // try {
-  //   await mongoConnect();
-  //   const db = getDb();
-  //   const productsCollection = db.collection('products');
-  //   const productsFromDB = await productsCollection.find().toArray();
-  //   res.status(200).json(productsFromDB);
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).json({ error: 'Internal Server Error' });
-  // }
 };
 
 const getProductIdController = (req, res) => {
