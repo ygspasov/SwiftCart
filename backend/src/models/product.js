@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getDb } from '../util/database.js';
+import { Cart } from './cart.js';
 const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
 const assetsPath = path.join(currentModuleDir, '../../src/assets', 'products.json');
-import { Cart } from './cart.js';
 
 const getProductsFromFile = (cb) => {
   fs.readFile(assetsPath, (err, fileContent) => {
@@ -61,8 +61,20 @@ class Product {
         console.log(err);
       });
   }
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
+  static fetchAll() {
+    // getProductsFromFile(cb);
+    const db = getDb();
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then((products) => {
+        console.log(products);
+        return products;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   static findById(id, cb) {
     getProductsFromFile((products) => {
