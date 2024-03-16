@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { getDb } from '../util/database.js';
 import { Cart } from './cart.js';
+import mongodb from 'mongodb';
 const currentModuleUrl = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleUrl);
 const currentModuleDir = path.dirname(currentModulePath);
@@ -74,11 +75,23 @@ class Product {
         console.log(err);
       });
   }
-  static findById(id, cb) {
-    getProductsFromFile((products) => {
-      const product = products.find((p) => p.id === id);
-      cb(product);
-    });
+  static findById(id) {
+    // getProductsFromFile((products) => {
+    //   const product = products.find((p) => p.id === id);
+    //   cb(product);
+    // });
+    const db = getDb();
+    return db
+      .collection('products')
+      .find({ _id: new mongodb.ObjectId(id) })
+      .next()
+      .then((product) => {
+        console.log('product', product);
+        return product;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   static deleteById(id) {
     getProductsFromFile((products) => {

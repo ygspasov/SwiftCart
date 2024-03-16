@@ -14,14 +14,14 @@
       <router-link
         v-if="admin"
         class="bg-black pa-1 mb-2 mx-1 rounded"
-        :to="'/admin/products/edit-product/' + product.id"
+        :to="'/admin/products/edit-product/' + product._id"
       >
         <v-btn class="radius-"> Edit </v-btn>
       </router-link>
       <router-link v-if="admin" class="bg-black pa-1 mb-2 mx-1 rounded" :to="''">
         <v-btn class="radius-" @click="deleteProduct"> Delete </v-btn>
       </router-link>
-      <router-link class="bg-black pa-1 mb-2 mx-1 rounded" :to="'/products/' + product.id">
+      <router-link class="bg-black pa-1 mb-2 mx-1 rounded" :to="'/products/' + product._id">
         <v-btn class="radius-"> View Details </v-btn>
       </router-link>
     </v-card-actions>
@@ -37,7 +37,7 @@ const props = defineProps(['product']);
 const product = props.product;
 const deleteProduct = async () => {
   try {
-    await axios.delete(`/api/admin/products/delete-product/${product.id}`);
+    await axios.delete(`/api/admin/products/delete-product/${product._id}`);
     store.loadProducts = true;
   } catch (err) {
     console.log('err', err);
