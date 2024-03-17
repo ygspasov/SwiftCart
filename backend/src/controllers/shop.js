@@ -14,11 +14,13 @@ const getProductsController = async (req, res) => {
 };
 
 const getProductIdController = async (req, res) => {
-  const { productId } = req.params;
-  const product = await Product.findById(productId);
-  if (product) {
-    res.status(200).json(product);
-  } else {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findById(productId);
+    if (product) {
+      res.status(200).json(product);
+    }
+  } catch (error) {
     res.status(404).json('Could not find the product!');
   }
 };

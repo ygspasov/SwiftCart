@@ -20,11 +20,12 @@ const getProductsFromFile = (cb) => {
 };
 
 class Product {
-  constructor(name, imageUrl, description, price) {
+  constructor(name, imageUrl, description, price, id) {
     this.name = name;
     this.imageUrl = imageUrl;
     this.description = description;
     this.price = price;
+    this._id = id;
   }
 
   save() {
@@ -51,10 +52,18 @@ class Product {
     //     });
     //   }
     // });
+
     const db = getDb();
-    return db
-      .collection('products')
-      .insertOne(this)
+    let dbOp;
+    if (this._id) {
+      //Updating the product
+      dbOp = db
+        .collection('products')
+        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
+    } else {
+      dbOp = db.collection('products').insertOne(this);
+    }
+    return dbOp
       .then((result) => {
         console.log(result);
       })

@@ -1,4 +1,5 @@
 import { Product } from '../models/product.js';
+import mongodb from 'mongodb';
 const getProductsController = async (req, res) => {
   try {
     Product.fetchAll((products) => {
@@ -21,11 +22,10 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  const { id, name, imageUrl, description, price } = req.body;
-  const updatedProduct = new Product(id, name, imageUrl, description, price);
+  const { name, imageUrl, description, price, id } = req.body;
+  const updatedProduct = new Product(name, imageUrl, description, price, new mongodb.ObjectId(id));
   updatedProduct.save();
   res.status(200).send(id);
-  // res.redirect('/admin/admin-products');
 };
 
 const deleteProductController = (req, res) => {
