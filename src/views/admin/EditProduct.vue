@@ -15,27 +15,27 @@
   </v-sheet>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import { useRouter, useRoute } from "vue-router";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-let name = ref("");
-let imageUrl = ref("");
-let description = ref("");
+let name = ref('');
+let imageUrl = ref('');
+let description = ref('');
 let price = ref(0);
 
 const getProduct = async () => {
   try {
     const product = await axios.get(`/api/products/${route.params.id}`);
-    console.log("product", product);
+    console.log('product', product);
     name.value = product.data.name;
     description.value = product.data.description;
     imageUrl.value = product.data.imageUrl;
     price.value = product.data.price;
   } catch (err) {
-    console.log("err", err);
+    console.log('err', err);
   }
 };
 
@@ -48,12 +48,9 @@ const editProduct = async () => {
       description: description.value,
       price: price.value,
     });
-    //setTimeout fixes a problem with the product image not loaded on router redirect
-    setTimeout(() => {
-      router.push("/admin/admin-products");
-    }, 200);
+    router.push('/admin/admin-products');
   } catch (err) {
-    console.log("Error editing product:", err);
+    console.log('Error editing product:', err);
   }
 };
 onMounted(() => {
