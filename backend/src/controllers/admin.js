@@ -12,7 +12,7 @@ const getProductsController = async (req, res) => {
 
 const postProductController = (req, res) => {
   const { name, imageUrl, description, price } = req.body;
-  const product = new Product(name, imageUrl, description, price);
+  const product = new Product(name, imageUrl, description, price, null, req.user._id);
   if (product) {
     product.save();
     res.status(200).send(product);
