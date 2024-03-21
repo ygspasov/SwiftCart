@@ -48,7 +48,7 @@ const getProduct = async () => {
   product.value = result.data;
 };
 const addToCart = async () => {
-  const prodId = product.value.id;
+  const prodId = product.value._id;
   try {
     axios.post(`/api/cart/${prodId}`, {
       prodId,
