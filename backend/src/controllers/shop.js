@@ -1,6 +1,5 @@
 // import { mongoConnect, getDb } from '../util/database.js';
 import { Product } from '../models/product.js';
-// import { Cart } from '../models/cart.js';
 
 const getProductsController = async (req, res) => {
   try {

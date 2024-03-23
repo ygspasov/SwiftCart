@@ -9,7 +9,7 @@ import { User } from './models/user.js';
 const app = express();
 
 app.use((req, res, next) => {
-  User.findById('65f998a5f107ef962c815983')
+  User.findById('65fe4ab3319c63747bd2536e')
     .then((user) => {
       req.user = new User(user.username, user.email, user.cart, user._id);
       console.log('req.user', req.user);
