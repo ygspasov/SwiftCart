@@ -24,28 +24,16 @@ const getProductIdController = async (req, res) => {
   }
 };
 
-// const getCartController = (req, res) => {
-//   try {
-//     Cart.getCart((cartItems) => {
-//       Product.fetchAll((products) => {
-//         const cartProducts = { products: [], totalPrice: cartItems.totalPrice };
-//         for (const product of products) {
-//           const cartProductData = cartItems.products.find((prod) => prod.id === product.id);
-//           if (cartProductData) {
-//             cartProducts.products.push({
-//               productData: product,
-//               qty: cartProductData.qty,
-//             });
-//           }
-//         }
-//         console.log('cartProducts', cartProducts);
-//         res.status(200).json(cartProducts);
-//       });
-//     });
-//   } catch (err) {
-//     res.status(400).json({ error: 'Cannot get cart items' });
-//   }
-// };
+const getCartController = async (req, res) => {
+  try {
+    const cartItems = await req.user.getCart();
+    if (cartItems) {
+      res.status(200).json(cartItems);
+    }
+  } catch (err) {
+    res.status(400).json({ error: 'Cannot get cart items' });
+  }
+};
 
 const postCartController = (req, res) => {
   const { prodId } = req.body;
@@ -75,7 +63,7 @@ const deleteCartItemController = (req, res) => {
 export {
   getProductsController,
   getProductIdController,
-  // getCartController,
+  getCartController,
   postCartController,
   deleteCartItemController,
 };

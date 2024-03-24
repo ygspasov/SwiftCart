@@ -43,6 +43,42 @@ class User {
       console.log(err);
     }
   }
+  getCart() {
+    const db = getDb();
+    const productIds = this.cart.items.map((i) => {
+      return i.productId;
+    });
+    return db
+      .collection('products')
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        // Map retrieved products to include quantity from the cart
+        const cartItemsWithQuantity = products.map((p) => {
+          const quantity = this.cart.items.find((i) => {
+            return i.productId.toString() === p._id.toString();
+          }).quantity;
+          return {
+            ...p,
+            quantity: quantity,
+          };
+        });
+
+        // Calculate total price
+        let totalPrice = 0;
+        cartItemsWithQuantity.forEach((item) => {
+          const price = parseFloat(item.price);
+          const quantity = item.quantity;
+          totalPrice += price * quantity;
+        });
+
+        // Return cart items along with total price
+        return {
+          cartItems: cartItemsWithQuantity,
+          totalPrice: totalPrice.toFixed(2),
+        };
+      });
+  }
 }
 
 export { User };

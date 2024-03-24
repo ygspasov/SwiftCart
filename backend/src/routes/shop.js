@@ -3,7 +3,7 @@ const router = express.Router();
 import {
   getProductsController,
   getProductIdController,
-  // getCartController,
+  getCartController,
   postCartController,
   deleteCartItemController,
 } from '../controllers/shop.js';
@@ -12,7 +12,7 @@ router.get('/api/products', getProductsController);
 
 router.get('/api/products/:productId', getProductIdController);
 
-// router.get('/api/cart', getCartController);
+router.get('/api/cart', getCartController);
 router.post('/api/cart/:productId', postCartController);
 
 router.delete('/api/cart/:productId', deleteCartItemController);
