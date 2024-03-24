@@ -54,7 +54,7 @@ class User {
       .toArray()
       .then((products) => {
         // Map retrieved products to include quantity from the cart
-        const cartItemsWithQuantity = products.map((p) => {
+        const cartItems = products.map((p) => {
           const quantity = this.cart.items.find((i) => {
             return i.productId.toString() === p._id.toString();
           }).quantity;
@@ -66,17 +66,15 @@ class User {
 
         // Calculate total price
         let totalPrice = 0;
-        cartItemsWithQuantity.forEach((item) => {
+        cartItems.forEach((item) => {
           const price = parseFloat(item.price);
           const quantity = item.quantity;
           totalPrice += price * quantity;
         });
 
+        totalPrice = totalPrice.toFixed(2);
         // Return cart items along with total price
-        return {
-          cartItems: cartItemsWithQuantity,
-          totalPrice: totalPrice.toFixed(2),
-        };
+        return { cartItems, totalPrice };
       });
   }
 }
