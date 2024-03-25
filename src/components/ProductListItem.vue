@@ -21,7 +21,7 @@ const props = defineProps(['item']);
 const item = props.item;
 
 const RemoveCartItem = async () => {
-  const productId = item.productData.id;
+  const productId = item._id;
   console.log('productId', productId);
   try {
     await axios.delete(`/api/cart/${productId}`, {
