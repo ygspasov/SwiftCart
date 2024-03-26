@@ -57,10 +57,20 @@ const deleteCartItemController = (req, res) => {
   }
 };
 
+const postOrderController = (req, res) => {
+  try {
+    req.user.addOrder();
+    res.status(200).json('Order created.');
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to create an order.' });
+  }
+};
+
 export {
   getProductsController,
   getProductIdController,
   getCartController,
   postCartController,
   deleteCartItemController,
+  postOrderController,
 };

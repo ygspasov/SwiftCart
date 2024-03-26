@@ -89,6 +89,20 @@ class User {
         return { cartItems, totalPrice };
       });
   }
+
+  addOrder() {
+    const db = getDb();
+    //Adding the user cart as a new order in the orders collection.
+    db.collection('orders')
+      .insertOne(this.cart)
+      .then(() => {
+        //Empyting the user cart both in the User class and the db
+        this.cart = { items: [] };
+        return db
+          .collection('users')
+          .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: { cart: { items: [] } } });
+      });
+  }
 }
 
 export { User };
