@@ -57,9 +57,9 @@ const deleteCartItemController = (req, res) => {
   }
 };
 
-const postOrderController = (req, res) => {
+const postOrderController = async (req, res) => {
   try {
-    req.user.addOrder();
+    await req.user.addOrder();
     res.status(200).json('Order created.');
   } catch (err) {
     res.status(400).json({ error: 'Failed to create an order.' });
