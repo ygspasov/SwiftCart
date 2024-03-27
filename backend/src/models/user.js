@@ -92,9 +92,18 @@ class User {
 
   addOrder() {
     const db = getDb();
-    //Adding the user cart as a new order in the orders collection.
-    db.collection('orders')
-      .insertOne(this.cart)
+    return this.getCart()
+      .then((products) => {
+        const order = {
+          items: products,
+          user: {
+            _id: new mongodb.ObjectId(this._id),
+            name: this.username,
+          },
+        };
+        //Adding the user cart as a new order in the orders collection.
+        return db.collection('orders').insertOne(order);
+      })
       .then(() => {
         //Empyting the user cart both in the User class and the db
         this.cart = { items: [] };
@@ -102,6 +111,11 @@ class User {
           .collection('users')
           .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: { cart: { items: [] } } });
       });
+  }
+
+  getOrders() {
+    const db = getDb();
+    return db.collection('orders');
   }
 }
 
