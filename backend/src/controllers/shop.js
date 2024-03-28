@@ -66,6 +66,15 @@ const postOrderController = async (req, res) => {
   }
 };
 
+const getOrdersController = async (req, res) => {
+  try {
+    const userOrders = await req.user.getOrders();
+    res.status(200).json(userOrders);
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to fetch the orders.' });
+  }
+};
+
 export {
   getProductsController,
   getProductIdController,
@@ -73,4 +82,5 @@ export {
   postCartController,
   deleteCartItemController,
   postOrderController,
+  getOrdersController,
 };

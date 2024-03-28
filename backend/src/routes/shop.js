@@ -7,6 +7,7 @@ import {
   postCartController,
   deleteCartItemController,
   postOrderController,
+  getOrdersController,
 } from '../controllers/shop.js';
 
 router.get('/api/products', getProductsController);
@@ -18,6 +19,7 @@ router.post('/api/cart/:productId', postCartController);
 
 router.delete('/api/cart/:productId', deleteCartItemController);
 
+router.get('/api/orders', getOrdersController);
 router.post('/api/create-order', postOrderController);
 
 router.get('/api/checkout', (req, res) => {
