@@ -5,15 +5,14 @@
     <p>Order # {{ order._id }}</p>
     <v-list lines="one">
       <v-list-item v-for="product in order.items.cartItems" :key="product._id">
-        <v-card
-          :subtitle="'Description: ' + product.description"
-          :text="product.price"
-          :title="'Product: ' + product.name"
-          class="w-100"
-        ></v-card>
+        <SingeCart
+          :description="product.description"
+          :price="product.price"
+          :name="product.name"
+        />
       </v-list-item>
-      <v-list-item
-        ><p>Оrder price: {{ order.items.totalPrice }}</p></v-list-item
+      <v-list-item>
+        <p>Оrder price: {{ order.items.totalPrice }}</p></v-list-item
       >
     </v-list>
   </div>
@@ -21,6 +20,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import SingeCart from "../../components/SingleCart.vue";
 
 const orders = ref([]);
 
