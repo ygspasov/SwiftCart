@@ -1,11 +1,14 @@
-// import { mongoConnect, getDb } from '../util/database.js';
 import { Product } from '../models/product.js';
+import { Order } from '../models/order.js';
 
 const getProductsController = async (req, res) => {
   try {
-    const products = await Product.fetchAll();
-    console.log('products', products);
-    res.status(200).json(products);
+    Product.find()
+      .populate('userId')
+      .then((products) => {
+        console.log('products', products);
+        res.status(200).json(products);
+      });
   } catch (err) {
     console.log('Error fetching products:', err);
     res.status(400).json({ error: 'Cannot get products' });
@@ -26,8 +29,9 @@ const getProductIdController = async (req, res) => {
 
 const getCartController = async (req, res) => {
   try {
-    const cartItems = await req.user.getCart();
+    const cartItems = await req.user.populate('cart.items.productId');
     if (cartItems) {
+      console.log('cartItems', cartItems.cart.items);
       res.status(200).json(cartItems);
     }
   } catch (err) {
@@ -59,7 +63,28 @@ const deleteCartItemController = (req, res) => {
 
 const postOrderController = async (req, res) => {
   try {
-    await req.user.addOrder();
+    await req.user
+      .populate('cart.items.productId')
+      .then((user) => {
+        const products = user.cart.items.map((item) => {
+          return {
+            quantity: item.quantity,
+            product: { ...item.productId._doc },
+          };
+        });
+        console.log('products', products);
+        const order = new Order({
+          user: {
+            name: req.user.name,
+            userId: req.user,
+          },
+          products: products,
+        });
+        order.save();
+      })
+      .then(() => {
+        return req.user.clearCart();
+      });
     res.status(200).json('Order created.');
   } catch (err) {
     res.status(400).json({ error: 'Failed to create an order.' });
@@ -68,8 +93,10 @@ const postOrderController = async (req, res) => {
 
 const getOrdersController = async (req, res) => {
   try {
-    const userOrders = await req.user.getOrders();
-    res.status(200).json(userOrders);
+    Order.find({ 'user.userId': req.user._id }).then((orders) => {
+      console.log('orders', orders);
+      res.status(200).json(orders);
+    });
   } catch (err) {
     res.status(400).json({ error: 'Failed to fetch the orders.' });
   }
