@@ -31,7 +31,6 @@ const getCartController = async (req, res) => {
   try {
     const cartItems = await req.user.populate('cart.items.productId');
     if (cartItems) {
-      console.log('cartItems', cartItems.cart.items);
       res.status(200).json(cartItems);
     }
   } catch (err) {

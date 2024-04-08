@@ -5,7 +5,7 @@
   <div class="d-flex flex-column text-h6 mx-2 my-2 my-md-0 flex-grow-1 text-center text-md-left">
     <span class="flex-grow-1 text-h5">{{ item.productId.name }}</span>
     <span class="flex-grow-1 text-h5"> Quantity: {{ item.quantity }}</span>
-    <span class="flex-grow-1 text-h5">Price: ${{ item.productId.price }}</span>
+    <span class="flex-grow-1 text-h5">Price: ${{ item.price }}</span>
   </div>
   <div class="d-flex align-start mx-auto mx-md-0">
     <v-btn class="" color="black" @click="RemoveCartItem">Remove</v-btn>

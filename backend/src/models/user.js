@@ -14,8 +14,10 @@ const userSchema = new Schema({
       {
         productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
         quantity: { type: Number, required: true },
+        price: { type: Number, required: true },
       },
     ],
+    totalPrice: { type: Number, required: false },
   },
 });
 
@@ -24,21 +26,30 @@ userSchema.methods.addToCart = function (product) {
     return cp.productId.toString() === product._id.toString();
   });
   let newQuantity = 1;
-  const updatedCartItems = [...this.cart.items];
+  let updatedCartItems = [...this.cart.items];
+  let updatedCart = {
+    items: updatedCartItems,
+    totalPrice: 0,
+  };
   if (cartProductIndex >= 0) {
+    //When the product already exists in the cart
     newQuantity = this.cart.items[cartProductIndex].quantity + 1;
     updatedCartItems[cartProductIndex].quantity = newQuantity;
+    updatedCartItems[cartProductIndex].price += product.price;
   } else {
+    //When the product doesn't exist in the cart
     updatedCartItems.push({
       productId: product._id,
       quantity: newQuantity,
+      price: product.price,
     });
   }
-  const updatedCart = {
-    items: updatedCartItems,
-  };
+  console.log('updatedCart', updatedCart);
+  updatedCartItems.forEach((element) => {
+    updatedCart.totalPrice += element.price;
+  });
+  this.cart = updatedCart;
   try {
-    this.cart = updatedCart;
     return this.save();
   } catch (err) {
     console.log(err);
@@ -49,11 +60,17 @@ userSchema.methods.deleteItemFromCart = function (prodId) {
     return item._id.toString() !== prodId.toString();
   });
   this.cart.items = updatedCartItems;
+  //Updating the total price of the user cart when removing items from it
+  let updatedTotalPrice = 0;
+  updatedCartItems.forEach((element) => {
+    updatedTotalPrice += element.price;
+  });
+  this.cart.totalPrice = updatedTotalPrice;
   return this.save();
 };
 
 userSchema.methods.clearCart = function () {
-  this.cart = { items: [] };
+  this.cart = { items: [], totalPrice: 0 };
   return this.save();
 };
 

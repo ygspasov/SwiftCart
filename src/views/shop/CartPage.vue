@@ -28,7 +28,7 @@ const getCartItems = async () => {
     const result = await axios.get('/api/cart');
     cartItems.value = result.data.cart.items;
     console.log('cartItems.value', cartItems.value);
-    totalPrice.value = result.data.totalPrice;
+    totalPrice.value = result.data.cart.totalPrice;
   } catch (err) {
     console.log('err', err);
   }
