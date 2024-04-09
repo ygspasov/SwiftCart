@@ -68,17 +68,19 @@ const postOrderController = async (req, res) => {
         const products = user.cart.items.map((item) => {
           return {
             quantity: item.quantity,
+            price: item.price,
             product: { ...item.productId._doc },
           };
         });
-        console.log('products', products);
         const order = new Order({
           user: {
             name: req.user.name,
             userId: req.user,
           },
           products: products,
+          totalPrice: user.cart.totalPrice,
         });
+        console.log('order', order);
         order.save();
       })
       .then(() => {

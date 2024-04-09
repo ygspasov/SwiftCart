@@ -5,6 +5,7 @@ const orderSchema = new Schema({
     {
       product: { type: Object, required: true },
       quantity: { type: Number, required: true },
+      price: { type: Number, required: true },
     },
   ],
   user: {
@@ -18,6 +19,7 @@ const orderSchema = new Schema({
       ref: 'User',
     },
   },
+  totalPrice: { type: Number, required: true },
 });
 
 const Order = mongoose.model('Order', orderSchema);
