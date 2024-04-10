@@ -8,12 +8,12 @@
         <!-- {{ item }} -->
         <SingeCart
           :description="item.product.description"
-          :price="item.product.price"
+          :price="item.price"
           :name="item.product.name"
         />
       </v-list-item>
       <v-list-item>
-        <!-- <p>Оrder price: {{ order.items.totalPrice }}</p> -->
+        <p>Оrder price: {{ order.totalPrice }}</p>
       </v-list-item>
     </v-list>
   </div>
