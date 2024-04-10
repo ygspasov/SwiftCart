@@ -25,10 +25,14 @@ const totalPrice = ref(0);
 const getCartItems = async () => {
   try {
     cartItems.value = [];
-    const result = await axios.get('/api/cart');
-    cartItems.value = result.data.cart.items;
-    console.log('cartItems.value', cartItems.value);
-    totalPrice.value = result.data.cart.totalPrice;
+    //setTimeout fixes a problem with items not updating after the get request
+    setTimeout(() => {
+      axios.get('/api/cart').then((result) => {
+        cartItems.value = result.data.cart.items;
+        console.log('cartItems.value', cartItems.value);
+        totalPrice.value = result.data.cart.totalPrice;
+      });
+    }, 100);
   } catch (err) {
     console.log('err', err);
   }

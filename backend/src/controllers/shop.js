@@ -29,23 +29,21 @@ const getProductIdController = async (req, res) => {
 
 const getCartController = async (req, res) => {
   try {
-    const cartItems = await req.user.populate('cart.items.productId');
-    if (cartItems) {
+    await req.user.populate('cart.items.productId').then((cartItems) => {
       res.status(200).json(cartItems);
-    }
+    });
   } catch (err) {
     res.status(400).json({ error: 'Cannot get cart items' });
   }
 };
 
-const postCartController = (req, res) => {
+const postCartController = async (req, res) => {
   const { prodId } = req.body;
-  Product.findById(prodId)
+  await Product.findById(prodId)
     .then((product) => {
       return req.user.addToCart(product);
     })
     .then((result) => {
-      console.log('result', result);
       res.status(200).json(result);
     });
 };
