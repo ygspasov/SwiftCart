@@ -7,6 +7,7 @@ import AddProductPage from '@/views/admin/AddProductPage.vue';
 import AdminProductsPage from '@/views/admin/ProductsPage.vue';
 import EditProduct from '@/views/admin/EditProduct.vue';
 import OrdersPage from '@/views/shop/OrdersPage.vue';
+import LoginPage from '@/views/shop/LoginPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/orders/',
       name: 'OrdersPage',
       component: OrdersPage,
+    },
+    {
+      path: '/login/',
+      name: 'LoginPage',
+      component: LoginPage,
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],
