@@ -3,8 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 // import { mongoConnect } from './util/database.js';
-import { router } from './routes/shop.js';
+import { shopRouter } from './routes/shop.js';
 import { adminRouter } from './routes/admin.js';
+import { authRouter } from './routes/auth.js';
 import { User } from './models/user.js';
 import { config } from 'dotenv';
 config();
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/images', express.static('backend/src/assets/images'));
-app.use(router, adminRouter);
+app.use(shopRouter, adminRouter, authRouter);
 
 const port = process.env.PORT || 8000;
 // mongoConnect(() => {

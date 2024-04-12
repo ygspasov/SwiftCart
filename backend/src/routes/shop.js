@@ -30,4 +30,4 @@ router.get('/', (req, res) => {
   res.send('Home page');
 });
 
-export { router };
+export { router as shopRouter };
