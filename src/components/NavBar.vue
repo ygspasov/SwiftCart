@@ -24,6 +24,7 @@
         <router-link to="/" class="d-none d-sm-flex"
           ><v-btn color="black">Products</v-btn></router-link
         >
+
         <router-link to="/admin/add-product" class="d-none d-sm-flex"
           ><v-btn color="black">Add product</v-btn></router-link
         >
