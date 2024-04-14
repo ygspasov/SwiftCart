@@ -1,7 +1,6 @@
 const getLoginController = async (req, res) => {
   try {
-    const isLoggedIn = req.get('Cookie').split('=')[1].trim() === 'true';
-    console.log('isLoggedIn', isLoggedIn);
+    console.log('req.session.isLoggedIn', req.session.isLoggedIn);
     res.status(200).json('Login');
   } catch (err) {
     res.status(400).json({ error: 'Failed to fetch the orders.' });
@@ -10,7 +9,7 @@ const getLoginController = async (req, res) => {
 
 const postLoginController = async (req, res) => {
   try {
-    res.setHeader('Set-Cookie', 'loggedIn=true');
+    req.session.isLoggedIn = true;
     res.status(200).json('Post Login');
   } catch (err) {
     res.status(400).json({ error: 'Failed to fetch the orders.' });

@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
-// import { mongoConnect } from './util/database.js';
+import session from 'express-session';
 import { shopRouter } from './routes/shop.js';
 import { adminRouter } from './routes/admin.js';
 import { authRouter } from './routes/auth.js';
@@ -23,12 +23,10 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/images', express.static('backend/src/assets/images'));
+app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false }));
 app.use(shopRouter, adminRouter, authRouter);
 
 const port = process.env.PORT || 8000;
-// mongoConnect(() => {
-//   app.listen(port);
-// });
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.0qq5jxd.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
 mongoose
   .connect(MONGODB_URI)

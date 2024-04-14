@@ -31,11 +31,11 @@ const emailRules = [
 const login = async () => {
   try {
     await axios.post(`/auth/login`).then(() => {
-      if (document.cookie.includes('loggedIn=true')) {
-        console.log('User is logged in');
-      } else {
-        console.log('User is not logged in');
-      }
+      // if (document.cookie.includes('loggedIn=true')) {
+      //   console.log('User is logged in');
+      // } else {
+      //   console.log('User is not logged in');
+      // }
     });
   } catch (err) {
     console.log(err);
