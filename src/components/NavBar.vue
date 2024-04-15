@@ -20,25 +20,9 @@
       </template>
 
       <v-app-bar-title> <router-link to="/">SwiftCart</router-link></v-app-bar-title>
-      <div class="menu-links d-flex flex-wrap">
-        <router-link to="/" class="d-none d-sm-flex"
-          ><v-btn color="black">Products</v-btn></router-link
-        >
-
-        <router-link to="/admin/add-product" class="d-none d-sm-flex"
-          ><v-btn color="black">Add product</v-btn></router-link
-        >
-        <router-link to="/admin/admin-products" class="d-none d-sm-flex"
-          ><v-btn color="black">Admin products</v-btn></router-link
-        >
-        <router-link to="/cart" class="d-none d-sm-flex"
-          ><v-btn color="black">Cart</v-btn></router-link
-        >
-        <router-link to="/orders" class="d-none d-sm-flex"
-          ><v-btn color="black">Orders</v-btn></router-link
-        >
-        <router-link to="/login" class="d-none d-sm-flex"
-          ><v-btn color="black">Login</v-btn></router-link
+      <div class="menu-links d-flex flex-wrap" v-for="(item, i) in items" :key="i">
+        <router-link :to="{ path: item.to }" class="d-none d-sm-flex"
+          ><v-btn color="black">{{ item.title }}</v-btn></router-link
         >
       </div>
     </v-app-bar>
@@ -47,11 +31,13 @@
 
 <script setup>
 const items = [
-  { title: 'Products', to: '/products' },
-  { title: 'Add Product', to: '/add-product' },
+  { title: 'Products', to: '/' },
+  { title: 'Add Product', to: 'admin/add-product' },
   { title: 'Admin Products', to: '/admin/admin-products' },
   { title: 'Cart', to: '/cart' },
   { title: 'Orders', to: '/orders' },
+  { title: 'Login', to: '/login' },
+  { title: 'Logout', to: '/logout' },
 ];
 </script>
 <style>
