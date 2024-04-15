@@ -12,8 +12,17 @@ const postLoginController = async (req, res) => {
     req.session.isLoggedIn = true;
     res.status(200).json('Post Login');
   } catch (err) {
-    res.status(400).json({ error: 'Failed to fetch the orders.' });
+    res.status(400).json({ error: 'Failed to login.' });
   }
 };
 
-export { getLoginController, postLoginController };
+const postLogoutController = async (req, res) => {
+  try {
+    req.session.destroy();
+    res.status(200).json('Post Logout');
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to logout.' });
+  }
+};
+
+export { getLoginController, postLoginController, postLogoutController };

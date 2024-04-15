@@ -15,6 +15,13 @@
                 ></v-list-item-title
               >
             </v-list-item>
+            <v-list-item
+              ><v-list-item-title class="text-center"
+                ><router-link to="/"
+                  ><v-btn @click="logout">Logout</v-btn></router-link
+                ></v-list-item-title
+              ></v-list-item
+            >
           </v-list>
         </v-menu>
       </template>
@@ -25,11 +32,15 @@
           ><v-btn color="black">{{ item.title }}</v-btn></router-link
         >
       </div>
+      <router-link to="/" class="d-none d-sm-flex"
+        ><v-btn color="black" @click="logout">Logout</v-btn></router-link
+      >
     </v-app-bar>
   </header>
 </template>
 
 <script setup>
+import axios from 'axios';
 const items = [
   { title: 'Products', to: '/' },
   { title: 'Add Product', to: 'admin/add-product' },
@@ -37,8 +48,14 @@ const items = [
   { title: 'Cart', to: '/cart' },
   { title: 'Orders', to: '/orders' },
   { title: 'Login', to: '/login' },
-  { title: 'Logout', to: '/logout' },
 ];
+const logout = async () => {
+  try {
+    await axios.post(`/auth/logout`);
+  } catch (err) {
+    console.log(err);
+  }
+};
 </script>
 <style>
 .v-menu .v-overlay__content {
