@@ -37,19 +37,6 @@ app.use(shopRouter, adminRouter, authRouter);
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: 'Yavor',
-          email: 'yavor@test.com',
-          cart: {
-            items: [],
-          },
-        });
-        user.save();
-      }
-    });
-
     app.listen(port);
   })
   .catch((err) => console.log(err));

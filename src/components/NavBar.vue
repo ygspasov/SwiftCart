@@ -47,6 +47,7 @@ const items = [
   { title: 'Admin Products', to: '/admin/admin-products' },
   { title: 'Cart', to: '/cart' },
   { title: 'Orders', to: '/orders' },
+  { title: 'Signup', to: '/signup' },
   { title: 'Login', to: '/login' },
 ];
 const logout = async () => {

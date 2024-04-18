@@ -7,6 +7,7 @@ import AddProductPage from '@/views/admin/AddProductPage.vue';
 import AdminProductsPage from '@/views/admin/ProductsPage.vue';
 import EditProduct from '@/views/admin/EditProduct.vue';
 import OrdersPage from '@/views/shop/OrdersPage.vue';
+import SignUpPage from '@/views/shop/SignUpPage.vue';
 import LoginPage from '@/views/shop/LoginPage.vue';
 
 const router = createRouter({
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/login/',
       name: 'LoginPage',
       component: LoginPage,
+    },
+    {
+      path: '/signup/',
+      name: 'SignUpPage',
+      component: SignUpPage,
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],

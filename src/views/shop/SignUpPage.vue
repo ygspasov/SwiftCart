@@ -30,8 +30,15 @@ const emailRules = [
   },
 ];
 const signup = async () => {
+  console.log('signup', {
+    email: email.value,
+    password: password.value,
+  });
   try {
-    await axios.post(`/auth/signup`);
+    await axios.post(`/auth/signup`, {
+      email: email.value,
+      password: password.value,
+    });
   } catch (err) {
     console.log(err);
   }

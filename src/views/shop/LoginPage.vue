@@ -1,9 +1,8 @@
 <template>
   <v-sheet class="mx-auto mt-5" width="300">
     <v-form fast-fail @submit.prevent>
-      <v-text-field v-model="firstName" :rules="firstNameRules" label="First name"></v-text-field>
-
       <v-text-field v-model="email" :rules="emailRules" label="Email"></v-text-field>
+      <v-text-field v-model="password" :rules="passwordRules" label="Password"></v-text-field>
 
       <v-btn class="mt-2" type="submit" block @click="login"> Login</v-btn>
     </v-form>
@@ -13,10 +12,10 @@
 import { ref } from 'vue';
 import axios from 'axios';
 
-const firstName = ref('');
-const firstNameRules = [
+const password = ref('');
+const passwordRules = [
   (value) => {
-    if (value?.length >= 3) return true;
+    if (value?.length >= 4) return true;
     return 'First name must be at least 3 characters.';
   },
 ];
