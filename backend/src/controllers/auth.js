@@ -1,20 +1,25 @@
+import bcrypt from 'bcryptjs';
 import { User } from '../models/user.js';
 
 const postSignupController = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   try {
-    User.findOne({ email: email }).then((userDoc) => {
-      if (userDoc) {
-        return;
-      }
-      const user = new User({
-        email: email,
-        password: password,
-        cart: { items: [] },
+    User.findOne({ email: email })
+      .then((userDoc) => {
+        if (userDoc) {
+          return;
+        }
+        return bcrypt.hash(password, 12);
+      })
+      .then((hashedPassword) => {
+        const user = new User({
+          email: email,
+          password: hashedPassword,
+          cart: { items: [] },
+        });
+        return user.save();
       });
-      return user.save();
-    });
     res.status(200).json('Signup');
   } catch (err) {
     res.status(400).json({ error: 'Failed to sign up.' });
