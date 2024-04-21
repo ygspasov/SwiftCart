@@ -29,7 +29,10 @@ const emailRules = [
 ];
 const login = async () => {
   try {
-    await axios.post(`/auth/login`);
+    await axios.post(`/auth/login`, {
+      email: email.value,
+      password: password.value,
+    });
   } catch (err) {
     console.log(err);
   }

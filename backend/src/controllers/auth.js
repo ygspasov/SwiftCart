@@ -35,9 +35,22 @@ const getLoginController = async (req, res) => {
 };
 
 const postLoginController = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
   try {
-    req.session.isLoggedIn = true;
-    res.status(200).json('Post Login');
+    User.findOne({ email: email }).then((user) => {
+      bcrypt.compare(password, user.password).then((doMatch) => {
+        //Comparing the password the user entered with the password stored in the db
+        if (doMatch) {
+          console.log('passwords match');
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          req.session.save();
+          res.status(200).json('Post Login');
+          return;
+        }
+      });
+    });
   } catch (err) {
     res.status(400).json({ error: 'Failed to login.' });
   }
