@@ -46,7 +46,7 @@ const postLoginController = async (req, res) => {
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.save();
-          res.status(200).json('Post Login');
+          res.status(200).json({ isLoggedIn: true });
           return;
         }
       });

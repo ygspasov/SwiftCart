@@ -21,10 +21,10 @@ import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-let name = ref('');
-let imageUrl = ref('');
-let description = ref('');
-let price = ref(0);
+const name = ref('');
+const imageUrl = ref('');
+const description = ref('');
+const price = ref(0);
 
 const getProduct = async () => {
   try {
