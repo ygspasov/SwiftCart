@@ -59,7 +59,7 @@ const postLoginController = async (req, res) => {
 const postLogoutController = async (req, res) => {
   try {
     req.session.destroy();
-    res.status(200).json('Post Logout');
+    res.status(200).json({ isLoggedIn: false });
   } catch (err) {
     res.status(400).json({ error: 'Failed to logout.' });
   }

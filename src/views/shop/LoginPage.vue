@@ -11,6 +11,10 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const authStore = useAuthStore();
 
 const password = ref('');
 const passwordRules = [
@@ -29,10 +33,17 @@ const emailRules = [
 ];
 const login = async () => {
   try {
-    await axios.post(`/auth/login`, {
-      email: email.value,
-      password: password.value,
-    });
+    await axios
+      .post(`/auth/login`, {
+        email: email.value,
+        password: password.value,
+      })
+      .then((res) => {
+        authStore.updateLoginStatus(res.data.isLoggedIn);
+        email.value = '';
+        password.value = '';
+        router.push('/');
+      });
   } catch (err) {
     console.log(err);
   }

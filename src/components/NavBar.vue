@@ -41,6 +41,10 @@
 
 <script setup>
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const authStore = useAuthStore();
 const items = [
   { title: 'Products', to: '/' },
   { title: 'Add Product', to: 'admin/add-product' },
@@ -52,7 +56,11 @@ const items = [
 ];
 const logout = async () => {
   try {
-    await axios.post(`/auth/logout`);
+    await axios.post(`/auth/logout`).then((res) => {
+      authStore.updateLoginStatus(res.data.isLoggedIn);
+      console.log('authstore', authStore.isLoggedIn);
+      router.push('/');
+    });
   } catch (err) {
     console.log(err);
   }
