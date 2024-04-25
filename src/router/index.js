@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth';
 import { createRouter, createWebHistory } from 'vue-router';
 import CartPage from '@/views/shop/CartPage.vue';
 import ProductDetailPage from '@/views/shop/ProductDetailPage.vue';
@@ -37,6 +38,15 @@ const router = createRouter({
       path: '/admin/products/edit-product/:id',
       name: 'EditProduct',
       component: EditProduct,
+      //route based navigation guard
+      // beforeEnter: () => {
+      //   const authStore = useAuthStore();
+      //   // reject the navigation if user isn't logged in and redirect to the login page
+      //   if (!authStore.isLoggedIn) {
+      //     router.push('/login');
+      //     return;
+      //   }
+      // },
     },
     {
       path: '/cart/',
@@ -60,6 +70,21 @@ const router = createRouter({
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],
+});
+
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore();
+  if (
+    // make sure the user is authenticated
+    !authStore.isLoggedIn &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'LoginPage' &&
+    to.name !== 'Products' &&
+    to.name !== 'SignUpPage'
+  ) {
+    // redirect the user to the login page
+    return { name: 'LoginPage' };
+  }
 });
 
 export default router;
