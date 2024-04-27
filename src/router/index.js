@@ -80,7 +80,8 @@ router.beforeEach(async (to) => {
     // ❗️ Avoid an infinite redirect
     to.name !== 'LoginPage' &&
     to.name !== 'Products' &&
-    to.name !== 'SignUpPage'
+    to.name !== 'SignUpPage' &&
+    to.name !== 'ProductDetail'
   ) {
     // redirect the user to the login page
     return { name: 'LoginPage' };
