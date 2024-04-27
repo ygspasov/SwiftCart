@@ -2,8 +2,12 @@
   <v-sheet class="mx-auto mt-5" width="300">
     <v-form fast-fail @submit.prevent>
       <v-text-field v-model="email" :rules="emailRules" label="Email"></v-text-field>
-      <v-text-field v-model="password" :rules="passwordRules" label="Password"></v-text-field>
-
+      <v-text-field
+        v-model="password"
+        :rules="passwordRules"
+        label="Password"
+        type="password"
+      ></v-text-field>
       <v-btn class="mt-2" type="submit" block @click="login"> Login</v-btn>
     </v-form>
   </v-sheet>
@@ -12,10 +16,11 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
+import { useAlertsStore } from '@/stores/alerts';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const authStore = useAuthStore();
-
+const alertsStore = useAlertsStore();
 const password = ref('');
 const passwordRules = [
   (value) => {
@@ -43,9 +48,17 @@ const login = async () => {
         email.value = '';
         password.value = '';
         router.push('/');
+        alertsStore.setAlert('success', res.data.message);
+        console.log('alertsStore.alert', alertsStore.alert.message);
+      })
+      .then(() => {
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 2000);
       });
   } catch (err) {
     console.log(err);
+    alertsStore.setAlert('error', err);
   }
 };
 </script>

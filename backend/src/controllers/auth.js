@@ -9,6 +9,7 @@ const postSignupController = async (req, res) => {
       if (userDoc) {
         return;
       }
+      res.status(200).json('Signed up');
       return bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new User({
           email: email,
@@ -28,9 +29,9 @@ const postSignupController = async (req, res) => {
 const getLoginController = async (req, res) => {
   try {
     console.log('req.session.isLoggedIn', req.session.isLoggedIn);
-    res.status(200).json('Login');
+    res.status(200).json('Logged in');
   } catch (err) {
-    res.status(400).json({ error: 'Failed to fetch the orders.' });
+    res.status(400).json({ error: 'Failed to log in' });
   }
 };
 
@@ -46,7 +47,7 @@ const postLoginController = async (req, res) => {
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.save();
-          res.status(200).json({ isLoggedIn: true });
+          res.status(200).json({ isLoggedIn: true, message: 'Logged in!' });
           return;
         }
       });
