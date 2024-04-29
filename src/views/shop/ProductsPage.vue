@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-container>
-      <v-row align="center" justify="center" class="text-center">
-        <v-alert :text="alertsStore.alert.message" v-if="alertsStore.alert"></v-alert
-      ></v-row>
+      <ShopAlerts :alert="alertsStore.alert" />
       <v-row align="center" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
@@ -13,6 +11,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
 import axios from 'axios';
 import ProductsGrid from '@/components/ProductsGrid.vue';
 const alertsStore = useAlertsStore();
