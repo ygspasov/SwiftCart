@@ -44,21 +44,28 @@ const login = async () => {
         password: password.value,
       })
       .then((res) => {
-        authStore.updateLoginStatus(res.data.isLoggedIn);
-        email.value = '';
-        password.value = '';
-        router.push('/');
-        alertsStore.setAlert('success', res.data.message);
-        console.log('alertsStore.alert', alertsStore.alert.message);
+        if (res.data.isLoggedIn) {
+          authStore.updateLoginStatus(res.data.isLoggedIn);
+          email.value = '';
+          password.value = '';
+          router.push('/');
+          alertsStore.setAlert('success', res.data.message);
+          console.log('alertsStore.alert', alertsStore.alert.message);
+        }
       })
       .then(() => {
         setTimeout(() => {
           alertsStore.clearAlert();
-        }, 2000);
+        }, 3000);
       });
   } catch (err) {
-    console.log(err);
-    alertsStore.setAlert('error', err);
+    router.push('/');
+    console.log('err', err);
+    alertsStore.setAlert('error', err.response.data.message);
+    setTimeout(() => {
+      alertsStore.clearAlert();
+      router.push('/login');
+    }, 3000);
   }
 };
 </script>

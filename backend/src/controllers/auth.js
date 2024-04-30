@@ -48,7 +48,10 @@ const postLoginController = async (req, res) => {
           req.session.user = user;
           req.session.save();
           res.status(200).json({ isLoggedIn: true, message: 'Logged in!' });
-          return;
+        } else {
+          res
+            .status(401)
+            .json({ isLoggedIn: false, message: 'Invalid credentials. Please try again.' });
         }
       });
     });
