@@ -7,6 +7,7 @@ const postSignupController = async (req, res) => {
   try {
     User.findOne({ email: email }).then((userDoc) => {
       if (userDoc) {
+        res.status(409).json({ isLoggedIn: false, message: 'The user already exists.' });
         return;
       } else {
         res.status(200).json({ isLoggedIn: true, message: 'Signed up' });

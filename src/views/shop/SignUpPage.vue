@@ -61,7 +61,13 @@ const signup = async () => {
         }, 3000);
       });
   } catch (err) {
-    console.log(err);
+    router.push('/');
+    console.log('err', err);
+    alertsStore.setAlert('error', err.response.data.message);
+    setTimeout(() => {
+      alertsStore.clearAlert();
+      router.push('/signup');
+    }, 3000);
   }
 };
 </script>
