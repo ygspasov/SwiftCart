@@ -8,19 +8,18 @@ const postSignupController = async (req, res) => {
     User.findOne({ email: email }).then((userDoc) => {
       if (userDoc) {
         return;
-      }
-      res.status(200).json('Signed up');
-      return bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new User({
-          email: email,
-          password: hashedPassword,
-          cart: { items: [] },
+      } else {
+        res.status(200).json({ isLoggedIn: true, message: 'Signed up' });
+        return bcrypt.hash(password, 12).then((hashedPassword) => {
+          const user = new User({
+            email: email,
+            password: hashedPassword,
+            cart: { items: [] },
+          });
+          return user.save();
         });
-        return user.save();
-      });
+      }
     });
-
-    res.status(200).json('Signup');
   } catch (err) {
     res.status(400).json({ error: 'Failed to sign up.' });
   }

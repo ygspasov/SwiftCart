@@ -12,7 +12,12 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { useAlertsStore } from '@/stores/alerts';
+const router = useRouter();
+const authStore = useAuthStore();
+const alertsStore = useAlertsStore();
 const password = ref('');
 const repeat = ref('');
 const passwordRules = [
@@ -35,10 +40,26 @@ const signup = async () => {
     password: password.value,
   });
   try {
-    await axios.post(`/auth/signup`, {
-      email: email.value,
-      password: password.value,
-    });
+    await axios
+      .post(`/auth/signup`, {
+        email: email.value,
+        password: password.value,
+      })
+      .then((res) => {
+        if (res.data.isLoggedIn) {
+          authStore.updateLoginStatus(res.data.isLoggedIn);
+          email.value = '';
+          password.value = '';
+          router.push('/');
+          alertsStore.setAlert('success', res.data.message);
+          console.log('alertsStore.alert', alertsStore.alert.message);
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
+      });
   } catch (err) {
     console.log(err);
   }
