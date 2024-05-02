@@ -25,7 +25,7 @@ const postProductController = (req, res) => {
   });
   if (product) {
     product.save();
-    res.status(200).send(product);
+    res.status(200).json({ product: product, message: 'Product added' });
   } else {
     res.status(404).json('Could not find the product.');
   }

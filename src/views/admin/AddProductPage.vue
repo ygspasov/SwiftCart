@@ -18,7 +18,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-
+import { useAlertsStore } from '@/stores/alerts';
+const alertsStore = useAlertsStore();
 const router = useRouter();
 let name = ref('');
 let imageUrl = ref('');
@@ -28,16 +29,21 @@ const generateRandomId = () => Math.floor(Math.random() * 900) + 100;
 const postProduct = async () => {
   const id = generateRandomId().toString();
   try {
-    await axios.post(`/api/products/${id}`, {
-      id: id,
-      name: name.value,
-      imageUrl: imageUrl.value,
-      description: description.value,
-      price: price.value,
-    });
-    setTimeout(() => {
-      router.push('/admin/admin-products');
-    }, 200);
+    await axios
+      .post(`/api/products/${id}`, {
+        id: id,
+        name: name.value,
+        imageUrl: imageUrl.value,
+        description: description.value,
+        price: price.value,
+      })
+      .then((res) => {
+        router.push('/');
+        alertsStore.setAlert('success', res.data.message);
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
+      });
   } catch (err) {
     console.log('err', err);
   }
