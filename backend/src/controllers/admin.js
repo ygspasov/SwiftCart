@@ -52,7 +52,7 @@ const deleteProductController = (req, res) => {
   console.log('productId', productId);
   Product.findByIdAndDelete(productId).then(() => {
     console.log('Product deleted');
-    res.status(200).json(productId);
+    res.status(200).json({ productId: productId, message: 'Product deleted' });
   });
 };
 

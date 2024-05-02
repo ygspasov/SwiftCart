@@ -31,13 +31,23 @@
 import { inject } from 'vue';
 import axios from 'axios';
 import { useCartStore } from '@/stores/cart';
+import { useAlertsStore } from '@/stores/alerts';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const alertsStore = useAlertsStore();
 const admin = inject('admin');
 const store = useCartStore();
 const props = defineProps(['product']);
 const product = props.product;
 const deleteProduct = async () => {
   try {
-    await axios.delete(`/api/admin/products/delete-product/${product._id}`);
+    await axios.delete(`/api/admin/products/delete-product/${product._id}`).then((res) => {
+      router.push('/');
+      alertsStore.setAlert('success', res.data.message);
+      setTimeout(() => {
+        alertsStore.clearAlert();
+      }, 3000);
+    });
     store.loadProducts = true;
   } catch (err) {
     console.log('err', err);
