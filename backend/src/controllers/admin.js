@@ -33,7 +33,6 @@ const postProductController = (req, res) => {
 
 const editProductController = (req, res) => {
   const { name, imageUrl, description, price, id } = req.body;
-  // const updatedProduct = new Product(name, imageUrl, description, price, new mongodb.ObjectId(id));
   Product.findById(id)
     .then((product) => {
       product.name = name;
@@ -41,9 +40,8 @@ const editProductController = (req, res) => {
       product.description = description;
       product.price = price;
       return product.save();
-      // updatedProduct.save();
     })
-    .then(() => res.status(200).send(id))
+    .then(() => res.status(200).json({ message: 'Product edited' }))
     .catch((err) => console.log(err));
 };
 

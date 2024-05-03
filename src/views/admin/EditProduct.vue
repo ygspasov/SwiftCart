@@ -18,7 +18,8 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
-
+import { useAlertsStore } from '@/stores/alerts';
+const alertsStore = useAlertsStore();
 const router = useRouter();
 const route = useRoute();
 const name = ref('');
@@ -28,12 +29,16 @@ const price = ref(0);
 
 const getProduct = async () => {
   try {
-    const product = await axios.get(`/api/products/${route.params.id}`);
-    console.log('product', product);
-    name.value = product.data.name;
-    description.value = product.data.description;
-    imageUrl.value = product.data.imageUrl;
-    price.value = product.data.price;
+    await axios
+      .get(`/api/products/${route.params.id}`)
+      .then((product) => {
+        console.log('product', product);
+        name.value = product.data.name;
+        description.value = product.data.description;
+        imageUrl.value = product.data.imageUrl;
+        price.value = product.data.price;
+      })
+      .then();
   } catch (err) {
     console.log('err', err);
   }
@@ -41,14 +46,22 @@ const getProduct = async () => {
 
 const editProduct = async () => {
   try {
-    await axios.patch(`/api/admin/products/edit-product/${route.params.id}`, {
-      id: route.params.id,
-      name: name.value,
-      imageUrl: imageUrl.value,
-      description: description.value,
-      price: price.value,
-    });
-    router.push('/admin/admin-products');
+    await axios
+      .patch(`/api/admin/products/edit-product/${route.params.id}`, {
+        id: route.params.id,
+        name: name.value,
+        imageUrl: imageUrl.value,
+        description: description.value,
+        price: price.value,
+      })
+      .then((res) => {
+        router.push('/');
+        alertsStore.setAlert('success', res.data.message);
+        console.log('alertsStore.alert', alertsStore.alert.message);
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
+      });
   } catch (err) {
     console.log('Error editing product:', err);
   }
