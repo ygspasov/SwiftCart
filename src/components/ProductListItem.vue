@@ -14,6 +14,8 @@
 <script setup>
 import axios from 'axios';
 import { useCartStore } from '@/stores/cart';
+import { useAlertsStore } from '@/stores/alerts';
+const alertsStore = useAlertsStore();
 const store = useCartStore();
 const { loadCart } = store;
 const props = defineProps(['item']);
@@ -23,10 +25,14 @@ const RemoveCartItem = async () => {
   const productId = item._id;
   console.log('productId', productId);
   try {
-    await axios.delete(`/api/cart/${productId}`, {
-      productId,
-    });
-    loadCart();
+    await axios
+      .delete(`/api/cart/${productId}`, {
+        productId,
+      })
+      .then((res) => {
+        alertsStore.setAlert('success', res.data.message);
+        loadCart();
+      });
   } catch (err) {
     console.log('Error removing item:', err);
   }

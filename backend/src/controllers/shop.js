@@ -52,7 +52,7 @@ const deleteCartItemController = (req, res) => {
   const { productId } = req.params;
   try {
     req.user.deleteItemFromCart(productId);
-    res.status(200).json(productId);
+    res.status(200).json({ productId: productId, message: 'Removed from cart' });
   } catch (err) {
     res.status(400).json({ error: 'Failed to delete the product.' });
   }
