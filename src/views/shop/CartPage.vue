@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <ShopAlerts :alert="alertsStore.alert" />
     <v-row>
       <v-card v-if="showProducts" class="mx-auto">
         <v-card-title class="text-h5 my-1 text-center text-md-start">Shopping Cart</v-card-title>
@@ -17,6 +18,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 import { useCartStore } from '@/stores/cart';
 import ProductList from '@/components/ProductList.vue';
+import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
+const alertsStore = useAlertsStore();
 const store = useCartStore();
 const { loadCart } = store;
 const cartItems = ref([]);

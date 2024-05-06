@@ -44,7 +44,7 @@ const postCartController = async (req, res) => {
       return req.user.addToCart(product);
     })
     .then((result) => {
-      res.status(200).json(result);
+      res.status(200).json({ result: result, message: 'Added to cart' });
     });
 };
 

@@ -39,6 +39,8 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import NotFoundPage from '@/views/NotFoundPage.vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAlertsStore } from '@/stores/alerts';
+const alertsStore = useAlertsStore();
 const route = useRoute();
 const router = useRouter();
 const product = ref(null);
@@ -50,11 +52,21 @@ const getProduct = async () => {
 const addToCart = async () => {
   const prodId = product.value._id;
   try {
-    axios.post(`/api/cart/${prodId}`, {
-      prodId,
-    });
-    await updateCartItems();
-    router.push('/cart');
+    axios
+      .post(`/api/cart/${prodId}`, {
+        prodId,
+      })
+      .then((res) => {
+        alertsStore.setAlert('success', res.data.message);
+        console.log('alertsStore.alert', alertsStore.alert.message);
+        updateCartItems();
+        router.push('/cart');
+      })
+      .then(() => {
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
+      });
   } catch (err) {
     console.log('err', err);
   }
