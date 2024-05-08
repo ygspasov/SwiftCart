@@ -4,6 +4,7 @@
       :text="alert.message"
       v-if="alert"
       :type="alert.type === 'success' ? 'success' : 'error'"
+      class="mt-16"
     ></v-alert
   ></v-row>
 </template>

@@ -20,6 +20,8 @@ import { useCartStore } from '@/stores/cart';
 import ProductList from '@/components/ProductList.vue';
 import { useAlertsStore } from '@/stores/alerts';
 import ShopAlerts from '@/components/ShopAlerts.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const alertsStore = useAlertsStore();
 const store = useCartStore();
 const { loadCart } = store;
@@ -44,10 +46,18 @@ const getCartItems = async () => {
 
 const postOrder = async () => {
   try {
-    await axios.post('/api/create-order');
-    setTimeout(() => {
-      loadCart();
-    }, 100);
+    await axios
+      .post('/api/create-order')
+      .then((res) => {
+        alertsStore.setAlert('success', res.data.message);
+        loadCart();
+      })
+      .then(() => {
+        setTimeout(() => {
+          alertsStore.clearAlert();
+          router.push('/orders');
+        }, 3000);
+      });
   } catch (err) {
     console.log('err', err);
   }

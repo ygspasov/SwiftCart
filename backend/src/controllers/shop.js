@@ -72,7 +72,7 @@ const postOrderController = async (req, res) => {
         });
         const order = new Order({
           user: {
-            name: req.user.name,
+            email: req.user.email,
             userId: req.user,
           },
           products: products,
@@ -80,11 +80,11 @@ const postOrderController = async (req, res) => {
         });
         console.log('order', order);
         order.save();
+        res.status(200).json({ order: order, message: 'Order created' });
       })
       .then(() => {
         return req.user.clearCart();
       });
-    res.status(200).json('Order created.');
   } catch (err) {
     res.status(400).json({ error: 'Failed to create an order.' });
   }
