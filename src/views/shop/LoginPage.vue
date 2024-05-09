@@ -1,56 +1,52 @@
 <template>
   <v-sheet class="mx-auto mt-5" width="300">
     <v-form fast-fail @submit.prevent>
-      <v-text-field v-model="email" :rules="emailRules" label="Email"></v-text-field>
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        label="Password"
-        type="password"
-      ></v-text-field>
-      <v-btn class="mt-2" type="submit" block @click="login"> Login</v-btn>
+      <v-text-field v-model="state.userEmail" label="Email"></v-text-field>
+      <v-text-field v-model="state.userPassword" label="Password" type="password"></v-text-field>
+      <v-btn class="mt-2" type="submit" block @click="login">Login</v-btn>
     </v-form>
   </v-sheet>
 </template>
+
 <script setup>
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { useAlertsStore } from '@/stores/alerts';
 import { useRouter } from 'vue-router';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email } from '@vuelidate/validators';
+
 const router = useRouter();
 const authStore = useAuthStore();
 const alertsStore = useAlertsStore();
-const password = ref('');
-const passwordRules = [
-  (value) => {
-    if (value?.length >= 4) return true;
-    return 'First name must be at least 3 characters.';
-  },
-];
-const email = ref('');
-const emailRules = [
-  (value) => {
-    if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
 
-    return 'Must be a valid e-mail.';
-  },
-];
+const state = reactive({
+  userEmail: '',
+  userPassword: '',
+});
+
+const rules = {
+  userEmail: { required, email },
+  userPassword: { required },
+};
+const v$ = useVuelidate(rules);
+console.log('v$', v$);
+
 const login = async () => {
   try {
     await axios
       .post(`/auth/login`, {
-        email: email.value,
-        password: password.value,
+        email: state.userEmail,
+        password: state.userPassword,
       })
       .then((res) => {
         if (res.data.isLoggedIn) {
           authStore.updateLoginStatus(res.data.isLoggedIn);
-          email.value = '';
-          password.value = '';
+          state.userEmail = '';
+          state.userPassword = '';
           router.push('/');
           alertsStore.setAlert('success', res.data.message);
-          console.log('alertsStore.alert', alertsStore.alert.message);
         }
       })
       .then(() => {
@@ -59,7 +55,6 @@ const login = async () => {
         }, 3000);
       });
   } catch (err) {
-    router.push('/');
     console.log('err', err);
     alertsStore.setAlert('error', err.response.data.message);
     setTimeout(() => {
