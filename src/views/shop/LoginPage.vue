@@ -26,6 +26,7 @@
       <v-btn class="mt-2" type="submit" block @click="login">Login</v-btn>
     </v-form>
   </v-sheet>
+  <p class="mx-auto mt-5">New customer? <router-link to="/signup">Start here.</router-link></p>
 </template>
 
 <script setup>

@@ -8,6 +8,9 @@
       <v-btn class="mt-2" type="submit" block @click="signup"> Signup</v-btn>
     </v-form>
   </v-sheet>
+  <p class="mx-auto mt-5">
+    Already have an account? <router-link to="/signin">Sing in.</router-link>
+  </p>
 </template>
 <script setup>
 import { ref } from 'vue';
