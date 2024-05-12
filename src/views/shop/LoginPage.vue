@@ -35,7 +35,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useAlertsStore } from '@/stores/alerts';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
-import { required, email } from '@vuelidate/validators';
+import { required, email, helpers } from '@vuelidate/validators';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -46,14 +46,24 @@ const state = reactive({
   userPassword: '',
 });
 
+const passRules = (value) => value.length >= 4 && value.length <= 20;
+
 const rules = {
-  userEmail: { required, email },
-  userPassword: { required },
+  userEmail: {
+    required: helpers.withMessage('Email field cannot be empty', required),
+    email,
+  },
+  userPassword: {
+    required,
+    passRules: helpers.withMessage('Password must be between 4 and 20 characters.', passRules),
+  },
 };
 const v$ = useVuelidate(rules, state);
 console.log('v$', v$);
 
 const login = async () => {
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) return;
   try {
     await axios
       .post(`/auth/login`, {
