@@ -23,14 +23,16 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
-      <v-btn class="mt-2" type="submit" block @click="login">Login</v-btn>
+      <v-btn class="mt-2" type="submit" block @click="login" :disabled="!isFormCorrect"
+        >Login</v-btn
+      >
     </v-form>
   </v-sheet>
   <p class="mx-auto mt-5">New customer? <router-link to="/signup">Start here.</router-link></p>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { useAlertsStore } from '@/stores/alerts';
@@ -60,37 +62,30 @@ const rules = {
   },
 };
 const v$ = useVuelidate(rules, state);
-console.log('v$', v$);
+
+const isFormCorrect = computed(() => {
+  return !v$.value.$invalid;
+});
 
 const login = async () => {
-  const isFormCorrect = await v$.value.$validate();
-  if (!isFormCorrect) return;
+  if (!isFormCorrect.value) return;
   try {
-    await axios
-      .post(`/auth/login`, {
-        email: state.userEmail,
-        password: state.userPassword,
-      })
-      .then((res) => {
-        if (res.data.isLoggedIn) {
-          authStore.updateLoginStatus(res.data.isLoggedIn);
-          state.userEmail = '';
-          state.userPassword = '';
-          router.push('/');
-          alertsStore.setAlert('success', res.data.message);
-        }
-      })
-      .then(() => {
-        setTimeout(() => {
-          alertsStore.clearAlert();
-        }, 3000);
-      });
+    await axios.post(`/auth/login`, {
+      email: state.userEmail,
+      password: state.userPassword,
+    });
+    authStore.updateLoginStatus(true);
+    state.userEmail = '';
+    state.userPassword = '';
+    router.push('/');
+    alertsStore.setAlert('success', 'Login successful!');
   } catch (err) {
     console.log('err', err);
-    alertsStore.setAlert('error', err.response.data.message);
+    alertsStore.setAlert('error', err.response?.data?.message || 'An error occurred');
+    router.push('/login');
+  } finally {
     setTimeout(() => {
       alertsStore.clearAlert();
-      router.push('/login');
     }, 3000);
   }
 };
