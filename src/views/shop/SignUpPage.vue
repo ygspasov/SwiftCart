@@ -1,11 +1,42 @@
 <template>
   <v-sheet class="mx-auto mt-5" width="300">
     <v-form fast-fail @submit.prevent>
-      <v-text-field v-model="email" :rules="emailRules" label="Email"></v-text-field>
-      <v-text-field v-model="password" :rules="passwordRules" label="Password"></v-text-field>
-      <v-text-field v-model="repeat" :rules="repeatRules" label="Confirm password"></v-text-field>
+      <v-text-field
+        v-model="state.userEmail"
+        label="Email"
+        @input="v$.userEmail.$touch()"
+      ></v-text-field>
+      <div :class="{ error: v$.userEmail.$errors.length }">
+        <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
+          <div class="text-red mb-2">{{ error.$message }}</div>
+        </div>
+      </div>
+      <v-text-field
+        v-model="state.userPassword"
+        label="Password"
+        @input="v$.userPassword.$touch()"
+        type="password"
+      ></v-text-field>
+      <div :class="{ error: v$.userPassword.$errors.length }">
+        <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
+          <div class="text-red mb-2">{{ error.$message }}</div>
+        </div>
+      </div>
+      <v-text-field
+        v-model="state.userPasswordRepeat"
+        label="Confirm password"
+        @input="v$.userPasswordRepeat.$touch()"
+        type="password"
+      ></v-text-field>
+      <div :class="{ error: v$.userPasswordRepeat.$errors.length }">
+        <div class="input-errors" v-for="error of v$.userPasswordRepeat.$errors" :key="error.$uid">
+          <div class="text-red mb-2">{{ error.$message }}</div>
+        </div>
+      </div>
 
-      <v-btn class="mt-2" type="submit" block @click="signup"> Signup</v-btn>
+      <v-btn class="mt-2" type="submit" block @click="signup" :disabled="!isFormCorrect">
+        Signup</v-btn
+      >
     </v-form>
   </v-sheet>
   <p class="mx-auto mt-5">
@@ -13,46 +44,58 @@
   </p>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { reactive, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useAlertsStore } from '@/stores/alerts';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
 const router = useRouter();
 const authStore = useAuthStore();
 const alertsStore = useAlertsStore();
-const password = ref('');
-const repeat = ref('');
-const passwordRules = [
-  (value) => {
-    if (value?.length >= 4) return true;
-    return 'First name must be at least 3 characters.';
+const state = reactive({
+  userEmail: '',
+  userPassword: '',
+  userPasswordRepeat: '',
+});
+const passRules = (value) => value.length >= 4 && value.length <= 20;
+const rules = {
+  userEmail: {
+    required: helpers.withMessage('Email field cannot be empty.', required),
+    email,
   },
-];
-const email = ref('');
-const emailRules = [
-  (value) => {
-    if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
-
-    return 'Must be a valid e-mail.';
+  userPassword: {
+    required,
+    passRules: helpers.withMessage('Password must be between 4 and 20 characters.', passRules),
   },
-];
+  userPasswordRepeat: {
+    required,
+    passRepeatRules: helpers.withMessage(
+      'Passwords must match.',
+      (value) => value === state.userPassword
+    ),
+  },
+};
+const v$ = useVuelidate(rules, state);
+console.log('v$ signuppage', v$);
+const isFormCorrect = computed(() => {
+  return !v$.value.$invalid;
+});
 const signup = async () => {
-  console.log('signup', {
-    email: email.value,
-    password: password.value,
-  });
+  if (!isFormCorrect.value) return;
   try {
     await axios
       .post(`/auth/signup`, {
-        email: email.value,
-        password: password.value,
+        email: state.userEmail,
+        password: state.userEmail,
       })
       .then((res) => {
         if (res.data.isLoggedIn) {
           authStore.updateLoginStatus(res.data.isLoggedIn);
-          email.value = '';
-          password.value = '';
+          state.userEmail = '';
+          state.userPassword = '';
+          state.userPasswordRepeat = '';
           router.push('/');
           alertsStore.setAlert('success', res.data.message);
           console.log('alertsStore.alert', alertsStore.alert.message);
