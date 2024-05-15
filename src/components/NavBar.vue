@@ -49,7 +49,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const items = [
   { title: 'Products', to: '/' },
-  { title: 'Add Product', to: 'admin/add-product' },
+  { title: 'Add Product', to: '/admin/add-product' },
   { title: 'Admin Products', to: '/admin/admin-products' },
   { title: 'Cart', to: '/cart' },
   { title: 'Orders', to: '/orders' },
