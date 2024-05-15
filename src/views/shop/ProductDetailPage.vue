@@ -32,12 +32,11 @@
       </v-col>
     </v-row>
   </v-container>
-  <NotFoundPage v-else />
+  <v-container v-else><p class="text-center">No product found.</p></v-container>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import NotFoundPage from '@/views/NotFoundPage.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
 const alertsStore = useAlertsStore();
