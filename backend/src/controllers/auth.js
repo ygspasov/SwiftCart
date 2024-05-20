@@ -41,7 +41,6 @@ const postLoginController = async (req, res) => {
   try {
     User.findOne({ email: email }).then((user) => {
       bcrypt.compare(password, user.password).then((doMatch) => {
-        console.log('doMatch', doMatch);
         //Comparing the password the user entered with the password stored in the db
         if (doMatch) {
           console.log('passwords match');

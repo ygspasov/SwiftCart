@@ -19,11 +19,13 @@ const store = new MongoDBStoreSession({
   uri: MONGODB_URI,
   collection: 'sessions',
 });
-
+app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
 app.use((req, res, next) => {
-  User.findById('664a4676af3dc6b66a8defe1')
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
-      console.log('user', user);
       req.user = user;
       next();
     })
@@ -32,7 +34,6 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/images', express.static('backend/src/assets/images'));
-app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
 app.use(shopRouter, adminRouter, authRouter);
 
 mongoose
