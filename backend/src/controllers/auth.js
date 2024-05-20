@@ -11,6 +11,7 @@ const postSignupController = async (req, res) => {
         return;
       } else {
         res.status(200).json({ isLoggedIn: true, message: 'Signed up' });
+
         return bcrypt.hash(password, 12).then((hashedPassword) => {
           const user = new User({
             email: email,
@@ -28,7 +29,6 @@ const postSignupController = async (req, res) => {
 
 const getLoginController = async (req, res) => {
   try {
-    console.log('req.session.isLoggedIn', req.session.isLoggedIn);
     res.status(200).json('Logged in');
   } catch (err) {
     res.status(400).json({ error: 'Failed to log in' });
@@ -41,6 +41,7 @@ const postLoginController = async (req, res) => {
   try {
     User.findOne({ email: email }).then((user) => {
       bcrypt.compare(password, user.password).then((doMatch) => {
+        console.log('doMatch', doMatch);
         //Comparing the password the user entered with the password stored in the db
         if (doMatch) {
           console.log('passwords match');
@@ -56,7 +57,7 @@ const postLoginController = async (req, res) => {
       });
     });
   } catch (err) {
-    res.status(400).json({ error: 'Failed to login.' });
+    res.status(400).json({ isLoggedIn: false, message: 'Failed to login.' });
   }
 };
 

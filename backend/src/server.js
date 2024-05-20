@@ -21,8 +21,9 @@ const store = new MongoDBStoreSession({
 });
 
 app.use((req, res, next) => {
-  User.findById('6625278d7272f9d3fee35b27')
+  User.findById('664a4676af3dc6b66a8defe1')
     .then((user) => {
+      console.log('user', user);
       req.user = user;
       next();
     })

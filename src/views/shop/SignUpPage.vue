@@ -88,7 +88,7 @@ const signup = async () => {
     await axios
       .post(`/auth/signup`, {
         email: state.userEmail,
-        password: state.userEmail,
+        password: state.userPassword,
       })
       .then((res) => {
         if (res.data.isLoggedIn) {

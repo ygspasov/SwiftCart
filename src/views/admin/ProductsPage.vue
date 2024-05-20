@@ -18,7 +18,7 @@ let products = ref([]);
 provide(/* key */ 'admin', /* value */ true);
 const getProducts = async () => {
   try {
-    const result = await axios.get('http://localhost:8000/api/products');
+    const result = await axios.get('/api/admin/admin-products');
     products.value = result.data;
     console.log(result.data);
   } catch (err) {
