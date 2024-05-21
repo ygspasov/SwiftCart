@@ -1,8 +1,11 @@
 import { Product } from '../models/product.js';
+import mongoose from 'mongoose';
+
 const getProductsController = async (req, res) => {
-  console.log('admin products');
+  const userId = mongoose.Types.ObjectId.createFromHexString(req.user.id);
   try {
-    Product.find()
+    //Filtering the products in the admin section to only those the currently logged in user created
+    Product.find({ userId: userId })
       .populate('userId')
       .then((products) => {
         console.log('products', products);
