@@ -118,7 +118,7 @@ const editProduct = async () => {
         price: state.price,
       })
       .then((res) => {
-        router.push('/');
+        router.push('/admin/admin-products');
         alertsStore.setAlert('success', res.data.message);
         console.log('alertsStore.alert', alertsStore.alert.message);
         setTimeout(() => {

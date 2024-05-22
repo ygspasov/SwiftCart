@@ -38,20 +38,23 @@ const editProductController = (req, res) => {
   const { name, imageUrl, description, price, id } = req.body;
   Product.findById(id)
     .then((product) => {
+      //preventing the edit when the user isn't the one who created the product
+      if (!product.userId.equals(req.user._id)) {
+        return;
+      }
       product.name = name;
       product.imageUrl = imageUrl;
       product.description = description;
       product.price = price;
-      return product.save();
+      return product.save().then(() => res.status(200).json({ message: 'Product edited' }));
     })
-    .then(() => res.status(200).json({ message: 'Product edited' }))
     .catch((err) => console.log(err));
 };
 
 const deleteProductController = (req, res) => {
   const { productId } = req.params;
   console.log('productId', productId);
-  Product.findByIdAndDelete(productId).then(() => {
+  Product.deleteOne({ _id: productId, userId: req.user._id }).then(() => {
     console.log('Product deleted');
     res.status(200).json({ productId: productId, message: 'Product deleted' });
   });
