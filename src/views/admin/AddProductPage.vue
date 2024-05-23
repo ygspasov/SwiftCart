@@ -11,12 +11,17 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
-      <v-text-field
+      <!-- <v-text-field
         v-model="state.imageUrl"
         label="Image URL"
         id="imageUrl"
         @input="v$.imageUrl.$touch()"
-      ></v-text-field>
+      ></v-text-field> -->
+      <v-file-input
+        v-model="state.imageUrl"
+        label="Image input"
+        @input="v$.imageUrl.$touch()"
+      ></v-file-input>
       <div :class="{ error: v$.imageUrl.$errors.length }">
         <div class="input-errors" v-for="error of v$.imageUrl.$errors" :key="error.$uid">
           <div class="text-red mb-2">{{ error.$message }}</div>
