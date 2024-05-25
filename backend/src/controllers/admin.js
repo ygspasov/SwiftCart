@@ -8,7 +8,7 @@ const getProductsController = async (req, res) => {
     Product.find({ userId: userId })
       .populate('userId')
       .then((products) => {
-        console.log('products', products);
+        // console.log('products', products);
         res.status(200).json(products);
       });
   } catch (err) {
@@ -17,8 +17,9 @@ const getProductsController = async (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const { name, imageUrl, description, price } = req.body;
-  console.log('req.user', req.user);
+  const { name, description, price } = req.body;
+  const imageUrl = req.file;
+  console.log('imageUrl', imageUrl);
   const product = new Product({
     name: name,
     imageUrl: imageUrl,

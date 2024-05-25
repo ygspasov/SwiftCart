@@ -6,7 +6,7 @@ const getProductsController = async (req, res) => {
     Product.find()
       .populate('userId')
       .then((products) => {
-        console.log('products', products);
+        // console.log('products', products);
         res.status(200).json(products);
       });
   } catch (err) {

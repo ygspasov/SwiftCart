@@ -10,6 +10,7 @@ import { authRouter } from './routes/auth.js';
 import { User } from './models/user.js';
 import { config } from 'dotenv';
 config();
+import multer from 'multer';
 
 const app = express();
 const MongoDBStoreSession = MongoDBStore(session);
@@ -19,6 +20,30 @@ const store = new MongoDBStoreSession({
   uri: MONGODB_URI,
   collection: 'sessions',
 });
+
+// Configure Multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'backend/src/assets/images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+});
+
 app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -33,6 +58,7 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 app.use(bodyParser.json());
+app.use(upload.single('image'));
 app.use('/images', express.static('backend/src/assets/images'));
 app.use(shopRouter, adminRouter, authRouter);
 
