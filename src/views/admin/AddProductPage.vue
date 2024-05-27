@@ -1,46 +1,49 @@
 <template>
-  <v-sheet width="400" class="mx-auto mt-5">
-    <v-form @submit.prevent="postProduct" enctype="multipart/form-data">
-      <v-text-field
-        v-model="state.name"
-        label="Product Name"
-        @input="v$.name.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.name.$errors.length }">
-        <div class="input-errors" v-for="error of v$.name.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+  <v-container>
+    <ShopAlerts :alert="alertsStore.alert" class="mb-5" />
+    <v-sheet width="400" class="mx-auto mt-5">
+      <v-form @submit.prevent="postProduct" enctype="multipart/form-data">
+        <v-text-field
+          v-model="state.name"
+          label="Product Name"
+          @input="v$.name.$touch()"
+        ></v-text-field>
+        <div :class="{ error: v$.name.$errors.length }">
+          <div class="input-errors" v-for="error of v$.name.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-file-input
-        label="Image input"
-        @input="v$.image.$touch()"
-        @change="handleFileChange"
-        :placeholder="state.image ? state.image.name : 'Select an image'"
-      ></v-file-input>
-      <div :class="{ error: v$.image.$errors.length }">
-        <div class="input-errors" v-for="error of v$.image.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-file-input
+          label="Image input"
+          @input="v$.image.$touch()"
+          @change="handleFileChange"
+          :placeholder="state.image ? state.image.name : 'Select an image'"
+        ></v-file-input>
+        <div :class="{ error: v$.image.$errors.length }">
+          <div class="input-errors" v-for="error of v$.image.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-textarea
-        v-model="state.description"
-        label="Description"
-        @input="v$.description.$touch()"
-      ></v-textarea>
-      <div :class="{ error: v$.description.$errors.length }">
-        <div class="input-errors" v-for="error of v$.description.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-textarea
+          v-model="state.description"
+          label="Description"
+          @input="v$.description.$touch()"
+        ></v-textarea>
+        <div :class="{ error: v$.description.$errors.length }">
+          <div class="input-errors" v-for="error of v$.description.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()"></v-text-field>
-      <div :class="{ error: v$.price.$errors.length }">
-        <div class="input-errors" v-for="error of v$.price.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()"></v-text-field>
+        <div :class="{ error: v$.price.$errors.length }">
+          <div class="input-errors" v-for="error of v$.price.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect">Add product</v-btn>
-    </v-form>
-  </v-sheet>
+        <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect">Add product</v-btn>
+      </v-form>
+    </v-sheet>
+  </v-container>
 </template>
 
 <script setup>
@@ -48,6 +51,7 @@ import { reactive, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers, numeric } from '@vuelidate/validators';
 
@@ -105,8 +109,6 @@ const postProduct = async () => {
   formData.append('image', state.image);
   formData.append('description', state.description);
   formData.append('price', state.price);
-  console.log('state.image', state.image);
-  console.log('formData', formData);
 
   try {
     await axios
@@ -123,7 +125,10 @@ const postProduct = async () => {
         }, 3000);
       });
   } catch (err) {
-    console.log('err', err);
+    alertsStore.setAlert('error', err.response.data.message);
+    setTimeout(() => {
+      alertsStore.clearAlert();
+    }, 3000);
   }
 };
 </script>

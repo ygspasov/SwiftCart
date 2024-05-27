@@ -18,11 +18,14 @@ const getProductsController = async (req, res) => {
 
 const postProductController = (req, res) => {
   const { name, description, price } = req.body;
-  const imageUrl = req.file;
-  console.log('imageUrl', imageUrl);
+  const image = req.file;
+  if (!image) {
+    return res.status(422).json({ message: 'The attached file is not an image.' });
+  }
+  console.log('image', image);
   const product = new Product({
     name: name,
-    imageUrl: imageUrl,
+    image,
     description: description,
     price: price,
     userId: req.user,
