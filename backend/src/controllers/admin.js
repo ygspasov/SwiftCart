@@ -22,10 +22,11 @@ const postProductController = (req, res) => {
   if (!image) {
     return res.status(422).json({ message: 'The attached file is not an image.' });
   }
+  const imageUrl = '/images/' + image.filename;
   console.log('image', image);
   const product = new Product({
     name: name,
-    image,
+    imageUrl: imageUrl,
     description: description,
     price: price,
     userId: req.user,
@@ -39,7 +40,8 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  const { name, imageUrl, description, price, id } = req.body;
+  const { name, description, price, id } = req.body;
+  const image = req.file;
   Product.findById(id)
     .then((product) => {
       //preventing the edit when the user isn't the one who created the product
@@ -47,7 +49,10 @@ const editProductController = (req, res) => {
         return;
       }
       product.name = name;
-      product.imageUrl = imageUrl;
+      //changing the image path only when a new image is uploaded
+      if (image) {
+        product.imageUrl = image.path;
+      }
       product.description = description;
       product.price = price;
       return product.save().then(() => res.status(200).json({ message: 'Product edited' }));
