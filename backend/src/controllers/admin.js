@@ -51,7 +51,7 @@ const editProductController = (req, res) => {
       product.name = name;
       //changing the image path only when a new image is uploaded
       if (image) {
-        product.imageUrl = image.path;
+        product.imageUrl = '/images/' + image.filename;
       }
       product.description = description;
       product.price = price;

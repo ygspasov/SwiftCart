@@ -11,14 +11,20 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
-      <v-text-field
+      <!-- <v-text-field
         v-model="state.imageUrl"
         label="Image URL"
         id="imageUrl"
         @input="v$.imageUrl.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.imageUrl.$errors.length }">
-        <div class="input-errors" v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+      ></v-text-field> -->
+      <v-file-input
+        label="Image input"
+        @input="v$.image.$touch()"
+        @change="handleFileChange"
+        :placeholder="state.image ? state.image.name : 'Select an image'"
+      ></v-file-input>
+      <div :class="{ error: v$.image.$errors.length }">
+        <div class="input-errors" v-for="error of v$.image.$errors" :key="error.$uid">
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
@@ -70,7 +76,7 @@ const rules = {
   name: {
     nameRules: helpers.withMessage('Name field must contain at least 2 symbols.', nameRules),
   },
-  imageUrl: {
+  image: {
     required,
   },
   description: {
@@ -91,7 +97,11 @@ const v$ = useVuelidate(rules, state);
 const isFormCorrect = computed(() => {
   return !v$.value.$invalid;
 });
-
+const handleFileChange = (event) => {
+  // Updating state.image with the selected file
+  state.image = event.target.files.length > 0 ? event.target.files[0] : null;
+  console.log('Selected file name:', state.image ? state.image.name : null);
+};
 const getProduct = async () => {
   try {
     await axios.get(`/api/products/${route.params.id}`).then((product) => {
@@ -108,14 +118,18 @@ const getProduct = async () => {
 
 const editProduct = async () => {
   if (!isFormCorrect.value) return;
+  const formData = new FormData();
+  formData.append('name', state.name);
+  formData.append('image', state.image);
+  formData.append('description', state.description);
+  formData.append('price', state.price);
+  formData.append('id', route.params.id);
   try {
     await axios
-      .patch(`/api/admin/products/edit-product/${route.params.id}`, {
-        id: route.params.id,
-        name: state.name,
-        imageUrl: state.imageUrl,
-        description: state.description,
-        price: state.price,
+      .patch(`/api/admin/products/edit-product/${route.params.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .then((res) => {
         router.push('/admin/admin-products');
