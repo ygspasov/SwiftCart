@@ -6,9 +6,9 @@ import {
   getCartController,
   postCartController,
   deleteCartItemController,
-  postOrderController,
-  getOrdersController,
 } from '../controllers/shop.js';
+
+import { postOrderController, getOrdersController } from '../controllers/orders.js';
 
 router.get('/api/products', getProductsController);
 
