@@ -64,6 +64,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(upload.single('image'));
 app.use('/images', express.static('backend/src/assets/images'));
+app.use('/invoices', express.static('backend/src/assets/invoices'));
 app.use(shopRouter, adminRouter, authRouter);
 
 mongoose

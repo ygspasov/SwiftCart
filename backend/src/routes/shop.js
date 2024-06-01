@@ -6,6 +6,7 @@ import {
   getCartController,
   postCartController,
   deleteCartItemController,
+  getInvoiceController,
 } from '../controllers/shop.js';
 
 import { postOrderController, getOrdersController } from '../controllers/orders.js';
@@ -29,5 +30,7 @@ router.get('/api/checkout', (req, res) => {
 router.get('/', (req, res) => {
   res.send('Home page');
 });
+
+router.get('/api/orders/:orderId', getInvoiceController);
 
 export { router as shopRouter };

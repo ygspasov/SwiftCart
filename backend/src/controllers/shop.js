@@ -1,5 +1,8 @@
+import fs from 'fs';
+import path from 'path';
 import { Product } from '../models/product.js';
 
+// import { join } from 'path';
 const getProductsController = async (req, res) => {
   try {
     Product.find()
@@ -57,10 +60,37 @@ const deleteCartItemController = (req, res) => {
   }
 };
 
+const getInvoiceController = (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const invoiceName = 'invoice-' + orderId + '.pdf';
+    const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
+
+    fs.access(invoicePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          return res.status(404).send('Invoice not found');
+        }
+        return next(err);
+      }
+
+      // Trigger file download in the browser
+      res.download(invoicePath, invoiceName, (err) => {
+        if (err) {
+          return next(err);
+        }
+      });
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getProductsController,
   getProductIdController,
   getCartController,
   postCartController,
   deleteCartItemController,
+  getInvoiceController,
 };

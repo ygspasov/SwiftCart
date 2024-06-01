@@ -1,12 +1,13 @@
 <template>
   <h1>Orders</h1>
-  <!-- {{ orders }} -->
   <div v-for="order in orders" :key="order._id">
-    <p>Order # {{ order._id }}</p>
+    <p>
+      Order # {{ order._id }} -
+      <a :href="`/api/orders/${order._id}`" download> Invoice </a>
+    </p>
     <v-list lines="one">
       <v-list-item v-for="item in order.products" :key="item._id">
-        <!-- {{ item }} -->
-        <SingeCart
+        <SingleCart
           :description="item.product.description"
           :price="item.price"
           :name="item.product.name"
@@ -21,7 +22,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import SingeCart from '../../components/SingleCart.vue';
+import SingleCart from '../../components/SingleCart.vue';
 
 const orders = ref([]);
 
@@ -29,13 +30,12 @@ const getOrders = async () => {
   try {
     let result = await axios.get('/api/orders');
     orders.value = result.data;
-    console.log('orders.value', orders.value);
   } catch (err) {
     console.log('Error removing item:', err);
   }
 };
+
 onMounted(() => {
   getOrders();
 });
 </script>
-<style scoped></style>
