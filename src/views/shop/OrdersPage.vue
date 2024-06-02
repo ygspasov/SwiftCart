@@ -3,7 +3,7 @@
   <div v-for="order in orders" :key="order._id">
     <p>
       Order # {{ order._id }} -
-      <a :href="`/api/orders/${order._id}`" download> Invoice </a>
+      <a :href="`/api/orders/${order._id}`" @click="downloadInvoice(order._id)" download>Invoice</a>
     </p>
     <v-list lines="one">
       <v-list-item v-for="item in order.products" :key="item._id">
@@ -32,6 +32,16 @@ const getOrders = async () => {
     orders.value = result.data;
   } catch (err) {
     console.log('Error removing item:', err);
+  }
+};
+
+const downloadInvoice = async (orderId) => {
+  try {
+    await axios.get(`/api/orders/${orderId}`, {
+      responseType: 'blob',
+    });
+  } catch (error) {
+    console.log('Error downloading the file', error);
   }
 };
 

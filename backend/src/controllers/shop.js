@@ -65,7 +65,6 @@ const getInvoiceController = (req, res, next) => {
     const orderId = req.params.orderId;
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
-
     fs.access(invoicePath, fs.constants.F_OK, (err) => {
       if (err) {
         if (err.code === 'ENOENT') {
@@ -73,7 +72,9 @@ const getInvoiceController = (req, res, next) => {
         }
         return next(err);
       }
-
+      // Setting content type header
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
       // Trigger file download in the browser
       res.download(invoicePath, invoiceName, (err) => {
         if (err) {
