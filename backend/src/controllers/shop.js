@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Product } from '../models/product.js';
+import { Order } from '../models/order.js';
 
 // import { join } from 'path';
 const getProductsController = async (req, res) => {
@@ -63,25 +64,36 @@ const deleteCartItemController = (req, res) => {
 const getInvoiceController = (req, res, next) => {
   try {
     const orderId = req.params.orderId;
-    const invoiceName = 'invoice-' + orderId + '.pdf';
-    const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
-    fs.access(invoicePath, fs.constants.F_OK, (err) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          return res.status(404).send('Invoice not found');
+    Order.findById(orderId)
+      .then((order) => {
+        if (!order) {
+          return next(new Error('No order found.'));
         }
-        return next(err);
-      }
-      // Setting content type header
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
-      // Trigger file download in the browser
-      res.download(invoicePath, invoiceName, (err) => {
-        if (err) {
-          return next(err);
+        //checking if the order belongs to the currently logged in user in order to allow file download
+        if (order.user.userId.toString() !== req.user._id.toString()) {
+          return next(new Error('Unauthorized'));
         }
-      });
-    });
+        const invoiceName = 'invoice-' + orderId + '.pdf';
+        const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
+        fs.access(invoicePath, fs.constants.F_OK, (err) => {
+          if (err) {
+            if (err.code === 'ENOENT') {
+              return res.status(404).send('Invoice not found');
+            }
+            return next(err);
+          }
+          // Setting content type header
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
+          // Trigger file download in the browser
+          res.download(invoicePath, invoiceName, (err) => {
+            if (err) {
+              return next(err);
+            }
+          });
+        });
+      })
+      .catch((err) => next(err));
   } catch (error) {
     return next(error);
   }
