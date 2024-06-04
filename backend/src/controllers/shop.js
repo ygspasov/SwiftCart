@@ -3,7 +3,8 @@ import path from 'path';
 import { Product } from '../models/product.js';
 import { Order } from '../models/order.js';
 
-// import { join } from 'path';
+import PDFdocument from 'pdfkit';
+
 const getProductsController = async (req, res) => {
   try {
     Product.find()
@@ -75,23 +76,21 @@ const getInvoiceController = (req, res, next) => {
         }
         const invoiceName = 'invoice-' + orderId + '.pdf';
         const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
-        fs.access(invoicePath, fs.constants.F_OK, (err) => {
-          if (err) {
-            if (err.code === 'ENOENT') {
-              return res.status(404).send('Invoice not found');
-            }
-            return next(err);
-          }
-          // Setting content type header
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
-          // Trigger file download in the browser
-          res.download(invoicePath, invoiceName, (err) => {
-            if (err) {
-              return next(err);
-            }
-          });
+        const pdfDoc = new PDFdocument();
+        pdfDoc.pipe(fs.createWriteStream(invoicePath));
+        pdfDoc.pipe(res);
+        pdfDoc.fontSize(24).text('Invoice');
+        pdfDoc.fontSize(16).text('--------------------------------------------');
+        order.products.forEach((prod) => {
+          pdfDoc
+            .fontSize(14)
+            .text(prod.product.name + ' - ' + prod.quantity + ' x ' + '$' + prod.product.price);
         });
+        pdfDoc.fontSize(16).text('--------------------------------------------');
+        pdfDoc.fontSize(18).text('Total Price ' + '$' + order.totalPrice);
+        pdfDoc.end();
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
       })
       .catch((err) => next(err));
   } catch (error) {
