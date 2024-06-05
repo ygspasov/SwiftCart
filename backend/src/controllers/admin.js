@@ -73,9 +73,7 @@ const deleteProductController = (req, res) => {
         return res.status(404).json({ message: 'Product not found' });
       }
 
-      console.log('product.imageUrl:', product.imageUrl); // Log the imageUrl to verify its value
-
-      deleteFile(product.imageUrl); // Assuming imageUrl contains just the filename or relative path
+      deleteFile(product.imageUrl); // Deleting the file from the file system
       await Product.deleteOne({ _id: productId, userId: req.user._id });
 
       console.log('Product deleted');
