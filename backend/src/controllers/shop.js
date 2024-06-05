@@ -77,6 +77,8 @@ const getInvoiceController = (req, res, next) => {
 
         const invoiceName = 'invoice-' + orderId + '.pdf';
         const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
+        const invoiceNumber = order._id;
+        const clientEmail = order.user.email;
 
         const pdfDoc = new PDFDocument();
 
@@ -95,12 +97,36 @@ const getInvoiceController = (req, res, next) => {
 
         pdfDoc.fontSize(24).text('Invoice', nameX, y, { align: 'left' });
         y = 120;
-        pdfDoc.fontSize(14).text('---------------------------------', nameX, y, { align: 'left' });
-
-        pdfDoc.fontSize(12).text('Name', nameX, 150, { underline: true });
-        pdfDoc.text('Quantity', quantityX, 150, { underline: true });
-        pdfDoc.text('Price', priceX, 150, { underline: true });
-        y = 170;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            '-------------------------------------------------------------------------------------',
+            nameX,
+            y,
+            {
+              align: 'left',
+            }
+          );
+        y = 140;
+        pdfDoc.fontSize(12).text('Invoice# ' + invoiceNumber, nameX, y);
+        y = 160;
+        pdfDoc.fontSize(12).text('Client: ' + clientEmail, nameX, y);
+        y = 180;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            '-------------------------------------------------------------------------------------',
+            nameX,
+            y,
+            {
+              align: 'left',
+            }
+          );
+        y = 200;
+        pdfDoc.fontSize(12).text('Item', nameX, y, { underline: true });
+        pdfDoc.text('Quantity', quantityX, y, { underline: true });
+        pdfDoc.text('Price', priceX, y, { underline: true });
+        y = 220;
         // Table rows
         order.products.forEach((prod) => {
           pdfDoc.fontSize(10).text(prod.product.name, nameX, y);
@@ -111,7 +137,16 @@ const getInvoiceController = (req, res, next) => {
 
         y += 10;
 
-        pdfDoc.fontSize(14).text('---------------------------------', nameX, y, { align: 'left' });
+        pdfDoc
+          .fontSize(14)
+          .text(
+            '-------------------------------------------------------------------------------------',
+            nameX,
+            y,
+            {
+              align: 'left',
+            }
+          );
         y += 20;
         pdfDoc.fontSize(16).text('Total Price: $' + order.totalPrice, nameX, y, { align: 'left' });
 
