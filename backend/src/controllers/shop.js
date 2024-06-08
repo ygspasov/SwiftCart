@@ -6,13 +6,24 @@ import { Order } from '../models/order.js';
 import PDFDocument from 'pdfkit';
 
 const getProductsController = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 3; // Default to 2 products per page if
+
   try {
-    Product.find()
+    // Fetching the total number of products
+    const totalProducts = await Product.countDocuments();
+    // Fetching products for the current page
+    const products = await Product.find()
       .populate('userId')
-      .then((products) => {
-        // console.log('products', products);
-        res.status(200).json(products);
-      });
+      .skip((page - 1) * limit)
+      .limit(limit);
+    // Calculating total number of pages
+    const totalPages = Math.ceil(totalProducts / limit);
+    // Responding with products and total pages
+    res.status(200).json({
+      products,
+      totalPages,
+    });
   } catch (err) {
     console.log('Error fetching products:', err);
     res.status(400).json({ error: 'Cannot get products' });
