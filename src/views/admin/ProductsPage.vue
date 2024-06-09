@@ -38,7 +38,6 @@ let page = router.currentRoute.value.query.page
   ? parseInt(router.currentRoute.value.query.page)
   : 1; // Initialize with page 1 or from query parameter
 const totalPages = ref(1);
-
 const getProducts = async (page) => {
   try {
     //Set how many products should load on a single page
@@ -69,9 +68,6 @@ watch(
 const handlePageChange = (event) => {
   // Extracting the page value from the event
   const newPage = event.target.innerText;
-
-  console.log('handlePageChange newPage', newPage);
-
   // Updating the router's query parameter with the new page value
   router.push({ query: { ...router.currentRoute.value.query, page: newPage } });
 };

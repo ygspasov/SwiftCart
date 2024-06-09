@@ -1,15 +1,17 @@
 import { Product } from '../models/product.js';
+import mongoose from 'mongoose';
 import { deleteFile } from '../utils/file.js';
 
 const getProductsController = async (req, res) => {
+  const userId = mongoose.Types.ObjectId.createFromHexString(req.user.id);
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 3; // Default to 3 products per page if not provided
 
   try {
     // Fetching the total number of products
-    const totalProducts = await Product.countDocuments();
-    // Fetching products for the current page
-    const products = await Product.find()
+    const totalProducts = await Product.countDocuments({ userId: userId });
+    // Fetching products for the current page (only those created by the currently logged in user)
+    const products = await Product.find({ userId: userId })
       .populate('userId')
       .skip((page - 1) * limit)
       .limit(limit);
