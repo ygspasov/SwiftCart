@@ -8,6 +8,7 @@ import AddProductPage from '@/views/admin/AddProductPage.vue';
 import AdminProductsPage from '@/views/admin/ProductsPage.vue';
 import EditProduct from '@/views/admin/EditProduct.vue';
 import OrdersPage from '@/views/shop/OrdersPage.vue';
+import CheckoutPage from '@/views/shop/CheckoutPage.vue';
 import SignUpPage from '@/views/shop/SignUpPage.vue';
 import LoginPage from '@/views/shop/LoginPage.vue';
 
@@ -57,6 +58,11 @@ const router = createRouter({
       path: '/orders/',
       name: 'OrdersPage',
       component: OrdersPage,
+    },
+    {
+      path: '/checkout/',
+      name: 'CheckoutPage',
+      component: CheckoutPage,
     },
     {
       path: '/login/',

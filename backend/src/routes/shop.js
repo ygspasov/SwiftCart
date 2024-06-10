@@ -7,6 +7,7 @@ import {
   postCartController,
   deleteCartItemController,
   getInvoiceController,
+  getCheckoutController,
 } from '../controllers/shop.js';
 
 import { postOrderController, getOrdersController } from '../controllers/orders.js';
@@ -23,13 +24,7 @@ router.delete('/api/cart/:productId', deleteCartItemController);
 router.get('/api/orders', getOrdersController);
 router.post('/api/create-order', postOrderController);
 
-router.get('/api/checkout', (req, res) => {
-  res.send('Checkout');
-});
-
-router.get('/', (req, res) => {
-  res.send('Home page');
-});
+router.get('/api/checkout', getCheckoutController);
 
 router.get('/api/orders/:orderId', getInvoiceController);
 

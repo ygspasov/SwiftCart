@@ -168,6 +168,15 @@ const getInvoiceController = (req, res, next) => {
     return next(error);
   }
 };
+const getCheckoutController = async (req, res) => {
+  try {
+    await req.user.populate('cart.items.productId').then((cartItems) => {
+      res.status(200).json(cartItems);
+    });
+  } catch (err) {
+    res.status(400).json({ error: 'Cannot get cart items' });
+  }
+};
 export {
   getProductsController,
   getProductIdController,
@@ -175,4 +184,5 @@ export {
   postCartController,
   deleteCartItemController,
   getInvoiceController,
+  getCheckoutController,
 };

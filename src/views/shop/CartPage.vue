@@ -7,7 +7,10 @@
         <v-divider class="mx-4 mb-1"></v-divider>
         <ProductList :cartItems="cartItems" />
         <p class="text-center text-md-right mx-4 text-h5">Total: ${{ totalPrice }}</p>
-        <v-btn class="mx-4 my-3 w-100" elevation="4" color="black" @click="postOrder">Order</v-btn>
+        <!-- <v-btn class="mx-4 my-3 w-100" elevation="4" color="black" @click="postOrder">Order</v-btn> -->
+        <v-btn class="mx-4 my-3 w-100" elevation="4" color="black"
+          ><router-link class="text-white" to="/checkout">Order Now</router-link></v-btn
+        >
       </v-card>
       <p v-else class="mx-auto text-h5 text-red">No products in cart.</p>
     </v-row>
