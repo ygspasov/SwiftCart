@@ -2,6 +2,16 @@
   <v-sheet class="mx-auto mt-5" width="300">
     <v-form fast-fail @submit.prevent>
       <v-text-field
+        v-model="state.userName"
+        label="User name"
+        @input="v$.userName.$touch()"
+      ></v-text-field>
+      <div :class="{ error: v$.userName.$errors.length }">
+        <div class="input-errors" v-for="error of v$.userName.$errors" :key="error.$uid">
+          <div class="text-red mb-2">{{ error.$message }}</div>
+        </div>
+      </div>
+      <v-text-field
         v-model="state.userEmail"
         label="Email"
         @input="v$.userEmail.$touch()"
@@ -55,12 +65,18 @@ const router = useRouter();
 const authStore = useAuthStore();
 const alertsStore = useAlertsStore();
 const state = reactive({
+  userName: '',
   userEmail: '',
   userPassword: '',
   userPasswordRepeat: '',
 });
+const nameRules = (value) => value.length >= 4 && value.length <= 25;
 const passRules = (value) => value.length >= 4 && value.length <= 20;
 const rules = {
+  userName: {
+    required,
+    nameRules: helpers.withMessage('Username should be between 4 and 25 characters.', nameRules),
+  },
   userEmail: {
     required: helpers.withMessage('Email field cannot be empty.', required),
     email,
@@ -87,6 +103,7 @@ const signup = async () => {
   try {
     await axios
       .post(`/auth/signup`, {
+        name: state.userName,
         email: state.userEmail,
         password: state.userPassword,
       })

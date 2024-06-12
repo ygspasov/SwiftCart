@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/user.js';
 
 const postSignupController = async (req, res) => {
+  const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
   try {
@@ -14,6 +15,7 @@ const postSignupController = async (req, res) => {
 
         return bcrypt.hash(password, 12).then((hashedPassword) => {
           const user = new User({
+            name: name,
             email: email,
             password: hashedPassword,
             cart: { items: [] },
