@@ -5,18 +5,16 @@
       Order # {{ order._id }} -
       <a :href="`/api/orders/${order._id}`" @click="downloadInvoice(order._id)" download>Invoice</a>
     </p>
-    <v-list lines="one">
-      <v-list-item v-for="item in order.products" :key="item._id">
+    <v-row>
+      <v-col cols="12" class="mt-2" v-for="item in order.products" :key="item._id">
         <SingleCart
           :description="item.product.description"
           :price="item.price"
           :name="item.product.name"
         />
-      </v-list-item>
-      <v-list-item>
-        <p>Оrder price: {{ order.totalPrice }}</p>
-      </v-list-item>
-    </v-list>
+      </v-col>
+    </v-row>
+    <p class="my-2">Оrder price: ${{ order.totalPrice }}</p>
   </div>
 </template>
 <script setup>
