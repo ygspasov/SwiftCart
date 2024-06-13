@@ -85,11 +85,10 @@ const getInvoiceController = (req, res, next) => {
         if (order.user.userId.toString() !== req.user._id.toString()) {
           return next(new Error('Unauthorized'));
         }
-
         const invoiceName = 'invoice-' + orderId + '.pdf';
         const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
         const invoiceNumber = order._id;
-        const clientEmail = order.user.email;
+        const clientName = order.user.name;
 
         const pdfDoc = new PDFDocument();
 
@@ -121,7 +120,7 @@ const getInvoiceController = (req, res, next) => {
         y = 140;
         pdfDoc.fontSize(12).text('Invoice# ' + invoiceNumber, nameX, y);
         y = 160;
-        pdfDoc.fontSize(12).text('Client: ' + clientEmail, nameX, y);
+        pdfDoc.fontSize(12).text('Client: ' + clientName, nameX, y);
         y = 180;
         pdfDoc
           .fontSize(14)

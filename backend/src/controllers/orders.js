@@ -12,10 +12,7 @@ const postOrderController = async (req, res) => {
           };
         });
         const order = new Order({
-          user: {
-            email: req.user.email,
-            userId: req.user,
-          },
+          user: { name: req.user.name, email: req.user.email, userId: req.user },
           products: products,
           totalPrice: user.cart.totalPrice,
         });
