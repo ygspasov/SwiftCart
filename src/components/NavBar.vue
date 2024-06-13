@@ -4,7 +4,7 @@
       <template v-slot:prepend>
         <v-menu>
           <template v-slot:activator="{ props }">
-            <i class="d-flex d-sm-none" v-bind="props"><v-icon icon="fas fa-bars" /></i>
+            <v-icon class="d-flex d-sm-none" v-bind="props" icon="mdi-menu"></v-icon>
           </template>
           <!-- mobile menu -->
           <v-list class="mt-6">
