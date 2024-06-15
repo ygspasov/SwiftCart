@@ -17,11 +17,12 @@
             </v-list-item>
             <v-list-item v-if="showLogout"
               ><v-list-item-title class="text-center"
-                ><router-link to="/"
-                  ><v-btn @click="logout">Logout</v-btn></router-link
-                ></v-list-item-title
-              ></v-list-item
+                ><router-link to="/"> <v-btn @click="logout">Logout</v-btn></router-link>
+              </v-list-item-title></v-list-item
             >
+            <v-list-item v-if="authStore.isLoggedIn" class="text-center">{{
+              userName
+            }}</v-list-item>
           </v-list>
         </v-menu>
       </template>
@@ -36,6 +37,7 @@
       <router-link to="/" class="d-none d-sm-flex" v-if="showLogout"
         ><v-btn color="black" @click="logout">Logout</v-btn></router-link
       >
+      <p v-if="authStore.isLoggedIn">{{ userName }}</p>
     </v-app-bar>
   </header>
 </template>
@@ -76,6 +78,10 @@ const filteredItems = computed(() => {
   return showLogout.value
     ? items.filter((item) => item.title !== 'Signup' && item.title !== 'Login')
     : items;
+});
+
+const userName = computed(() => {
+  return authStore.userName.split(' ')[0];
 });
 </script>
 <style>

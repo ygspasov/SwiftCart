@@ -6,13 +6,18 @@ export const useAuthStore = defineStore(
   () => {
     const state = {
       isLoggedIn: ref(false),
+      userName: ref(''),
     };
 
     function updateLoginStatus(val) {
       state.isLoggedIn.value = val;
     }
 
-    return { ...state, updateLoginStatus };
+    function updateUserName(userName) {
+      state.userName.value = userName;
+    }
+
+    return { ...state, updateLoginStatus, updateUserName };
   },
   {
     persist: true,

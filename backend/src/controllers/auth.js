@@ -49,7 +49,7 @@ const postLoginController = async (req, res) => {
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.save();
-          res.status(200).json({ isLoggedIn: true, message: 'Logged in!' });
+          res.status(200).json({ isLoggedIn: true, message: 'Logged in!', user });
         } else {
           res
             .status(401)

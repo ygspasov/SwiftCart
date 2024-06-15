@@ -74,15 +74,19 @@ const login = async () => {
     password: state.userPassword,
   });
   try {
-    await axios.post(`/auth/login`, {
-      email: state.userEmail,
-      password: state.userPassword,
-    });
-    authStore.updateLoginStatus(true);
-    state.userEmail = '';
-    state.userPassword = '';
-    router.push('/');
-    alertsStore.setAlert('success', 'Login successful!');
+    await axios
+      .post(`/auth/login`, {
+        email: state.userEmail,
+        password: state.userPassword,
+      })
+      .then((user) => {
+        authStore.updateUserName(user.data.user.name);
+        authStore.updateLoginStatus(true);
+        state.userEmail = '';
+        state.userPassword = '';
+        router.push('/');
+        alertsStore.setAlert('success', 'Login successful!');
+      });
   } catch (err) {
     console.log('err', err);
     alertsStore.setAlert('error', err.response?.data?.message || 'An error occurred');
