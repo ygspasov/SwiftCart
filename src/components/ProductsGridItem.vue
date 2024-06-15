@@ -3,7 +3,7 @@
     <v-img class="align-end text-white" height="450" :src="product.imageUrl" cover> </v-img>
 
     <v-card-title
-      ><div class="text-center text-h5">{{ product.name }}</div></v-card-title
+      ><div class="text-center text-h5 text-wrap">{{ product.name }}</div></v-card-title
     >
 
     <v-card-text>
