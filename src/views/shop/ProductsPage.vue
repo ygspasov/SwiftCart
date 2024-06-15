@@ -14,7 +14,7 @@
             <v-pagination
               v-model="page"
               :length="totalPages"
-              @click="handlePageChange"
+              @update:modelValue="handlePageChange"
               class="my-4"
             ></v-pagination>
           </v-container>
@@ -36,9 +36,9 @@ const alertsStore = useAlertsStore();
 const router = useRouter();
 
 const products = ref([]);
-let page = router.currentRoute.value.query.page
-  ? parseInt(router.currentRoute.value.query.page)
-  : 1; // Initialize with page 1 or from query parameter
+const page = ref(
+  router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page) : 1
+);
 const totalPages = ref(1);
 
 const getProducts = async (page) => {
@@ -57,27 +57,19 @@ const getProducts = async (page) => {
 watch(
   () => router.currentRoute.value.query.page,
   (newPage) => {
-    console.log('newPage', newPage);
     if (!isNaN(parseInt(newPage))) {
-      page = parseInt(newPage);
-      getProducts(page);
+      page.value = parseInt(newPage);
+      getProducts(page.value);
     }
   },
   { immediate: true }
 );
 
-// Handle pagination change
-const handlePageChange = (event) => {
-  // Extracting the page value from the event
-  const newPage = event.target.innerText;
-
-  console.log('handlePageChange newPage', newPage);
-
-  // Updating the router's query parameter with the new page value
+const handlePageChange = (newPage) => {
   router.push({ query: { ...router.currentRoute.value.query, page: newPage } });
 };
 
 onMounted(() => {
-  getProducts(page);
+  getProducts(page.value);
 });
 </script>
