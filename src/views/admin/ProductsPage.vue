@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container>
-      <h3 class="text-center mb-2">Admin products</h3>
+      <h3 class="text-center mb-2 open-sans-regular">Admin products</h3>
       <ShopAlerts :alert="alertsStore.alert" />
       <v-row align="center" justify="center">
         <ProductsGrid :products="products" />

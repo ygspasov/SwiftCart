@@ -3,11 +3,13 @@
     <v-img class="align-end text-white" height="450" :src="product.imageUrl" cover> </v-img>
 
     <v-card-title
-      ><div class="text-center text-h5 text-wrap">{{ product.name }}</div></v-card-title
+      ><div class="text-center text-h5 text-wrap open-sans-regular">
+        {{ product.name }}
+      </div></v-card-title
     >
 
     <v-card-text>
-      <div class="text-center text-h6">${{ product.price }}</div>
+      <div class="text-center text-h6 roboto-regular">${{ product.price }}</div>
     </v-card-text>
 
     <v-card-actions class="d-flex flex-wrap justify-center px-0">
@@ -22,7 +24,7 @@
         <v-btn class="radius-" @click="deleteProduct"> Delete </v-btn>
       </router-link>
       <router-link class="bg-black pa-1 mb-2 mx-1 rounded" :to="'/products/' + product._id">
-        <v-btn class="radius-"> View Details </v-btn>
+        <v-btn class="radius- roboto-regular"> View Details </v-btn>
       </router-link>
     </v-card-actions>
   </v-card>

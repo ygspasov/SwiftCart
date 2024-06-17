@@ -1,12 +1,17 @@
 <template>
-  <h1>Orders</h1>
+  <h1 class="open-sans-regular mb-2">Orders:</h1>
   <div v-for="order in orders" :key="order._id">
-    <p>
+    <p class="open-sans-regular">
       Order # {{ order._id }} -
       <a :href="`/api/orders/${order._id}`" @click="downloadInvoice(order._id)" download>Invoice</a>
     </p>
     <v-row>
-      <v-col cols="12" class="mt-2" v-for="item in order.products" :key="item._id">
+      <v-col
+        cols="12"
+        class="open-sans-regular mt-2"
+        v-for="item in order.products"
+        :key="item._id"
+      >
         <SingleCart
           :description="item.product.description"
           :price="item.price"

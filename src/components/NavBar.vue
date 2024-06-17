@@ -10,14 +10,14 @@
           <v-list class="mt-6">
             <v-list-item v-for="(item, i) in filteredItems" :key="i">
               <v-list-item-title class="text-center"
-                ><router-link :to="{ path: item.to }" class="open-sans">
+                ><router-link :to="{ path: item.to }" class="open-sans-regular">
                   <v-btn color="">{{ item.title }}</v-btn></router-link
                 ></v-list-item-title
               >
             </v-list-item>
             <v-list-item v-if="showLogout"
               ><v-list-item-title class="text-center"
-                ><router-link to="/" class="open-sans">
+                ><router-link to="/" class="open-sans-regular">
                   <v-btn @click="logout">Logout</v-btn></router-link
                 >
               </v-list-item-title></v-list-item
@@ -31,10 +31,10 @@
 
       <!-- desktop menu -->
       <v-app-bar-title>
-        <router-link to="/" class="open-sans">SwiftCart</router-link></v-app-bar-title
+        <router-link to="/" class="open-sans-regular">SwiftCart</router-link></v-app-bar-title
       >
       <div
-        class="menu-links d-flex flex-wrap open-sans"
+        class="menu-links d-flex flex-wrap open-sans-regular"
         v-for="(item, i) in filteredItems"
         :key="i"
       >
@@ -43,7 +43,7 @@
         >
       </div>
       <router-link to="/" class="d-none d-sm-flex" v-if="showLogout"
-        ><v-btn color="black open-sans" @click="logout">Logout</v-btn></router-link
+        ><v-btn color="black open-sans-regular" @click="logout">Logout</v-btn></router-link
       >
       <p class="mx-2 roboto-medium" v-if="authStore.isLoggedIn">{{ userName }}</p>
     </v-app-bar>
