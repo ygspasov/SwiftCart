@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Product } from '../models/product.js';
 import { Order } from '../models/order.js';
-
+import moment from 'moment';
 import PDFDocument from 'pdfkit';
 
 const getProductsController = async (req, res) => {
@@ -89,6 +89,7 @@ const getInvoiceController = (req, res, next) => {
         const invoicePath = path.join('backend', 'src', 'assets', 'invoices', invoiceName);
         const invoiceNumber = order._id;
         const clientName = order.user.name;
+        const invoiceDate = order.createdAt;
 
         const pdfDoc = new PDFDocument();
 
@@ -106,7 +107,7 @@ const getInvoiceController = (req, res, next) => {
         let y = 100;
 
         pdfDoc.fontSize(24).text('Invoice', nameX, y, { align: 'left' });
-        y = 120;
+        y += 20;
         pdfDoc
           .fontSize(14)
           .text(
@@ -117,11 +118,13 @@ const getInvoiceController = (req, res, next) => {
               align: 'left',
             }
           );
-        y = 140;
+        y += 20;
         pdfDoc.fontSize(12).text('Invoice# ' + invoiceNumber, nameX, y);
-        y = 160;
-        pdfDoc.fontSize(12).text('Client: ' + clientName, nameX, y);
+        y += 20;
+        pdfDoc.fontSize(12).text('from ' + moment(invoiceDate).format('MMM Do YYYY'));
         y = 180;
+        pdfDoc.fontSize(12).text('Client: ' + clientName, nameX, y);
+        y += 20;
         pdfDoc
           .fontSize(14)
           .text(
@@ -132,11 +135,11 @@ const getInvoiceController = (req, res, next) => {
               align: 'left',
             }
           );
-        y = 200;
+        y += 20;
         pdfDoc.fontSize(12).text('Item', nameX, y, { underline: true });
         pdfDoc.text('Quantity', quantityX, y, { underline: true });
         pdfDoc.text('Price', priceX, y, { underline: true });
-        y = 220;
+        y += 20;
         // Table rows
         order.products.forEach((prod) => {
           pdfDoc.fontSize(10).text(prod.product.name, nameX, y);
