@@ -15,6 +15,7 @@ const postOrderController = async (req, res) => {
           user: { name: req.user.name, email: req.user.email, userId: req.user },
           products: products,
           totalPrice: user.cart.totalPrice,
+          createdAt: new Date(), // The order's creation date
         });
         console.log('order', order);
         order.save();
