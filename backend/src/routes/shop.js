@@ -9,7 +9,11 @@ import {
   getInvoiceController,
 } from '../controllers/shop.js';
 
-import { postOrderController, getOrdersController } from '../controllers/orders.js';
+import {
+  postOrderController,
+  getOrdersController,
+  deleteOrderController,
+} from '../controllers/orders.js';
 
 router.get('/api/products', getProductsController);
 
@@ -22,6 +26,7 @@ router.delete('/api/cart/:productId', deleteCartItemController);
 
 router.get('/api/orders', getOrdersController);
 router.post('/api/create-order', postOrderController);
+router.delete('/api/delete-order/:orderId', deleteOrderController);
 
 router.get('/api/checkout', (req, res) => {
   res.send('Checkout');

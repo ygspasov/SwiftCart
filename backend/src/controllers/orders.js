@@ -40,4 +40,23 @@ const getOrdersController = async (req, res) => {
   }
 };
 
-export { postOrderController, getOrdersController };
+const deleteOrderController = async (req, res) => {
+  const orderId = req.params.orderId;
+  console.log('Deleting order with id:', orderId);
+
+  if (!orderId) {
+    return res.status(400).json({ error: 'Order ID is required' });
+  }
+
+  try {
+    const result = await Order.deleteOne({ _id: orderId });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Order not found.' });
+    }
+    res.status(200).json({ id: orderId, message: 'Order removed.' });
+  } catch (err) {
+    res.status(400).json({ error: 'An error occurred.', message: 'Failed to remove the order.' });
+  }
+};
+
+export { postOrderController, getOrdersController, deleteOrderController };
