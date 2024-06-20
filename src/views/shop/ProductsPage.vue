@@ -44,7 +44,7 @@ const totalPages = ref(1);
 const getProducts = async (page) => {
   try {
     //Set how many products should load on a single page
-    const limitPerPage = 3;
+    const limitPerPage = 6;
     const result = await axios.get(`/api/products?page=${page}&limit=${limitPerPage}`);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;

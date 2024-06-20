@@ -43,7 +43,7 @@ const totalPages = ref(1);
 
 const getProducts = async (page) => {
   try {
-    const limitPerPage = 3;
+    const limitPerPage = 6;
     const result = await axios.get(`/api/admin/admin-products?page=${page}&limit=${limitPerPage}`);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;

@@ -7,7 +7,7 @@ import PDFDocument from 'pdfkit';
 
 const getProductsController = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-  const limit = parseInt(req.query.limit) || 3; // Default to 3 products per page if not provided
+  const limit = parseInt(req.query.limit) || 6; // Default to 6 products per page if not provided
 
   try {
     // Fetching the total number of products
