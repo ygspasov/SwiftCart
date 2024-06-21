@@ -2,7 +2,7 @@
 
 # SwiftCart
 
-SwiftCart is an Online shop app built with the MEVN stack.
+SwiftCart is an online shop app built with the MEVN stack.
 
 ## Installation and running the project
 
@@ -55,3 +55,19 @@ npm run dev
 [Bcrypt](https://www.npmjs.com/package/bcrypt) - a library to help you hash passwords
 
 [Multer](https://www.npmjs.com/package/multer) - a node.js middleware for handling multipart/form-data, which is primarily used for uploading files
+
+## Features
+
+### Authentication
+
+Users can sign up, log in, log out, add products to the shop, view the products of other users, but only edit and delete their own content.
+
+The Sign in and Registration forms use [Vuelidate](https://vuelidate-next.netlify.app/) for validation. All fields show the appropriate errors when the user input doesn't meet the fields' validation criteria. The Sign up and Login buttons only become active when all fields have been validated.
+
+![Register](./src/assets/images/readme/registration.jpg)
+
+### Adding products
+
+After a successful login, a user can see its name on the right side of the navbar, and then start adding products. Again, all of the fields of the form must be validated in order for the "Add Product" button to activate. The user can also upload a photo of the product from his computer.
+
+![Add Product](./src/assets/images/readme/addProduct.jpg)
