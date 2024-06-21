@@ -3,7 +3,7 @@
     <v-container>
       <h3 class="text-center mb-2 open-sans-regular">Admin products</h3>
       <ShopAlerts :alert="alertsStore.alert" />
-      <v-row align="center" justify="center">
+      <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
     </v-container>

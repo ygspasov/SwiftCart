@@ -2,13 +2,13 @@
   <div>
     <v-container>
       <ShopAlerts :alert="alertsStore.alert" />
-      <v-row align="center" justify="center">
+      <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
     </v-container>
 
     <v-container>
-      <v-row justify="center">
+      <v-row justify="center" align="baseline">
         <v-col cols="8">
           <v-container class="max-width">
             <v-pagination
