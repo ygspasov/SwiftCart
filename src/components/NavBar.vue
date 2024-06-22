@@ -10,8 +10,13 @@
           <v-list class="mt-6">
             <v-list-item v-for="(item, i) in filteredItems" :key="i">
               <v-list-item-title class="text-center"
-                ><router-link :to="{ path: item.to }" class="open-sans-regular">
-                  <v-btn color="">{{ item.title }}</v-btn></router-link
+                ><router-link
+                  :to="{ path: item.to }"
+                  class="open-sans-regular"
+                  :exact="true"
+                  :active-class="'active-navlink'"
+                >
+                  <v-btn>{{ item.title }}</v-btn></router-link
                 ></v-list-item-title
               >
             </v-list-item>
@@ -33,13 +38,18 @@
       <v-app-bar-title>
         <router-link to="/" class="open-sans-regular">SwiftCart</router-link></v-app-bar-title
       >
+
       <div
         class="menu-links d-flex flex-wrap open-sans-regular"
         v-for="(item, i) in filteredItems"
         :key="i"
       >
-        <router-link :to="{ path: item.to }" class="d-none d-sm-flex"
-          ><v-btn color="black">{{ item.title }}</v-btn></router-link
+        <router-link
+          :to="{ path: item.to }"
+          class="d-none d-sm-flex text-black"
+          :exact="true"
+          :active-class="'active-navlink'"
+          ><v-btn>{{ item.title }}</v-btn></router-link
         >
       </div>
       <router-link to="/" class="d-none d-sm-flex" v-if="showLogout"
@@ -92,9 +102,15 @@ const userName = computed(() => {
   return authStore.userName.split(' ')[0];
 });
 </script>
-<style>
+<style scoped>
 .v-menu .v-overlay__content {
   left: 50% !important;
   transform: translate(-50%, 0%);
+}
+.active-navlink {
+  font-weight: bold;
+  color: white !important;
+  background: black;
+  border-radius: 5px;
 }
 </style>
