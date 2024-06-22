@@ -12,11 +12,11 @@
               <v-list-item-title class="text-center"
                 ><router-link
                   :to="{ path: item.to }"
-                  class="open-sans-regular"
+                  class="open-sans-regular text-black text-button"
                   :exact="true"
-                  :active-class="'active-navlink'"
+                  :active-class="'active-navlink-mobile'"
                 >
-                  <v-btn>{{ item.title }}</v-btn></router-link
+                  <a class="button">{{ item.title }}</a></router-link
                 ></v-list-item-title
               >
             </v-list-item>
@@ -107,10 +107,16 @@ const userName = computed(() => {
   left: 50% !important;
   transform: translate(-50%, 0%);
 }
-.active-navlink {
+.menu-links .active-navlink {
   font-weight: bold;
   color: white !important;
   background: black;
   border-radius: 5px;
+}
+.active-navlink-mobile {
+  font-weight: bold;
+  font-size: 1rem !important;
+  text-transform: uppercase;
+  color: black !important;
 }
 </style>
