@@ -48,7 +48,17 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
+app.use(
+  session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      maxAge: null, // Session cookie will not expire due to inactivity
+    },
+  })
+);
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();

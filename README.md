@@ -56,6 +56,8 @@ npm run dev
 
 [Multer](https://www.npmjs.com/package/multer) - a node.js middleware for handling multipart/form-data, which is primarily used for uploading files
 
+![SwiftCart](./src/assets/images/readme/SwiftCart.jpg)
+
 ## Features
 
 ### Authentication
