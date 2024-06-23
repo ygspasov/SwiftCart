@@ -67,9 +67,22 @@ Users can sign up, log in, log out, add products to the shop, view the products 
 The Sign in and Registration forms use [Vuelidate](https://vuelidate-next.netlify.app/) for validation. All fields show the appropriate errors when the user input doesn't meet the fields' validation criteria. The Sign up and Login buttons only become active when all fields have been validated.
 
 ![Register](./src/assets/images/readme/registration.jpg)
+![login](./src/assets/images/readme/login.jpg)
 
 ### Adding products
 
 After a successful login, a user can see its name on the right side of the navbar, and then start adding products. Again, all of the fields of the form must be validated in order for the "Add Product" button to activate. The user can also upload a photo of the product from his computer.
 
 ![Add Product](./src/assets/images/readme/addProduct.jpg)
+
+### Editing and deleting products
+
+From the Admin Products section, a user can edit a post. This applies to all data of a product - the name, description, price and the image.
+
+![Admin Product](./src/assets/images/readme/adminProduct.jpg)
+
+### Viewing single product
+
+Clicking on "View Details" for an individual product takes the user to a single view for that product. From there, appart from examining the description, the user also can add a chosen product to his shopping cart
+
+![Single Product](./src/assets/images/readme/singleProduct.jpg)
