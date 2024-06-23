@@ -120,4 +120,3 @@ The app displays action notifications for each action the user takes, such as si
 The app comes with a responsive design and a hamburger menu.
 
 ![Responsive](./src/assets/images/readme/responsive.jpg)
-![ordersResponsive](./src/assets/images/readme/ordersResponsive.jpg)
