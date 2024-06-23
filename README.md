@@ -79,7 +79,7 @@ After a successful login, a user can see its name on the right side of the navba
 
 From the Admin Products section, a user can edit a post. This applies to all data of a product - the name, description, price and the image.
 
-![Admin Product](./src/assets/images/readme/adminProduct.jpg)
+![Admin Product](./src/assets/images/readme/adminProducts.jpg)
 
 ### Viewing single product
 
