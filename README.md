@@ -77,12 +77,34 @@ After a successful login, a user can see its name on the right side of the navba
 
 ### Editing and deleting products
 
-From the Admin Products section, a user can edit a post. This applies to all data of a product - the name, description, price and the image.
+From the Admin Products section, a user can edit a product. This applies to all data of a product - the name, description, price and the image. A user can only edit or delete the products that he created.
 
 ![Admin Product](./src/assets/images/readme/adminProducts.jpg)
 
 ### Viewing single product
 
-Clicking on "View Details" for an individual product takes the user to a single view for that product. From there, appart from examining the description, the user also can add a chosen product to his shopping cart
+Clicking on "View Details" for an individual product takes the user to a single view for that product. From there, appart from examining the description, the user can also add a chosen product to his shopping cart.
 
 ![Single Product](./src/assets/images/readme/singleProduct.jpg)
+
+### The cart
+
+Each time the user adds a product to the cart, he is redirected to the Cart page where he can examine all of his chosen products, view their price, quantity and the total price of all the items he chose to purchase. He has the option to remove a current product from the cart before ordering.
+
+![Cart](./src/assets/images/readme/cart.jpg)
+
+### Orders
+
+The app keeps track of the orders a user makes. Once he presses the Order button on his Cart page, a new order is created for all the items listed on the cart. An order can be canceled at any time, which also removes the information about it from the db.
+
+![Orders](./src/assets/images/readme/orders.jpg)
+
+### Pagination
+
+Currently the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
+
+### Responsive design
+
+The app comes with a responsive design and a hamburger menu.
+
+![Responsive](./src/assets/images/readme/responsive.jpg)
