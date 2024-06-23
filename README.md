@@ -109,6 +109,12 @@ Next to each order on the Orders page, there is a link for generating an invoice
 
 Currently, the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
 
+### Action Notifications
+
+The app displays action notifications for each action the user takes, such as signing in, creating a product, editing a product, removing a product, making an order, or canceling an order.
+
+![Notifications](./src/assets/images/readme/notifications.jpg)
+
 ### Responsive design
 
 The app comes with a responsive design and a hamburger menu.
