@@ -99,7 +99,6 @@ const isFormCorrect = computed(() => {
 const handleFileChange = (event) => {
   // Updating state.image with the selected file
   state.image = event.target.files.length > 0 ? event.target.files[0] : null;
-  console.log('Selected file name:', state.image ? state.image.name : null);
 };
 const postProduct = async () => {
   if (!isFormCorrect.value) return;

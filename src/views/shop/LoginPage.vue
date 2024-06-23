@@ -69,10 +69,6 @@ const isFormCorrect = computed(() => {
 
 const login = async () => {
   if (!isFormCorrect.value) return;
-  console.log('email,password', {
-    email: state.userEmail,
-    password: state.userPassword,
-  });
   try {
     await axios
       .post(`/auth/login`, {

@@ -17,7 +17,6 @@ const postOrderController = async (req, res) => {
           totalPrice: user.cart.totalPrice,
           createdAt: new Date(), // The order's creation date
         });
-        console.log('order', order);
         order.save();
         res.status(200).json({ order: order, message: 'Order created' });
       })
@@ -32,7 +31,6 @@ const postOrderController = async (req, res) => {
 const getOrdersController = async (req, res) => {
   try {
     Order.find({ 'user.userId': req.user._id }).then((orders) => {
-      console.log('orders', orders);
       res.status(200).json(orders);
     });
   } catch (err) {
@@ -42,7 +40,6 @@ const getOrdersController = async (req, res) => {
 
 const deleteOrderController = async (req, res) => {
   const orderId = req.params.orderId;
-  console.log('Deleting order with id:', orderId);
 
   if (!orderId) {
     return res.status(400).json({ error: 'Order ID is required' });

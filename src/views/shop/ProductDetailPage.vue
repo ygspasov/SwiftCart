@@ -57,7 +57,6 @@ const addToCart = async () => {
       })
       .then((res) => {
         alertsStore.setAlert('success', res.data.message);
-        console.log('alertsStore.alert', alertsStore.alert.message);
         updateCartItems();
         router.push('/cart');
       })

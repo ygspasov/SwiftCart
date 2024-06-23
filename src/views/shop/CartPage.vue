@@ -45,7 +45,6 @@ const getCartItems = async () => {
     setTimeout(() => {
       axios.get('/api/cart').then((result) => {
         cartItems.value = result.data.cart.items;
-        console.log('cartItems.value', cartItems.value);
         totalPrice.value = result.data.cart.totalPrice;
       });
     }, 100);
@@ -76,7 +75,6 @@ const postOrder = async () => {
 const showProducts = computed(() => cartItems.value.length);
 
 const loadProducts = computed(() => store.loadProducts);
-console.log('store.loadProducts', store.loadProducts);
 watch(loadProducts, (newVal) => {
   if (newVal) {
     getCartItems();

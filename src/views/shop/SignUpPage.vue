@@ -94,7 +94,6 @@ const rules = {
   },
 };
 const v$ = useVuelidate(rules, state);
-console.log('v$ signuppage', v$);
 const isFormCorrect = computed(() => {
   return !v$.value.$invalid;
 });
@@ -115,7 +114,6 @@ const signup = async () => {
           state.userPasswordRepeat = '';
           router.push('/');
           alertsStore.setAlert('success', res.data.message);
-          console.log('alertsStore.alert', alertsStore.alert.message);
         }
       })
       .then(() => {

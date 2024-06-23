@@ -100,12 +100,10 @@ const isFormCorrect = computed(() => {
 const handleFileChange = (event) => {
   // Updating state.image with the selected file
   state.image = event.target.files.length > 0 ? event.target.files[0] : null;
-  console.log('Selected file name:', state.image ? state.image.name : null);
 };
 const getProduct = async () => {
   try {
     await axios.get(`/api/products/${route.params.id}`).then((product) => {
-      console.log('product', product);
       state.name = product.data.name;
       state.description = product.data.description;
       state.imageUrl = product.data.imageUrl;
@@ -134,7 +132,6 @@ const editProduct = async () => {
       .then((res) => {
         router.push('/admin/admin-products');
         alertsStore.setAlert('success', res.data.message);
-        console.log('alertsStore.alert', alertsStore.alert.message);
         setTimeout(() => {
           alertsStore.clearAlert();
         }, 3000);

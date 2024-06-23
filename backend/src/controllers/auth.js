@@ -45,7 +45,6 @@ const postLoginController = async (req, res) => {
       bcrypt.compare(password, user.password).then((doMatch) => {
         //Comparing the password the user entered with the password stored in the db
         if (doMatch) {
-          console.log('passwords match');
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.save();

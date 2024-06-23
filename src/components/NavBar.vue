@@ -80,7 +80,6 @@ const logout = async () => {
   try {
     await axios.post(`/auth/logout`).then((res) => {
       authStore.updateLoginStatus(res.data.isLoggedIn);
-      console.log('authstore', authStore.isLoggedIn);
       router.push('/login');
     });
   } catch (err) {

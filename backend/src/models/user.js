@@ -48,7 +48,6 @@ userSchema.methods.addToCart = function (product) {
       price: product.price,
     });
   }
-  console.log('updatedCart', updatedCart);
   updatedCartItems.forEach((element) => {
     updatedCart.totalPrice += element.price;
   });

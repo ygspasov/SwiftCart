@@ -9,7 +9,6 @@ const deleteFile = (filePath) => {
     if (err) {
       throw err;
     }
-    console.log('File deleted successfully');
   });
 };
 

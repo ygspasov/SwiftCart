@@ -35,7 +35,6 @@ const postProductController = (req, res) => {
     return res.status(422).json({ message: 'The attached file is not an image.' });
   }
   const imageUrl = '/images/' + image.filename;
-  console.log('image', image);
   const product = new Product({
     name: name,
     imageUrl: imageUrl,
@@ -76,7 +75,6 @@ const editProductController = (req, res) => {
 
 const deleteProductController = (req, res) => {
   const { productId } = req.params;
-  console.log('productId', productId);
 
   Product.findById(productId)
     .then(async (product) => {
@@ -86,8 +84,6 @@ const deleteProductController = (req, res) => {
 
       deleteFile(product.imageUrl); // Deleting the file from the file system
       await Product.deleteOne({ _id: productId, userId: req.user._id });
-
-      console.log('Product deleted');
       res.status(200).json({ productId: productId, message: 'Product deleted' });
     })
     .catch((err) => {
