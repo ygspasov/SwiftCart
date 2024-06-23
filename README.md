@@ -4,23 +4,23 @@
 
 SwiftCart is an online shop app built with the MEVN stack.
 
-## Installation and running the project
+## Installing and Running the Project
 
-### Installing the dependencies
+### Installing the Dependencies
 
 ```js
 npm i
 ```
 
-### Running the project
+### Running the Project
 
-#### Starting the backend server
+#### Starting the Backend Server
 
 ```js
 npm run backend
 ```
 
-#### Starting the frontend server
+#### Starting the Frontend Server
 
 ```js
 npm run dev
@@ -62,49 +62,56 @@ npm run dev
 
 ### Authentication
 
-Users can sign up, log in, log out, add products to the shop, view the products of other users, but only edit and delete their own content.
+Users can sign up, log in, log out, add products to the shop, and view products of other users, but only edit and delete their own content.
 
 The Sign in and Registration forms use [Vuelidate](https://vuelidate-next.netlify.app/) for validation. All fields show the appropriate errors when the user input doesn't meet the fields' validation criteria. The Sign up and Login buttons only become active when all fields have been validated.
 
 ![Register](./src/assets/images/readme/registration.jpg)
 ![login](./src/assets/images/readme/login.jpg)
 
-### Adding products
+### Adding Products
 
-After a successful login, a user can see its name on the right side of the navbar, and then start adding products. Again, all of the fields of the form must be validated in order for the "Add Product" button to activate. The user can also upload a photo of the product from his computer.
+After a successful login, a user can see their name on the right side of the navbar, and then start adding products. Again, all fields of the form must be validated in order for the "Add Product" button to activate. The user can also upload a photo of the product from their computer.
 
 ![Add Product](./src/assets/images/readme/addProduct.jpg)
 
-### Editing and deleting products
+### Editing and Deleting Products
 
-From the Admin Products section, a user can edit a product. This applies to all data of a product - the name, description, price and the image. A user can only edit or delete the products that he created.
+From the Admin Products section, a user can edit a product. This applies to all data of a product - the name, description, price, and the image. A user can only edit or delete the products that they created.
 
 ![Admin Product](./src/assets/images/readme/adminProducts.jpg)
 
-### Viewing single product
+### Viewing a Single Product
 
-Clicking on "View Details" for an individual product takes the user to a single view for that product. From there, appart from examining the description, the user can also add a chosen product to his shopping cart.
+Clicking on "View Details" for an individual product takes the user to a single view for that product. From there, apart from examining the description, the user can also add the chosen product to their shopping cart.
 
 ![Single Product](./src/assets/images/readme/singleProduct.jpg)
 
 ### The cart
 
-Each time the user adds a product to the cart, he is redirected to the Cart page where he can examine all of his chosen products, view their price, quantity and the total price of all the items he chose to purchase. He has the option to remove a current product from the cart before ordering.
+Each time the user adds a product to the cart, they are redirected to the Cart page where they can examine all of their chosen products, view their price, quantity, and the total price of all the items they chose to purchase. They have the option to remove a product from the cart before ordering.
 
 ![Cart](./src/assets/images/readme/cart.jpg)
 
 ### Orders
 
-The app keeps track of the orders a user makes. Once he presses the Order button on his Cart page, a new order is created for all the items listed on the cart. An order can be canceled at any time, which also removes the information about it from the db.
+The app keeps track of the orders a user makes. Once they press the Order button on their Cart page, a new order is created for all the items listed in the cart. An order can be canceled at any time, which also removes the information about it from the database.
 
 ![Orders](./src/assets/images/readme/orders.jpg)
 
+### Invoicing
+
+Next to each order on the Orders page, there is a link for generating an invoice for that order. It is automatically generated in PDF format and saved by the browser.
+
+![Invoice](./src/assets/images/readme/invoice.jpg)
+
 ### Pagination
 
-Currently the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
+Currently, the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
 
 ### Responsive design
 
 The app comes with a responsive design and a hamburger menu.
 
 ![Responsive](./src/assets/images/readme/responsive.jpg)
+![ordersResponsive](./src/assets/images/readme/ordersResponsive.jpg)
