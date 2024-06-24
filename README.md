@@ -1,7 +1,5 @@
 # SwiftCart
 
-# SwiftCart
-
 SwiftCart is an online shop app built with the MEVN stack.
 
 ## Installing and Running the Project
