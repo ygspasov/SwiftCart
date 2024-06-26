@@ -11,6 +11,7 @@ import { User } from './models/user.js';
 import { config } from 'dotenv';
 config();
 import multer from 'multer';
+import path from 'path';
 
 const app = express();
 const MongoDBStoreSession = MongoDBStore(session);
@@ -76,6 +77,14 @@ app.use(upload.single('image'));
 app.use('/images', express.static('backend/src/assets/images'));
 app.use('/invoices', express.static('backend/src/assets/invoices'));
 app.use(shopRouter, adminRouter, authRouter);
+
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(__dirname, '../../../dist')));
+
+// Fallback route to serve the frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../../dist', 'index.html'));
+});
 
 mongoose
   .connect(MONGODB_URI)
