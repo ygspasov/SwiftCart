@@ -38,26 +38,30 @@ const getLoginController = async (req, res) => {
 };
 
 const postLoginController = async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
   try {
-    User.findOne({ email: email }).then((user) => {
-      bcrypt.compare(password, user.password).then((doMatch) => {
-        //Comparing the password the user entered with the password stored in the db
-        if (doMatch) {
-          req.session.isLoggedIn = true;
-          req.session.user = user;
-          req.session.save();
-          res.status(200).json({ isLoggedIn: true, message: 'Logged in!', user });
-        } else {
-          res
-            .status(401)
-            .json({ isLoggedIn: false, message: 'Invalid credentials. Please try again.' });
-        }
-      });
-    });
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ isLoggedIn: false, message: 'No such user exists.' });
+    }
+
+    const doMatch = await bcrypt.compare(password, user.password);
+
+    if (doMatch) {
+      req.session.isLoggedIn = true;
+      req.session.user = user;
+      await req.session.save();
+      return res.status(200).json({ isLoggedIn: true, message: 'Logged in!', user });
+    } else {
+      return res
+        .status(401)
+        .json({ isLoggedIn: false, message: 'Invalid credentials. Please try again.' });
+    }
   } catch (err) {
-    res.status(400).json({ isLoggedIn: false, message: 'Failed to login.' });
+    return res
+      .status(500)
+      .json({ isLoggedIn: false, message: 'Failed to login due to server error.' });
   }
 };
 

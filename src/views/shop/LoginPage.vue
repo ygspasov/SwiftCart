@@ -1,33 +1,38 @@
 <template>
-  <v-sheet class="mx-auto mt-5" width="300">
-    <v-form fast-fail @submit.prevent>
-      <v-text-field
-        v-model="state.userEmail"
-        label="Email"
-        @input="v$.userEmail.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.userEmail.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+  <v-container>
+    <ShopAlerts class="mb-2" :alert="alertsStore.alert" />
+  </v-container>
+  <v-container>
+    <v-sheet class="mx-auto" width="300">
+      <v-form fast-fail @submit.prevent>
+        <v-text-field
+          v-model="state.userEmail"
+          label="Email"
+          @input="v$.userEmail.$touch()"
+        ></v-text-field>
+        <div :class="{ error: v$.userEmail.$errors.length }">
+          <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
 
-      <v-text-field
-        v-model="state.userPassword"
-        label="Password"
-        type="password"
-        @input="v$.userPassword.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.userPassword.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-text-field
+          v-model="state.userPassword"
+          label="Password"
+          type="password"
+          @input="v$.userPassword.$touch()"
+        ></v-text-field>
+        <div :class="{ error: v$.userPassword.$errors.length }">
+          <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-btn class="mt-2" type="submit" block @click="login" :disabled="!isFormCorrect"
-        >Login</v-btn
-      >
-    </v-form>
-  </v-sheet>
+        <v-btn class="mt-2" type="submit" block @click="login" :disabled="!isFormCorrect"
+          >Login</v-btn
+        >
+      </v-form>
+    </v-sheet>
+  </v-container>
   <p class="mx-auto mt-5">New customer? <router-link to="/signup">Start here.</router-link></p>
 </template>
 
@@ -36,6 +41,7 @@ import { reactive, computed } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, helpers } from '@vuelidate/validators';
@@ -84,9 +90,7 @@ const login = async () => {
         alertsStore.setAlert('success', 'Login successful!');
       });
   } catch (err) {
-    console.log('err', err);
     alertsStore.setAlert('error', err.response?.data?.message || 'An error occurred');
-    router.push('/login');
   } finally {
     setTimeout(() => {
       alertsStore.clearAlert();

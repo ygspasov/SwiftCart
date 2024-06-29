@@ -1,54 +1,60 @@
 <template>
-  <v-sheet class="mx-auto mt-5" width="300">
-    <v-form fast-fail @submit.prevent>
-      <v-text-field
-        v-model="state.userName"
-        label="User name"
-        @input="v$.userName.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.userName.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userName.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+  <v-container>
+    <v-sheet class="mx-auto mt-5" width="300">
+      <v-form fast-fail @submit.prevent>
+        <v-text-field
+          v-model="state.userName"
+          label="User name"
+          @input="v$.userName.$touch()"
+        ></v-text-field>
+        <div :class="{ error: v$.userName.$errors.length }">
+          <div class="input-errors" v-for="error of v$.userName.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-text-field
-        v-model="state.userEmail"
-        label="Email"
-        @input="v$.userEmail.$touch()"
-      ></v-text-field>
-      <div :class="{ error: v$.userEmail.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-text-field
+          v-model="state.userEmail"
+          label="Email"
+          @input="v$.userEmail.$touch()"
+        ></v-text-field>
+        <div :class="{ error: v$.userEmail.$errors.length }">
+          <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-text-field
-        v-model="state.userPassword"
-        label="Password"
-        @input="v$.userPassword.$touch()"
-        type="password"
-      ></v-text-field>
-      <div :class="{ error: v$.userPassword.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-text-field
+          v-model="state.userPassword"
+          label="Password"
+          @input="v$.userPassword.$touch()"
+          type="password"
+        ></v-text-field>
+        <div :class="{ error: v$.userPassword.$errors.length }">
+          <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
-      <v-text-field
-        v-model="state.userPasswordRepeat"
-        label="Confirm password"
-        @input="v$.userPasswordRepeat.$touch()"
-        type="password"
-      ></v-text-field>
-      <div :class="{ error: v$.userPasswordRepeat.$errors.length }">
-        <div class="input-errors" v-for="error of v$.userPasswordRepeat.$errors" :key="error.$uid">
-          <div class="text-red mb-2">{{ error.$message }}</div>
+        <v-text-field
+          v-model="state.userPasswordRepeat"
+          label="Confirm password"
+          @input="v$.userPasswordRepeat.$touch()"
+          type="password"
+        ></v-text-field>
+        <div :class="{ error: v$.userPasswordRepeat.$errors.length }">
+          <div
+            class="input-errors"
+            v-for="error of v$.userPasswordRepeat.$errors"
+            :key="error.$uid"
+          >
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
         </div>
-      </div>
 
-      <v-btn class="mt-2" type="submit" block @click="signup" :disabled="!isFormCorrect">
-        Signup</v-btn
-      >
-    </v-form>
-  </v-sheet>
+        <v-btn class="mt-2" type="submit" block @click="signup" :disabled="!isFormCorrect">
+          Signup</v-btn
+        >
+      </v-form>
+    </v-sheet>
+  </v-container>
   <p class="mx-auto mt-5">
     Already have an account? <router-link to="/signin">Sing in.</router-link>
   </p>
