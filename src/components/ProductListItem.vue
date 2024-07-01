@@ -17,7 +17,7 @@
       >
     </v-row></v-container
   >
-  <v-container class="open-sans-regular pa-0 mt-md-5">
+  <v-container class="open-sans-regular pa-0 mt-md-5" id="actions">
     <v-row no-gutters class="d-flex justify-center"
       ><v-col cols="12" md="8" class="flex-grow-1 text-center text-md-left"
         ><v-btn size="large" color="black" @click="RemoveCartItem">Remove</v-btn></v-col
@@ -67,4 +67,11 @@ const setQuantity = (qty) => {
   item.quantity = qty;
 };
 </script>
-<style scoped></style>
+<style>
+#app #actions .v-input__control .v-field__field {
+  height: 50px;
+}
+#app #actions .v-input {
+  height: 50px;
+}
+</style>
