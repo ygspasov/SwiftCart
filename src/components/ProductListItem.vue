@@ -30,6 +30,7 @@
           :min="1"
           :model-value="item.quantity"
           control-variant="split"
+          @update:model-value="setQuantity"
         ></v-number-input>
       </v-col>
     </v-row>
@@ -60,6 +61,10 @@ const RemoveCartItem = async () => {
   } catch (err) {
     console.log('Error removing item:', err);
   }
+};
+
+const setQuantity = (qty) => {
+  item.quantity = qty;
 };
 </script>
 <style scoped></style>
