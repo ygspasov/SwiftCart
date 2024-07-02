@@ -1,4 +1,5 @@
 import { Order } from '../models/order.js';
+import { User } from '../models/user.js';
 const postOrderController = async (req, res) => {
   try {
     await req.user
@@ -25,6 +26,39 @@ const postOrderController = async (req, res) => {
       });
   } catch (err) {
     res.status(400).json({ error: 'Failed to create an order.' });
+  }
+};
+
+const updateCartProductQuantityController = async (req, res) => {
+  const productId = req.params.productId;
+  const newQuantity = req.body.quantity;
+
+  try {
+    const user = await User.findById(req.user._id).populate('cart.items.productId');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the item in cart and update quantity
+    const cartItem = user.cart.items.find((item) => item.productId._id.toString() === productId);
+
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Product not found in cart' });
+    }
+
+    cartItem.quantity = newQuantity;
+
+    // Recalculating totalPrice
+    user.cart.totalPrice = user.cart.items.reduce((total, item) => {
+      return total + item.quantity * item.price;
+    }, 0);
+
+    await user.save();
+
+    res.status(200).json({ message: 'Quantity updated successfully', cartItem });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update quantity' });
   }
 };
 
@@ -56,4 +90,9 @@ const deleteOrderController = async (req, res) => {
   }
 };
 
-export { postOrderController, getOrdersController, deleteOrderController };
+export {
+  postOrderController,
+  getOrdersController,
+  deleteOrderController,
+  updateCartProductQuantityController,
+};

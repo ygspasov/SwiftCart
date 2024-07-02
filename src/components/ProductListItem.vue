@@ -13,7 +13,7 @@
         >Quantity: {{ item.quantity }}</v-col
       >
       <v-col class="flex-grow-1 text-h5 roboto-regular text-center text-md-right"
-        >Price: ${{ item.price }}</v-col
+        >Price: ${{ item.quantity * item.price }}</v-col
       >
     </v-row></v-container
   >
@@ -30,7 +30,7 @@
           :min="1"
           :model-value="item.quantity"
           control-variant="split"
-          @update:model-value="setQuantity"
+          @update:model-value="(newQuantity) => setQuantity(newQuantity, item.productId._id)"
         ></v-number-input>
       </v-col>
     </v-row>
@@ -63,8 +63,15 @@ const RemoveCartItem = async () => {
   }
 };
 
-const setQuantity = (qty) => {
-  item.quantity = qty;
+const setQuantity = async (quantity, productId) => {
+  item.quantity = quantity;
+  try {
+    await axios.put(`/api/cart/${productId}`, {
+      quantity,
+    });
+  } catch (error) {
+    console.log('Failed to update quantity:', error);
+  }
 };
 </script>
 <style>
