@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production';
+  console.log('Vite mode:', mode);
   const backendUrl = isProduction
     ? 'https://swiftcart-7801bc3a5de9.herokuapp.com'
     : 'http://localhost:8000';
