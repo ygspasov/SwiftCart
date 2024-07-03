@@ -2,15 +2,17 @@
   <v-container>
     <ShopAlerts :alert="alertsStore.alert" />
     <v-row>
-      <v-card v-if="showProducts" class="mx-auto">
-        <v-card-title class="text-h5 my-1 text-center text-md-start open-sans-regular"
+      <v-card v-if="showProducts" class="mx-auto" max-width="600">
+        <v-card-title class="text-h5 my-1 mx-2 text-center text-md-start open-sans-regular"
           >Shopping Cart</v-card-title
         >
         <v-divider class="mx-4 mb-1"></v-divider>
         <ProductList :cartItems="cartItems" />
-        <p class="text-center text-md-right mx-4 text-h5 roboto-regular">
-          Total: ${{ totalPrice }}
-        </p>
+        <v-container>
+          <p class="text-center text-md-right mx-4 text-h5 roboto-regular">
+            Total: ${{ totalPrice }}
+          </p>
+        </v-container>
         <v-btn
           class="mx-4 my-3 w-100 open-sans-regular"
           elevation="4"
@@ -41,13 +43,10 @@ const totalPrice = ref(0);
 const getCartItems = async () => {
   try {
     cartItems.value = [];
-    //setTimeout fixes a problem with items not updating after the get request
-    setTimeout(() => {
-      axios.get('/api/cart').then((result) => {
-        cartItems.value = result.data.cart.items;
-        totalPrice.value = result.data.cart.totalPrice;
-      });
-    }, 100);
+    axios.get('/api/cart').then((result) => {
+      cartItems.value = result.data.cart.items;
+      totalPrice.value = result.data.cart.totalPrice;
+    });
   } catch (err) {
     console.log('err', err);
   }
