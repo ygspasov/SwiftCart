@@ -85,9 +85,9 @@ Clicking on "View Details" for an individual product takes the user to a single 
 
 ![Single Product](./src/assets/images/readme/singleProduct.jpg)
 
-### The cart
+### The Cart
 
-Each time the user adds a product to the cart, they are redirected to the Cart page where they can examine all of their chosen products, view their price, quantity, and the total price of all the items they chose to purchase. They have the option to remove a product from the cart before ordering.
+Each time the user adds a product to the cart, they are redirected to the Cart page where they can examine all of their chosen products, view their price, quantity, and the total price of all the items they chose to purchase. It is also possible to adjust the quantity of the each items, which updates the price of that item as well as the cart's total price. A user can remove a product from their cart before ordering.
 
 ![Cart](./src/assets/images/readme/cart.jpg)
 
