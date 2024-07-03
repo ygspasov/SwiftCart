@@ -66,9 +66,11 @@ const RemoveCartItem = async () => {
 const setQuantity = async (quantity, productId) => {
   item.quantity = quantity;
   try {
-    await axios.put(`/api/cart/${productId}`, {
-      quantity,
-    });
+    await axios
+      .put(`/api/cart/${productId}`, {
+        quantity,
+      })
+      .then(() => loadCart());
   } catch (error) {
     console.log('Failed to update quantity:', error);
   }
