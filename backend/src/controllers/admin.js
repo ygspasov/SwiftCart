@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import { deleteFile } from '../utils/file.js';
 
 const getProductsController = async (req, res) => {
+  if (!req.user.id) {
+    return;
+  }
   const userId = mongoose.Types.ObjectId.createFromHexString(req.user.id);
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 3; // Default to 3 products per page if not provided
