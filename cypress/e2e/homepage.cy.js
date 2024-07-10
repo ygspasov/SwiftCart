@@ -12,7 +12,7 @@ describe('GET homepage products', () => {
       expect(response.body.products).to.be.an('array');
       expect(response.body.products.length).to.be.at.most(6); // The set pagination limit is 6 products per page
 
-      // Check if each product has the expected properties (example properties)
+      // Check if each product has the expected properties
       response.body.products.forEach((product) => {
         expect(product).to.have.property('_id');
         expect(product).to.have.property('name');
