@@ -32,3 +32,6 @@ coverage
 # images
 /backend/src/assets/images
 /backend/src/assets/invoices
+
+# env vars
+cypress.config.js

@@ -6,6 +6,7 @@
     <v-sheet class="mx-auto" width="300">
       <v-form fast-fail @submit.prevent>
         <v-text-field
+          class="email"
           v-model="state.userEmail"
           label="Email"
           @input="v$.userEmail.$touch()"
@@ -17,6 +18,7 @@
         </div>
 
         <v-text-field
+          class="password"
           v-model="state.userPassword"
           label="Password"
           type="password"
