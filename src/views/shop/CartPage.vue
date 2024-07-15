@@ -43,7 +43,7 @@ const totalPrice = ref(0);
 const getCartItems = async () => {
   try {
     cartItems.value = [];
-    axios.get('/api/cart').then((result) => {
+    await axios.get('/api/cart').then((result) => {
       cartItems.value = result.data.cart.items;
       totalPrice.value = result.data.cart.totalPrice;
     });
