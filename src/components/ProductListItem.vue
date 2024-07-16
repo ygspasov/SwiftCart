@@ -10,10 +10,10 @@
         item.productId.name
       }}</v-col>
       <v-col class="flex-grow-1 text-h5 roboto-regular text-center text-md-right"
-        >Quantity: {{ item.quantity }}</v-col
+        >Quantity: {{ item.quantity.toFixed(2) }}</v-col
       >
       <v-col class="flex-grow-1 text-h5 roboto-regular text-center text-md-right"
-        >Price: ${{ item.quantity * item.price }}</v-col
+        >Price: ${{ (item.quantity * item.price).toFixed(2) }}</v-col
       >
     </v-row></v-container
   >

@@ -10,7 +10,7 @@
         <ProductList :cartItems="cartItems" />
         <v-container>
           <p class="text-center text-md-right mx-4 text-h5 roboto-regular">
-            Total: ${{ totalPrice }}
+            Total: ${{ totalPrice.toFixed(2) }}
           </p>
         </v-container>
         <v-btn
