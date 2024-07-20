@@ -1,5 +1,6 @@
 describe('GET homepage products', () => {
   it('should return product data successfully', () => {
+    cy.visit('/');
     cy.request({
       method: 'GET',
       url: '/api/products?page=1&limit=6',

@@ -1,4 +1,4 @@
-import login from './support/login.js';
+import login from '../support/login.js';
 describe('Test cart products', () => {
   beforeEach(() => {
     login();
