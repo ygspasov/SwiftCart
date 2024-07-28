@@ -36,7 +36,9 @@
 
       <!-- desktop menu -->
       <v-app-bar-title>
-        <router-link to="/" class="open-sans-regular">SwiftCart</router-link></v-app-bar-title
+        <router-link to="/" class="open-sans-regular"
+          >SwiftCart</router-link
+        ></v-app-bar-title
       >
 
       <div
@@ -53,7 +55,9 @@
         >
       </div>
       <router-link to="/" class="d-none d-sm-flex" v-if="showLogout"
-        ><v-btn color="black open-sans-regular" @click="logout">Logout</v-btn></router-link
+        ><v-btn color="black open-sans-regular" @click="logout"
+          >Logout</v-btn
+        ></router-link
       >
       <p class="mx-2 roboto-medium" v-if="authStore.isLoggedIn">{{ userName }}</p>
     </v-app-bar>
@@ -61,26 +65,26 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { computed } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useRouter } from 'vue-router';
+import axios from "axios";
+import { computed } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 const router = useRouter();
 const authStore = useAuthStore();
 const items = [
-  { title: 'Products', to: '/' },
-  { title: 'Add Product', to: '/admin/add-product' },
-  { title: 'Admin Products', to: '/admin/admin-products' },
-  { title: 'Cart', to: '/cart' },
-  { title: 'Orders', to: '/orders' },
-  { title: 'Signup', to: '/signup' },
-  { title: 'Login', to: '/login' },
+  { title: "Products", to: "/" },
+  { title: "Add Product", to: "/admin/add-product" },
+  { title: "Admin Products", to: "/admin/admin-products" },
+  { title: "Cart", to: "/cart" },
+  { title: "Orders", to: "/orders" },
+  { title: "Signup", to: "/signup" },
+  { title: "Login", to: "/login" },
 ];
 const logout = async () => {
   try {
     await axios.post(`/auth/logout`).then((res) => {
       authStore.updateLoginStatus(res.data.isLoggedIn);
-      router.push('/login');
+      router.push("/login");
     });
   } catch (err) {
     console.log(err);
@@ -92,13 +96,19 @@ const showLogout = computed(() => {
 
 // Filtering menu items based on the showLogout status
 const filteredItems = computed(() => {
-  return showLogout.value
-    ? items.filter((item) => item.title !== 'Signup' && item.title !== 'Login')
-    : items;
+  return items.filter((item) => {
+    if (showLogout.value) {
+      // Show all items except "Signup" and "Login" if logged in
+      return !["Signup", "Login"].includes(item.title);
+    } else {
+      // Show only "Products", "Signup", and "Login" if not logged in
+      return ["Products", "Signup", "Login"].includes(item.title);
+    }
+  });
 });
 
 const userName = computed(() => {
-  return authStore.userName.split(' ')[0];
+  return authStore.userName.split(" ")[0];
 });
 </script>
 <style scoped>
