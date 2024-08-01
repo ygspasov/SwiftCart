@@ -15,11 +15,14 @@
         <v-card-text>
           <v-row dense>
             <v-col cols="12">
-              <v-text-field label="Category name*" required></v-text-field>
+              <v-text-field label="Category name*" v-model="name" required></v-text-field>
             </v-col>
 
             <v-col cols="12">
-              <v-text-field label="Category description"></v-text-field>
+              <v-text-field
+                label="Category description"
+                v-model="description"
+              ></v-text-field>
             </v-col>
           </v-row>
 
@@ -39,7 +42,7 @@
             color="primary"
             text="Save"
             variant="tonal"
-            @click="dialog = false"
+            @click="postCategory"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -48,6 +51,20 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
 const dialog = ref(false);
+const name = ref("");
+const description = ref("");
+const postCategory = async () => {
+  dialog.value = false;
+  try {
+    await axios.post("/api/post-category", {
+      name: name.value,
+      description: description.value,
+    });
+  } catch (err) {
+    console.log("Error posting a category", err);
+  }
+};
 </script>
 <style scoped></style>
