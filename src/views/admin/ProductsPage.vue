@@ -1,8 +1,8 @@
 <template>
   <div>
-    <CategoryModal />
     <v-container>
-      <ShopAlerts :alert="alertsStore.alert" />
+      <ShopAlerts :alert="alertsStore.alert" class="mb-2" />
+      <CategoryModal />
       <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>

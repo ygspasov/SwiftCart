@@ -52,16 +52,27 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useAlertsStore } from "@/stores/alerts";
+const alertsStore = useAlertsStore();
 const dialog = ref(false);
 const name = ref("");
 const description = ref("");
 const postCategory = async () => {
   dialog.value = false;
   try {
-    await axios.post("/api/post-category", {
-      name: name.value,
-      description: description.value,
-    });
+    await axios
+      .post("/api/post-category", {
+        name: name.value,
+        description: description.value,
+      })
+      .then((res) => {
+        alertsStore.setAlert("success", res.data.message);
+      })
+      .then(() => {
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
+      });
   } catch (err) {
     console.log("Error posting a category", err);
   }
