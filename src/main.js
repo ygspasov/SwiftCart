@@ -47,4 +47,21 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 app.use(router);
 
+import axios from 'axios';
+import { useAuthStore } from './stores/auth';
+
+axios.interceptors.response.use(
+  async (response) => response,
+  async (error) => {
+    const authStore = useAuthStore();
+    //checking if the user is authenticated and redirecting to /login if he is not
+    if (error.response && error.response.status === 401) {
+      authStore.isLoggedIn = false;
+      await router.push('/login');
+    }
+
+    throw error;
+  }
+);
+
 app.mount('#app');

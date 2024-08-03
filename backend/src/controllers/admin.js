@@ -5,7 +5,7 @@ import { deleteFile } from '../utils/file.js';
 
 const getProductsController = async (req, res) => {
   if (!req.user || !req.user.id) {
-    return res.status(400).json({ error: 'User ID is required' });
+    return res.status(401).json({ message: 'Session expired. Please log in again.' });
   }
   const userId = mongoose.Types.ObjectId.createFromHexString(req.user.id);
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided

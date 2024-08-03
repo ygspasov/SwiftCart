@@ -43,6 +43,9 @@ const getProductIdController = async (req, res) => {
 };
 
 const getCartController = async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: 'Session expired. Please log in again.' });
+  }
   try {
     await req.user.populate('cart.items.productId').then((cartItems) => {
       res.status(200).json(cartItems);
