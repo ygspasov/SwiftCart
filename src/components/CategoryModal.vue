@@ -15,14 +15,38 @@
         <v-card-text>
           <v-row dense>
             <v-col cols="12">
-              <v-text-field label="Category name*" v-model="name" required></v-text-field>
+              <v-text-field
+                label="Category name*"
+                v-model="state.name"
+                required
+                @input="v$.name.$touch()"
+              ></v-text-field>
+              <div :class="{ error: v$.name.$errors.length }">
+                <div
+                  class="input-errors"
+                  v-for="error of v$.name.$errors"
+                  :key="error.$uid"
+                >
+                  <div class="text-red mb-2">{{ error.$message }}</div>
+                </div>
+              </div>
             </v-col>
 
             <v-col cols="12">
               <v-text-field
                 label="Category description"
-                v-model="description"
+                v-model="state.description"
+                @input="v$.description.$touch()"
               ></v-text-field>
+              <div :class="{ error: v$.description.$errors.length }">
+                <div
+                  class="input-errors"
+                  v-for="error of v$.description.$errors"
+                  :key="error.$uid"
+                >
+                  <div class="text-red mb-2">{{ error.$message }}</div>
+                </div>
+              </div>
             </v-col>
           </v-row>
 
@@ -40,9 +64,10 @@
 
           <v-btn
             color="primary"
-            text="Save"
+            text="Add"
             variant="tonal"
             @click="postCategory"
+            :disabled="!isFormCorrect"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -50,23 +75,53 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "axios";
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
 import { useAlertsStore } from "@/stores/alerts";
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
-const name = ref("");
-const description = ref("");
+
+const state = ref({
+  name: "",
+  description: "",
+});
+const nameRules = (value) => value.length >= 3 && value.length <= 25;
+const descriptionRules = (value) => value.length >= 5 && value.length <= 100;
+const rules = {
+  name: {
+    required,
+    nameRules: helpers.withMessage(
+      "Category name should be between 4 and 25 characters.",
+      nameRules
+    ),
+  },
+  description: {
+    required,
+    descriptionRules: helpers.withMessage(
+      "Category description should be between 5 and 100 characters.",
+      descriptionRules
+    ),
+  },
+};
+const v$ = useVuelidate(rules, state);
+const isFormCorrect = computed(() => {
+  return !v$.value.$invalid;
+});
 const postCategory = async () => {
+  if (!isFormCorrect.value) return;
   dialog.value = false;
   try {
     await axios
       .post("/api/post-category", {
-        name: name.value,
-        description: description.value,
+        name: state.value.name,
+        description: state.value.description,
       })
       .then((res) => {
         alertsStore.setAlert("success", res.data.message);
+        state.value.name = "";
+        state.value.description = "";
       })
       .then(() => {
         setTimeout(() => {
