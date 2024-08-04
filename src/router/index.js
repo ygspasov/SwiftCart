@@ -10,6 +10,7 @@ import EditProduct from '@/views/admin/EditProduct.vue';
 import OrdersPage from '@/views/shop/OrdersPage.vue';
 import SignUpPage from '@/views/shop/SignUpPage.vue';
 import LoginPage from '@/views/shop/LoginPage.vue';
+import CategoriesPage from '@/views/shop/CategoriesPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,11 @@ const router = createRouter({
       path: '/signup/',
       name: 'SignUpPage',
       component: SignUpPage,
+    },
+    {
+      path: '/categories/',
+      name: 'CategoriesPage',
+      component: CategoriesPage,
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],
