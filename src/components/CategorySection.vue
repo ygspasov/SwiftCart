@@ -1,5 +1,8 @@
 <template>
-  <div class="pa-4 text-center">
+  <div class="pa-4 mb-2 d-flex flex-wrap justify-space-around">
+    <v-btn variant="tonal" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
+      >View categories</v-btn
+    >
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn

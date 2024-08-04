@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <ShopAlerts :alert="alertsStore.alert" class="mb-2" />
-      <CategoryModal />
+      <CategorySection />
       <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
@@ -31,7 +31,7 @@ import axios from "axios";
 import { useAlertsStore } from "@/stores/alerts";
 import ShopAlerts from "@/components/ShopAlerts.vue";
 import ProductsGrid from "@/components/ProductsGrid.vue";
-import CategoryModal from "@/components/CategoryModal.vue";
+import CategorySection from "@/components/CategorySection.vue";
 
 const alertsStore = useAlertsStore();
 const router = useRouter();
