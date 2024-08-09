@@ -12,7 +12,11 @@
           @input="v$.userEmail.$touch()"
         ></v-text-field>
         <div :class="{ error: v$.userEmail.$errors.length }">
-          <div class="input-errors" v-for="error of v$.userEmail.$errors" :key="error.$uid">
+          <div
+            class="input-errors"
+            v-for="error of v$.userEmail.$errors"
+            :key="error.$uid"
+          >
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
@@ -25,7 +29,11 @@
           @input="v$.userPassword.$touch()"
         ></v-text-field>
         <div :class="{ error: v$.userPassword.$errors.length }">
-          <div class="input-errors" v-for="error of v$.userPassword.$errors" :key="error.$uid">
+          <div
+            class="input-errors"
+            v-for="error of v$.userPassword.$errors"
+            :key="error.$uid"
+          >
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
@@ -35,38 +43,43 @@
       </v-form>
     </v-sheet>
   </v-container>
-  <p class="mx-auto mt-5">New customer? <router-link to="/signup">Start here.</router-link></p>
+  <p class="mx-auto mt-5">
+    New customer? <router-link to="/signup">Start here.</router-link>
+  </p>
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
-import axios from 'axios';
-import { useAuthStore } from '@/stores/auth';
-import { useAlertsStore } from '@/stores/alerts';
-import ShopAlerts from '@/components/ShopAlerts.vue';
-import { useRouter } from 'vue-router';
-import { useVuelidate } from '@vuelidate/core';
-import { required, email, helpers } from '@vuelidate/validators';
+import { reactive, computed } from "vue";
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
+import { useAlertsStore } from "@/stores/alerts";
+import ShopAlerts from "@/components/ShopAlerts.vue";
+import { useRouter } from "vue-router";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, helpers } from "@vuelidate/validators";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const alertsStore = useAlertsStore();
 
 const state = reactive({
-  userEmail: '',
-  userPassword: '',
+  userEmail: "",
+  userPassword: "",
 });
 
 const passRules = (value) => value.length >= 4 && value.length <= 20;
 
 const rules = {
   userEmail: {
-    required: helpers.withMessage('Email field cannot be empty', required),
+    required: helpers.withMessage("Email field cannot be empty", required),
     email,
   },
   userPassword: {
     required,
-    passRules: helpers.withMessage('Password must be between 4 and 20 characters.', passRules),
+    passRules: helpers.withMessage(
+      "Password must be between 4 and 20 characters.",
+      passRules
+    ),
   },
 };
 const v$ = useVuelidate(rules, state);
@@ -84,15 +97,18 @@ const login = async () => {
         password: state.userPassword,
       })
       .then((user) => {
+        console.log("user", user);
         authStore.updateUserName(user.data.user.name);
+        authStore.updateUserId(user.data.user._id);
         authStore.updateLoginStatus(true);
-        state.userEmail = '';
-        state.userPassword = '';
-        router.push('/');
-        alertsStore.setAlert('success', 'Login successful!');
+        state.userEmail = "";
+        state.userPassword = "";
+        state.userId = "";
+        router.push("/");
+        alertsStore.setAlert("success", "Login successful!");
       });
   } catch (err) {
-    alertsStore.setAlert('error', err.response?.data?.message || 'An error occurred');
+    alertsStore.setAlert("error", err.response?.data?.message || "An error occurred");
   } finally {
     setTimeout(() => {
       alertsStore.clearAlert();

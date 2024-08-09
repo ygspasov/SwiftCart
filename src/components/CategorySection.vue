@@ -83,6 +83,8 @@ import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 import { useAlertsStore } from "@/stores/alerts";
+const authStore = useAuthStore();
+import { useAuthStore } from "@/stores/auth";
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
 
@@ -120,6 +122,7 @@ const postCategory = async () => {
       .post("/api/post-category", {
         name: state.value.name,
         description: state.value.description,
+        userId: authStore.userId,
       })
       .then((res) => {
         alertsStore.setAlert("success", res.data.message);

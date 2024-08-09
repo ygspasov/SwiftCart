@@ -1,4 +1,5 @@
 import { Category } from '../models/category.js';
+import mongoose from 'mongoose';
 
 const getCategories = async (req, res) => {
   try {
@@ -10,7 +11,8 @@ const getCategories = async (req, res) => {
 };
 
 const postCategoryController = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, userId } = req.body;
+  const userObjectId = new mongoose.Types.ObjectId(userId);
   try {
     // Check if the category already exists
     const existingCategory = await Category.findOne({ name });
@@ -23,6 +25,7 @@ const postCategoryController = async (req, res) => {
     const category = new Category({
       name,
       description,
+      userId: userObjectId,
     });
     const savedCategory = await category.save();
     res.status(201).json({

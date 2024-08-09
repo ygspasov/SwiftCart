@@ -10,6 +10,11 @@ const categorySchema = new Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   imageUrl: String, // For storing a category image URL
 });
 
