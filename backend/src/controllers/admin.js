@@ -32,7 +32,7 @@ const getProductsController = async (req, res) => {
 };
 
 const postProductController = (req, res) => {
-  const { name, description, price } = req.body;
+  const { name, description, price, categoryId } = req.body;
   const image = req.file;
   if (!image) {
     return res.status(422).json({ message: 'The attached file is not an image.' });
@@ -44,6 +44,7 @@ const postProductController = (req, res) => {
     description: description,
     price: price,
     userId: req.user,
+    categoryId: categoryId,
   });
   if (product) {
     product.save();

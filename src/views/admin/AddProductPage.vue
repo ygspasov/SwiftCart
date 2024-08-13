@@ -30,38 +30,52 @@
           @input="v$.description.$touch()"
         ></v-textarea>
         <div :class="{ error: v$.description.$errors.length }">
-          <div class="input-errors" v-for="error of v$.description.$errors" :key="error.$uid">
+          <div
+            class="input-errors"
+            v-for="error of v$.description.$errors"
+            :key="error.$uid"
+          >
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
-        <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()"></v-text-field>
+        <v-text-field
+          v-model="state.price"
+          label="Price"
+          @input="v$.price.$touch()"
+        ></v-text-field>
         <div :class="{ error: v$.price.$errors.length }">
           <div class="input-errors" v-for="error of v$.price.$errors" :key="error.$uid">
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
-        <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect">Add product</v-btn>
+        <v-autocomplete
+          label="Categories"
+          :items="['Books', 'Hardware', 'Software']"
+        ></v-autocomplete>
+        <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect"
+          >Add product</v-btn
+        >
       </v-form>
     </v-sheet>
   </v-container>
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
-import { useAlertsStore } from '@/stores/alerts';
-import ShopAlerts from '@/components/ShopAlerts.vue';
-import { useVuelidate } from '@vuelidate/core';
-import { required, helpers, numeric } from '@vuelidate/validators';
+import { reactive, computed } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { useAlertsStore } from "@/stores/alerts";
+import ShopAlerts from "@/components/ShopAlerts.vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers, numeric } from "@vuelidate/validators";
 
 const alertsStore = useAlertsStore();
 const router = useRouter();
 
 const state = reactive({
-  name: '',
+  name: "",
   image: null,
-  description: '',
+  description: "",
   price: 0,
 });
 
@@ -72,7 +86,10 @@ const priceRules = (value) => value > 0;
 const rules = {
   required,
   name: {
-    nameRules: helpers.withMessage('Name field must contain at least 2 symbols.', nameRules),
+    nameRules: helpers.withMessage(
+      "Name field must contain at least 2 symbols.",
+      nameRules
+    ),
   },
   image: {
     required,
@@ -80,14 +97,14 @@ const rules = {
   description: {
     required,
     descriptionRules: helpers.withMessage(
-      'Description field must contain at least 5 symbols.',
+      "Description field must contain at least 5 symbols.",
       descriptionRules
     ),
   },
   price: {
     required,
     numeric,
-    priceRules: helpers.withMessage('Price should be greater than 0', priceRules),
+    priceRules: helpers.withMessage("Price should be greater than 0", priceRules),
   },
 };
 
@@ -104,27 +121,27 @@ const postProduct = async () => {
   if (!isFormCorrect.value) return;
 
   const formData = new FormData();
-  formData.append('name', state.name);
-  formData.append('image', state.image);
-  formData.append('description', state.description);
-  formData.append('price', state.price);
+  formData.append("name", state.name);
+  formData.append("image", state.image);
+  formData.append("description", state.description);
+  formData.append("price", state.price);
 
   try {
     await axios
-      .post('/api/products', formData, {
+      .post("/api/products", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        router.push('/admin/admin-products');
-        alertsStore.setAlert('success', res.data.message);
+        router.push("/admin/admin-products");
+        alertsStore.setAlert("success", res.data.message);
         setTimeout(() => {
           alertsStore.clearAlert();
         }, 3000);
       });
   } catch (err) {
-    alertsStore.setAlert('error', err.response.data.message);
+    alertsStore.setAlert("error", err.response.data.message);
     setTimeout(() => {
       alertsStore.clearAlert();
     }, 3000);
