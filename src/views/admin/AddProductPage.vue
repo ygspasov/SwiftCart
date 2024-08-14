@@ -30,53 +30,57 @@
           @input="v$.description.$touch()"
         ></v-textarea>
         <div :class="{ error: v$.description.$errors.length }">
-          <div
-            class="input-errors"
-            v-for="error of v$.description.$errors"
-            :key="error.$uid"
-          >
+          <div class="input-errors" v-for="error of v$.description.$errors" :key="error.$uid">
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
-        <v-text-field
-          v-model="state.price"
-          label="Price"
-          @input="v$.price.$touch()"
-        ></v-text-field>
+        <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()"></v-text-field>
         <div :class="{ error: v$.price.$errors.length }">
           <div class="input-errors" v-for="error of v$.price.$errors" :key="error.$uid">
             <div class="text-red mb-2">{{ error.$message }}</div>
           </div>
         </div>
         <v-autocomplete
+          v-model="state.selectedCategoryName"
           label="Categories"
-          :items="['Books', 'Hardware', 'Software']"
+          :items="categoryNames"
+          @click="getCategories"
+          @change="v$.selectedCategoryName.$touch()"
         ></v-autocomplete>
-        <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect"
-          >Add product</v-btn
-        >
+        <div :class="{ error: v$.selectedCategoryName.$errors.length }">
+          <div
+            class="input-errors"
+            v-for="error of v$.selectedCategoryName.$errors"
+            :key="error.$uid"
+          >
+            <div class="text-red mb-2">{{ error.$message }}</div>
+          </div>
+        </div>
+        <v-btn type="submit" block class="mt-2" :disabled="!isFormCorrect">Add product</v-btn>
       </v-form>
     </v-sheet>
   </v-container>
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
-import { useAlertsStore } from "@/stores/alerts";
-import ShopAlerts from "@/components/ShopAlerts.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, helpers, numeric } from "@vuelidate/validators";
+import { reactive, computed, ref, watch } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, helpers, numeric } from '@vuelidate/validators';
 
 const alertsStore = useAlertsStore();
 const router = useRouter();
 
 const state = reactive({
-  name: "",
+  name: '',
   image: null,
-  description: "",
+  description: '',
   price: 0,
+  selectedCategoryName: null,
+  categoryId: null,
 });
 
 const nameRules = (value) => value.length >= 2;
@@ -86,10 +90,7 @@ const priceRules = (value) => value > 0;
 const rules = {
   required,
   name: {
-    nameRules: helpers.withMessage(
-      "Name field must contain at least 2 symbols.",
-      nameRules
-    ),
+    nameRules: helpers.withMessage('Name field must contain at least 2 symbols.', nameRules),
   },
   image: {
     required,
@@ -97,14 +98,18 @@ const rules = {
   description: {
     required,
     descriptionRules: helpers.withMessage(
-      "Description field must contain at least 5 symbols.",
+      'Description field must contain at least 5 symbols.',
       descriptionRules
     ),
   },
+
   price: {
     required,
     numeric,
-    priceRules: helpers.withMessage("Price should be greater than 0", priceRules),
+    priceRules: helpers.withMessage('Price should be greater than 0', priceRules),
+  },
+  selectedCategoryName: {
+    required: helpers.withMessage('Please select a category.', required),
   },
 };
 
@@ -113,38 +118,58 @@ const v$ = useVuelidate(rules, state);
 const isFormCorrect = computed(() => {
   return !v$.value.$invalid;
 });
+
 const handleFileChange = (event) => {
-  // Updating state.image with the selected file
   state.image = event.target.files.length > 0 ? event.target.files[0] : null;
 };
+
 const postProduct = async () => {
   if (!isFormCorrect.value) return;
 
   const formData = new FormData();
-  formData.append("name", state.name);
-  formData.append("image", state.image);
-  formData.append("description", state.description);
-  formData.append("price", state.price);
+  formData.append('name', state.name);
+  formData.append('image', state.image);
+  formData.append('description', state.description);
+  formData.append('price', state.price);
+  formData.append('categoryId', state.categoryId);
 
   try {
-    await axios
-      .post("/api/products", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        router.push("/admin/admin-products");
-        alertsStore.setAlert("success", res.data.message);
-        setTimeout(() => {
-          alertsStore.clearAlert();
-        }, 3000);
-      });
-  } catch (err) {
-    alertsStore.setAlert("error", err.response.data.message);
+    const res = await axios.post('/api/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    router.push('/admin/admin-products');
+    alertsStore.setAlert('success', res.data.message);
     setTimeout(() => {
       alertsStore.clearAlert();
     }, 3000);
+  } catch (err) {
+    alertsStore.setAlert('error', err.response.data.message);
+    setTimeout(() => {
+      alertsStore.clearAlert();
+    }, 3000);
+  }
+};
+
+const categories = ref([]);
+const categoryNames = computed(() => categories.value.map((category) => category.name));
+
+watch(
+  () => state.selectedCategoryName,
+  (newValue) => {
+    const selectedCategory = categories.value.find((category) => category.name === newValue);
+    state.categoryId = selectedCategory ? selectedCategory._id : null;
+  }
+);
+
+const getCategories = async () => {
+  try {
+    const res = await axios.get('/api/categories');
+    categories.value = res.data;
+    console.log('categories', categories.value);
+  } catch (err) {
+    console.log('err', err);
   }
 };
 </script>

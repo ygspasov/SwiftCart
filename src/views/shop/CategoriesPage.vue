@@ -19,16 +19,16 @@
   >
 </template>
 <script setup>
-import { onMounted, ref } from "vue";
-import axios from "axios";
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 const categories = ref([]);
 const getCategories = async () => {
   try {
-    await axios.get("/api/categories").then((res) => {
+    await axios.get('/api/categories').then((res) => {
       categories.value = res.data;
     });
   } catch (err) {
-    console.log("err", err);
+    console.log('err', err);
   }
 };
 onMounted(() => {
