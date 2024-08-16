@@ -55,7 +55,7 @@ const postProductController = (req, res) => {
 };
 
 const editProductController = (req, res) => {
-  const { name, description, price, id } = req.body;
+  const { name, description, price, id, categoryId } = req.body;
   const image = req.file;
   Product.findById(id)
     .then(async (product) => {
@@ -71,6 +71,7 @@ const editProductController = (req, res) => {
       }
       product.description = description;
       product.price = price;
+      product.categoryId = categoryId;
       await product.save();
       return res.status(200).json({ message: 'Product edited' });
     })

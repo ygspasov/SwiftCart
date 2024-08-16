@@ -44,6 +44,13 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
+      <v-autocomplete
+        v-model="state.selectedCategoryName"
+        label="Categories"
+        :items="categoryNames"
+        @click="getCategories"
+        @change="v$.selectedCategoryName.$touch()"
+      ></v-autocomplete>
       <v-btn type="submit" block class="mt-2" @click="editProduct" :disabled="!isFormCorrect"
         >Edit product</v-btn
       >
@@ -51,7 +58,7 @@
   </v-sheet>
 </template>
 <script setup>
-import { reactive, onMounted, computed } from 'vue';
+import { reactive, onMounted, computed, ref, watch } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
@@ -66,6 +73,8 @@ const state = reactive({
   imageUrl: '',
   description: '',
   price: 0,
+  selectedCategoryName: null,
+  categoryId: null,
 });
 
 const nameRules = (value) => value.length >= 2;
@@ -89,6 +98,9 @@ const rules = {
   price: {
     required,
     numeric,
+  },
+  selectedCategoryName: {
+    required: helpers.withMessage('Please select a category.', required),
   },
 };
 
@@ -122,6 +134,7 @@ const editProduct = async () => {
   formData.append('description', state.description);
   formData.append('price', state.price);
   formData.append('id', route.params.id);
+  formData.append('categoryId', state.categoryId);
   try {
     await axios
       .patch(`/api/admin/products/edit-product/${route.params.id}`, formData, {
@@ -140,6 +153,27 @@ const editProduct = async () => {
     console.log('Error editing product:', err);
   }
 };
+const categories = ref([]);
+const categoryNames = computed(() => categories.value.map((category) => category.name));
+
+watch(
+  () => state.selectedCategoryName,
+  (newValue) => {
+    const selectedCategory = categories.value.find((category) => category.name === newValue);
+    state.categoryId = selectedCategory ? selectedCategory._id : null;
+  }
+);
+
+const getCategories = async () => {
+  try {
+    const res = await axios.get('/api/categories');
+    categories.value = res.data;
+    console.log('categories', categories.value);
+  } catch (err) {
+    console.log('err', err);
+  }
+};
+
 onMounted(() => {
   getProduct();
 });
