@@ -48,7 +48,6 @@
         v-model="state.selectedCategoryName"
         label="Categories"
         :items="categoryNames"
-        @click="getCategories"
         @change="v$.selectedCategoryName.$touch()"
       ></v-autocomplete>
       <v-btn type="submit" block class="mt-2" @click="editProduct" :disabled="!isFormCorrect"
@@ -115,12 +114,18 @@ const handleFileChange = (event) => {
 };
 const getProduct = async () => {
   try {
-    await axios.get(`/api/products/${route.params.id}`).then((product) => {
-      state.name = product.data.name;
-      state.description = product.data.description;
-      state.imageUrl = product.data.imageUrl;
-      state.price = product.data.price;
-    });
+    await axios
+      .get(`/api/products/${route.params.id}`)
+      .then((product) => {
+        state.name = product.data.name;
+        state.description = product.data.description;
+        state.imageUrl = product.data.imageUrl;
+        state.price = product.data.price;
+        state.categoryId = product.data.categoryId;
+      })
+      .then(() => {
+        getCategories();
+      });
   } catch (err) {
     console.log('err', err);
   }
@@ -168,7 +173,19 @@ const getCategories = async () => {
   try {
     const res = await axios.get('/api/categories');
     categories.value = res.data;
-    console.log('categories', categories.value);
+    // Prepopulating the category field based on existing data or defaulting to the first category
+    if (state.categoryId) {
+      const selectedCategory = categories.value.find(
+        (category) => category._id === state.categoryId
+      );
+      if (selectedCategory) {
+        state.selectedCategoryName = selectedCategory.name;
+      }
+    } else if (categories.value.length > 0) {
+      //if there isn't an assigned category, set the first category
+      state.selectedCategoryName = categories.value[0].name;
+      state.categoryId = categories.value[0]._id;
+    }
   } catch (err) {
     console.log('err', err);
   }
