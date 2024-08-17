@@ -1,5 +1,5 @@
 <template>
-  <v-sheet width="400" class="mx-auto mt-5">
+  <v-sheet class="mx-auto mt-5" max-width="400">
     <v-form @submit.prevent>
       <v-text-field
         v-model="state.name"
@@ -11,12 +11,6 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
-      <!-- <v-text-field
-        v-model="state.imageUrl"
-        label="Image URL"
-        id="imageUrl"
-        @input="v$.imageUrl.$touch()"
-      ></v-text-field> -->
       <v-file-input
         label="Image input"
         @input="v$.image.$touch()"
@@ -28,6 +22,11 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
+
+      <div v-if="imagePreview" class="mb-1">
+        <img :src="imagePreview" alt="Selected Image" class="w-100" />
+      </div>
+
       <v-textarea
         v-model="state.description"
         label="Description"
@@ -38,7 +37,7 @@
           <div class="text-red mb-2">{{ error.$message }}</div>
         </div>
       </div>
-      <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()"></v-text-field>
+      <v-text-field v-model="state.price" label="Price" @input="v$.price.$touch()">$</v-text-field>
       <div :class="{ error: v$.price.$errors.length }">
         <div class="input-errors" v-for="error of v$.price.$errors" :key="error.$uid">
           <div class="text-red mb-2">{{ error.$message }}</div>
@@ -50,12 +49,13 @@
         :items="categoryNames"
         @change="v$.selectedCategoryName.$touch()"
       ></v-autocomplete>
-      <v-btn type="submit" block class="mt-2" @click="editProduct" :disabled="!isFormCorrect"
-        >Edit product</v-btn
-      >
+      <v-btn type="submit" block class="mt-2" @click="editProduct" :disabled="!isFormCorrect">
+        Edit product
+      </v-btn>
     </v-form>
   </v-sheet>
 </template>
+
 <script setup>
 import { reactive, onMounted, computed, ref, watch } from 'vue';
 import axios from 'axios';
@@ -63,6 +63,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers, numeric } from '@vuelidate/validators';
+
 const alertsStore = useAlertsStore();
 const router = useRouter();
 const route = useRoute();
@@ -74,7 +75,10 @@ const state = reactive({
   price: 0,
   selectedCategoryName: null,
   categoryId: null,
+  image: null,
 });
+
+const imagePreview = ref(null);
 
 const nameRules = (value) => value.length >= 2;
 const descriptionRules = (value) => value.length >= 5;
@@ -108,31 +112,42 @@ const v$ = useVuelidate(rules, state);
 const isFormCorrect = computed(() => {
   return !v$.value.$invalid;
 });
+
 const handleFileChange = (event) => {
-  // Updating state.image with the selected file
-  state.image = event.target.files.length > 0 ? event.target.files[0] : null;
+  const file = event.target.files.length > 0 ? event.target.files[0] : null;
+  state.image = file;
+
+  // Generate a preview URL for the selected image
+  if (file) {
+    imagePreview.value = URL.createObjectURL(file);
+  } else {
+    imagePreview.value = null;
+  }
 };
+
 const getProduct = async () => {
   try {
-    await axios
-      .get(`/api/products/${route.params.id}`)
-      .then((product) => {
-        state.name = product.data.name;
-        state.description = product.data.description;
-        state.imageUrl = product.data.imageUrl;
-        state.price = product.data.price;
-        state.categoryId = product.data.categoryId;
-      })
-      .then(() => {
-        getCategories();
-      });
+    const product = await axios.get(`/api/products/${route.params.id}`);
+    state.name = product.data.name;
+    state.description = product.data.description;
+    state.imageUrl = product.data.imageUrl;
+    state.price = product.data.price;
+    state.categoryId = product.data.categoryId;
+
+    // Setting the initial image preview if an image URL exists
+    if (state.imageUrl) {
+      imagePreview.value = state.imageUrl;
+    }
+
+    getCategories();
   } catch (err) {
-    console.log('err', err);
+    console.log('Error fetching product:', err);
   }
 };
 
 const editProduct = async () => {
   if (!isFormCorrect.value) return;
+
   const formData = new FormData();
   formData.append('name', state.name);
   formData.append('image', state.image);
@@ -140,24 +155,23 @@ const editProduct = async () => {
   formData.append('price', state.price);
   formData.append('id', route.params.id);
   formData.append('categoryId', state.categoryId);
+
   try {
-    await axios
-      .patch(`/api/admin/products/edit-product/${route.params.id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        router.push('/admin/admin-products');
-        alertsStore.setAlert('success', res.data.message);
-        setTimeout(() => {
-          alertsStore.clearAlert();
-        }, 3000);
-      });
+    const res = await axios.patch(`/api/admin/products/edit-product/${route.params.id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    router.push('/admin/admin-products');
+    alertsStore.setAlert('success', res.data.message);
+    setTimeout(() => {
+      alertsStore.clearAlert();
+    }, 3000);
   } catch (err) {
     console.log('Error editing product:', err);
   }
 };
+
 const categories = ref([]);
 const categoryNames = computed(() => categories.value.map((category) => category.name));
 
@@ -187,7 +201,7 @@ const getCategories = async () => {
       state.categoryId = categories.value[0]._id;
     }
   } catch (err) {
-    console.log('err', err);
+    console.log('Error fetching categories:', err);
   }
 };
 
