@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="mx-auto mt-5" max-width="400">
+  <v-sheet class="mx-auto mt-5 w-md-100" max-width="400">
     <v-form @submit.prevent>
       <v-text-field
         v-model="state.name"
