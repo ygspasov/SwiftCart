@@ -12,10 +12,10 @@
         </div>
       </div>
       <v-file-input
+        v-model="image"
         label="Image input"
         @input="v$.image.$touch()"
         @change="handleFileChange"
-        :placeholder="state.image ? state.image.name : 'Select an image'"
       ></v-file-input>
       <div :class="{ error: v$.image.$errors.length }">
         <div class="input-errors" v-for="error of v$.image.$errors" :key="error.$uid">
@@ -84,7 +84,6 @@ const nameRules = (value) => value.length >= 2;
 const descriptionRules = (value) => value.length >= 5;
 
 const rules = {
-  required,
   name: {
     nameRules: helpers.withMessage('Name field must contain at least 2 symbols.', nameRules),
   },
