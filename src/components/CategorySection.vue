@@ -3,6 +3,23 @@
     <v-btn variant="tonal" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
       >View categories</v-btn
     >
+    <div class="text-center">
+      <v-menu open-on-hover>
+        <template v-slot:activator="{ props }">
+          <v-btn variant="tonal" class="mb-2 mb-md-0" v-bind="props">Select category</v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in categories"
+            :key="index"
+            @click="selectCategory(item.id)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
@@ -25,11 +42,7 @@
                 @input="v$.name.$touch()"
               ></v-text-field>
               <div :class="{ error: v$.name.$errors.length }">
-                <div
-                  class="input-errors"
-                  v-for="error of v$.name.$errors"
-                  :key="error.$uid"
-                >
+                <div class="input-errors" v-for="error of v$.name.$errors" :key="error.$uid">
                   <div class="text-red mb-2">{{ error.$message }}</div>
                 </div>
               </div>
@@ -42,20 +55,14 @@
                 @input="v$.description.$touch()"
               ></v-text-field>
               <div :class="{ error: v$.description.$errors.length }">
-                <div
-                  class="input-errors"
-                  v-for="error of v$.description.$errors"
-                  :key="error.$uid"
-                >
+                <div class="input-errors" v-for="error of v$.description.$errors" :key="error.$uid">
                   <div class="text-red mb-2">{{ error.$message }}</div>
                 </div>
               </div>
             </v-col>
           </v-row>
 
-          <small class="text-caption text-medium-emphasis"
-            >*indicates required field</small
-          >
+          <small class="text-caption text-medium-emphasis">*indicates required field</small>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -78,19 +85,24 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from "vue";
-import axios from "axios";
-import { useVuelidate } from "@vuelidate/core";
-import { required, helpers } from "@vuelidate/validators";
-import { useAlertsStore } from "@/stores/alerts";
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import { useVuelidate } from '@vuelidate/core';
+import { required, helpers } from '@vuelidate/validators';
+import { useAlertsStore } from '@/stores/alerts';
 const authStore = useAuthStore();
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from '@/stores/auth';
+const emit = defineEmits(['category-selected']);
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
-
+const categories = ref([
+  { title: 'Books', id: '66b6286a3267a694d8643b82' },
+  { title: 'Hardware', id: '66b628753267a694d8643b86' },
+  { title: 'Software', id: '66b629343267a694d8643bbc' },
+]);
 const state = ref({
-  name: "",
-  description: "",
+  name: '',
+  description: '',
 });
 const nameRules = (value) => value.length >= 3 && value.length <= 25;
 const descriptionRules = (value) => value.length >= 5 && value.length <= 100;
@@ -98,14 +110,14 @@ const rules = {
   name: {
     required,
     nameRules: helpers.withMessage(
-      "Category name should be between 4 and 25 characters.",
+      'Category name should be between 4 and 25 characters.',
       nameRules
     ),
   },
   description: {
     required,
     descriptionRules: helpers.withMessage(
-      "Category description should be between 5 and 100 characters.",
+      'Category description should be between 5 and 100 characters.',
       descriptionRules
     ),
   },
@@ -119,15 +131,15 @@ const postCategory = async () => {
   dialog.value = false;
   try {
     await axios
-      .post("/api/post-category", {
+      .post('/api/post-category', {
         name: state.value.name,
         description: state.value.description,
         userId: authStore.userId,
       })
       .then((res) => {
-        alertsStore.setAlert("success", res.data.message);
-        state.value.name = "";
-        state.value.description = "";
+        alertsStore.setAlert('success', res.data.message);
+        state.value.name = '';
+        state.value.description = '';
       })
       .then(() => {
         setTimeout(() => {
@@ -135,8 +147,11 @@ const postCategory = async () => {
         }, 3000);
       });
   } catch (err) {
-    console.log("Error posting a category", err);
+    console.log('Error posting a category', err);
   }
+};
+const selectCategory = (categoryId) => {
+  emit('category-selected', categoryId);
 };
 </script>
 <style scoped></style>

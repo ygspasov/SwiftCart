@@ -41,11 +41,17 @@ const page = ref(
 );
 const totalPages = ref(1);
 
-const getProducts = async (page) => {
+const getProducts = async (page, categoryId = '66b6286a3267a694d8643b82') => {
   try {
     //Set how many products should load on a single page
     const limitPerPage = 6;
-    const result = await axios.get(`/api/products?page=${page}&limit=${limitPerPage}`);
+    // Constructing the query string with page, limit, and an optional categoryId
+    let query = `/api/products?page=${page}&limit=${limitPerPage}`;
+    if (categoryId) {
+      query += `&categoryId=${categoryId}`;
+    }
+    console.log('query', query);
+    const result = await axios.get(query);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;
   } catch (err) {

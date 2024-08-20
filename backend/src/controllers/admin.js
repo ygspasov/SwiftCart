@@ -9,12 +9,18 @@ const getProductsController = async (req, res) => {
   const userId = mongoose.Types.ObjectId.createFromHexString(req.user.id);
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 3; // Default to 3 products per page if not provided
-
+  const categoryId = req.query.categoryId;
   try {
+    // Building the query object
+    const query = { userId: userId };
+    // Adding categoryId to the query object
+    if (categoryId) {
+      query.categoryId = mongoose.Types.ObjectId.createFromHexString(categoryId);
+    }
     // Fetching the total number of products
-    const totalProducts = await Product.countDocuments({ userId: userId });
+    const totalProducts = await Product.countDocuments(query);
     // Fetching products for the current page (only those created by the currently logged in user)
-    const products = await Product.find({ userId: userId })
+    const products = await Product.find(query)
       .populate('userId')
       .skip((page - 1) * limit)
       .limit(limit);

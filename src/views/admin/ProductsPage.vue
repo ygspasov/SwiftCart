@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <ShopAlerts :alert="alertsStore.alert" class="mb-2" />
-      <CategorySection />
+      <CategorySection @category-selected="fetchProductsByCategory" />
       <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
@@ -25,35 +25,38 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, provide } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
-import { useAlertsStore } from "@/stores/alerts";
-import ShopAlerts from "@/components/ShopAlerts.vue";
-import ProductsGrid from "@/components/ProductsGrid.vue";
-import CategorySection from "@/components/CategorySection.vue";
+import { ref, onMounted, watch, provide } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useAlertsStore } from '@/stores/alerts';
+import ShopAlerts from '@/components/ShopAlerts.vue';
+import ProductsGrid from '@/components/ProductsGrid.vue';
+import CategorySection from '@/components/CategorySection.vue';
 
 const alertsStore = useAlertsStore();
 const router = useRouter();
-provide(/* key */ "admin", /* value */ true);
+provide(/* key */ 'admin', /* value */ true);
 const products = ref([]);
 let page = ref(
-  router.currentRoute.value.query.page
-    ? parseInt(router.currentRoute.value.query.page)
-    : 1
+  router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page) : 1
 ); // Initialize with page 1 or from query parameter
 const totalPages = ref(1);
-
-const getProducts = async (page) => {
+const fetchProductsByCategory = (categoryId) => {
+  // Fetching products by the selected category
+  getProducts(1, categoryId);
+};
+const getProducts = async (page, categoryId = null) => {
   try {
     const limitPerPage = 6;
-    const result = await axios.get(
-      `/api/admin/admin-products?page=${page}&limit=${limitPerPage}`
-    );
+    let query = `/api/admin/admin-products?page=${page}&limit=${limitPerPage}`;
+    if (categoryId) {
+      query += `&categoryId=${categoryId}`;
+    }
+    const result = await axios.get(query);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;
   } catch (err) {
-    console.log("Error fetching products:", err);
+    console.log('Error fetching products:', err);
   }
 };
 

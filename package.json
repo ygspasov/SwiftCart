@@ -1,6 +1,9 @@
 {
   "name": "swiftcart",
-  "version": "0.0.0",
+  "author": "Yavor Spasov",
+  "email": "ygspasov@gmail.com",
+  "url": "https://github.com/ygspasov",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
