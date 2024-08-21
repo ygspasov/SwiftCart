@@ -85,7 +85,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
@@ -95,11 +95,7 @@ import { useAuthStore } from '@/stores/auth';
 const emit = defineEmits(['category-selected']);
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
-const categories = ref([
-  { title: 'Books', id: '66b6286a3267a694d8643b82' },
-  { title: 'Hardware', id: '66b628753267a694d8643b86' },
-  { title: 'Software', id: '66b629343267a694d8643bbc' },
-]);
+const categories = ref([]);
 const state = ref({
   name: '',
   description: '',
@@ -140,6 +136,7 @@ const postCategory = async () => {
         alertsStore.setAlert('success', res.data.message);
         state.value.name = '';
         state.value.description = '';
+        getCategories();
       })
       .then(() => {
         setTimeout(() => {
@@ -153,5 +150,19 @@ const postCategory = async () => {
 const selectCategory = (categoryId) => {
   emit('category-selected', categoryId);
 };
+const getCategories = async () => {
+  try {
+    const res = await axios.get('/api/categories');
+    categories.value = res.data.map((category) => ({
+      title: category.name,
+      id: category._id,
+    }));
+  } catch (err) {
+    console.log('err', err);
+  }
+};
+onMounted(() => {
+  getCategories();
+});
 </script>
 <style scoped></style>
