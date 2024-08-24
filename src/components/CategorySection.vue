@@ -1,9 +1,9 @@
 <template>
-  <div class="pa-4 mb-2 d-flex flex-wrap justify-space-around">
+  <v-container class="pa-4 mb-2 d-flex flex-wrap justify-center">
     <v-btn variant="tonal" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
       >View categories</v-btn
     >
-    <div class="text-center">
+    <div class="mx-0 mx-md-1">
       <v-menu open-on-hover>
         <template v-slot:activator="{ props }">
           <v-btn variant="tonal" class="mb-2 mb-md-0" v-bind="props">Select category</v-btn>
@@ -82,7 +82,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
