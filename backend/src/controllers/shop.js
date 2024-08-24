@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Product } from '../models/product.js';
+import mongoose from 'mongoose';
 import { Order } from '../models/order.js';
 import moment from 'moment';
 import PDFDocument from 'pdfkit';
@@ -8,12 +9,17 @@ import PDFDocument from 'pdfkit';
 const getProductsController = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 6; // Default to 6 products per page if not provided
-
+  const categoryId = req.query.categoryId;
   try {
+    const query = {};
+    // Adding categoryId to the query object
+    if (categoryId) {
+      query.categoryId = mongoose.Types.ObjectId.createFromHexString(categoryId);
+    }
     // Fetching the total number of products
-    const totalProducts = await Product.countDocuments();
+    const totalProducts = await Product.countDocuments(query);
     // Fetching products for the current page
-    const products = await Product.find()
+    const products = await Product.find(query)
       .populate('userId')
       .skip((page - 1) * limit)
       .limit(limit);

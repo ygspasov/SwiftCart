@@ -20,7 +20,7 @@
         </v-list>
       </v-menu>
     </div>
-    <v-dialog v-model="dialog" max-width="600">
+    <v-dialog v-if="!isRootPath" v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
           class="text-none font-weight-regular"
@@ -86,6 +86,7 @@
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
@@ -96,6 +97,8 @@ const emit = defineEmits(['category-selected']);
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
 const categories = ref([]);
+const route = useRoute();
+const isRootPath = computed(() => route.path === '/');
 const state = ref({
   name: '',
   description: '',

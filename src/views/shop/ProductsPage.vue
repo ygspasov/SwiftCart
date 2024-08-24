@@ -2,11 +2,11 @@
   <div>
     <v-container>
       <ShopAlerts :alert="alertsStore.alert" />
+      <CategorySection @category-selected="fetchProductsByCategory" />
       <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
     </v-container>
-
     <v-container>
       <v-row justify="center" align="baseline">
         <v-col cols="8">
@@ -31,6 +31,7 @@ import { useAlertsStore } from '@/stores/alerts';
 import ShopAlerts from '@/components/ShopAlerts.vue';
 import axios from 'axios';
 import ProductsGrid from '@/components/ProductsGrid.vue';
+import CategorySection from '@/components/CategorySection.vue';
 
 const alertsStore = useAlertsStore();
 const router = useRouter();
@@ -40,8 +41,11 @@ const page = ref(
   router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page) : 1
 );
 const totalPages = ref(1);
-
-const getProducts = async (page, categoryId = '66b6286a3267a694d8643b82') => {
+const fetchProductsByCategory = (categoryId) => {
+  // Fetching products by the selected category
+  getProducts(1, categoryId);
+};
+const getProducts = async (page, categoryId = null) => {
   try {
     //Set how many products should load on a single page
     const limitPerPage = 6;
