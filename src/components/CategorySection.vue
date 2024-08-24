@@ -1,10 +1,10 @@
 <template>
-  <v-container class="pa-4 mb-2 d-flex flex-wrap justify-center">
+  <v-container class="pa-4 mt-2 d-flex flex-wrap justify-center">
     <v-btn variant="tonal" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
       >View categories</v-btn
     >
     <div class="mx-0 mx-md-1">
-      <v-menu open-on-hover>
+      <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn variant="tonal" class="mb-2 mb-md-0" v-bind="props">Select category</v-btn>
         </template>
@@ -13,7 +13,7 @@
           <v-list-item
             v-for="(item, index) in categories"
             :key="index"
-            @click="selectCategory(item.id)"
+            @click="selectCategory(item)"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -83,6 +83,11 @@
       </v-card>
     </v-dialog>
   </v-container>
+  <v-container v-if="selectedCategory.title">
+    <v-row
+      ><p class="mx-auto text-subtitle-1">{{ selectedCategory.title }}</p></v-row
+    >
+  </v-container>
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -97,6 +102,7 @@ const emit = defineEmits(['category-selected']);
 const alertsStore = useAlertsStore();
 const dialog = ref(false);
 const categories = ref([]);
+const selectedCategory = ref({});
 const route = useRoute();
 const isRootPath = computed(() => route.path === '/');
 const state = ref({
@@ -150,8 +156,9 @@ const postCategory = async () => {
     console.log('Error posting a category', err);
   }
 };
-const selectCategory = (categoryId) => {
-  emit('category-selected', categoryId);
+const selectCategory = (category) => {
+  selectedCategory.value = category;
+  emit('category-selected', category.id);
 };
 const getCategories = async () => {
   try {
