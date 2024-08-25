@@ -103,6 +103,12 @@ Next to each order on the Orders page, there is a link for generating an invoice
 
 ![Invoice](./src/assets/images/readme/invoice.jpg)
 
+### Categories
+
+Through the Admin Products and Products pages, users can add new product categories, view existing products, or filter products by category. The Add Category option is only available through the Admin Products page and is accessible only to logged-in users.
+
+![Invoice](./src/assets/images/readme/categories.jpg)
+
 ### Pagination
 
 Currently, the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
