@@ -4,8 +4,8 @@
       <v-table theme="light" class="w-100 mt-5">
         <thead>
           <tr>
-            <th class="text-left">Category</th>
-            <th class="text-left">Description</th>
+            <th class="text-left open-sans-bold">Category</th>
+            <th class="text-left open-sans-bold">Description</th>
           </tr>
         </thead>
         <tbody>

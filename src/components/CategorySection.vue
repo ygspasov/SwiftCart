@@ -1,12 +1,12 @@
 <template>
   <v-container class="pa-4 mt-2 d-flex flex-wrap justify-center">
-    <v-btn variant="tonal" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
+    <v-btn variant="elevated" class="mb-2 mb-md-0" :to="{ path: '/categories' }"
       >View categories</v-btn
     >
     <div class="mx-0 mx-md-1">
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn variant="tonal" class="mb-2 mb-md-0" v-bind="props">Select category</v-btn>
+          <v-btn variant="elevated" class="mb-2 mb-md-0" v-bind="props">Select category</v-btn>
         </template>
 
         <v-list>
@@ -23,10 +23,10 @@
     <v-dialog v-if="!isRootPath" v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
-          class="text-none font-weight-regular"
+          class=""
           prepend-icon="mdi-plus"
           text="Add category"
-          variant="tonal"
+          variant="elevated"
           v-bind="activatorProps"
         ></v-btn>
       </template>
@@ -73,7 +73,7 @@
           <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
 
           <v-btn
-            color="primary"
+            color="black"
             text="Add"
             variant="tonal"
             @click="postCategory"

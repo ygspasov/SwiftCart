@@ -54,7 +54,6 @@ const getProducts = async (page, categoryId = null) => {
     if (categoryId) {
       query += `&categoryId=${categoryId}`;
     }
-    console.log('query', query);
     const result = await axios.get(query);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;

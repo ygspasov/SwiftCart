@@ -105,7 +105,7 @@ Next to each order on the Orders page, there is a link for generating an invoice
 
 ### Categories
 
-Through the Admin Products and Products pages, users can add new product categories, view existing products, or filter products by category. The Add Category option is only available through the Admin Products page and is accessible only to logged-in users.
+Through the Admin Products and Products pages, users can add new product categories, view existing categories, or filter products by category. The Add Category option is only available through the Admin Products page and is accessible only to logged-in users.
 
 ![Invoice](./src/assets/images/readme/categories.jpg)
 
