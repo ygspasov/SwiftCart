@@ -151,7 +151,7 @@ header .active-navlink-mobile {
 header .v-input__control > .v-field {
   min-width: 300px;
 }
-.v-overlay__content {
+#v-menu-1 .v-overlay__content {
   width: 100%;
 }
 </style>
