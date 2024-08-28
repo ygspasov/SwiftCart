@@ -1,7 +1,7 @@
 <template>
   <v-container class="open-sans-regular">
     <ShopAlerts :alert="alertsStore.alert" class="mb-5" />
-    <v-sheet width="400" class="mx-auto mt-5">
+    <v-sheet min-width="280" class="mx-auto mt-5 w-100">
       <v-form @submit.prevent="postProduct" enctype="multipart/form-data">
         <v-text-field
           v-model="state.name"
