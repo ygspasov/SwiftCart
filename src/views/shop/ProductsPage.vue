@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, provide } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
 const alertsStore = useAlertsStore();
@@ -40,7 +40,7 @@ import ProductsGrid from '@/components/ProductsGrid.vue';
 import CategorySection from '@/components/CategorySection.vue';
 
 const router = useRouter();
-
+provide(/* key */ 'admin', /* value */ false);
 const products = ref([]);
 let page = ref(
   router.currentRoute.value.query.page
