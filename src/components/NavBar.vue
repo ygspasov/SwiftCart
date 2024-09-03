@@ -45,17 +45,18 @@
 
       <!-- desktop menu -->
       <v-app-bar-title>
-        <router-link to="/" class="open-sans-regular">SwiftCart</router-link></v-app-bar-title
+        <router-link to="/" class="open-sans-regular"
+          >SwiftCart</router-link
+        ></v-app-bar-title
       >
 
       <v-text-field
         v-model="searchQuery"
-        append-icon="mdi-magnify"
         label="Search"
         solo
         hide-details
         class="d-none d-md-flex mx-4 justify-end"
-        @keyup="filteredSearchResults"
+        @input="filteredSearchResults"
       ></v-text-field>
       <div
         class="menu-links d-none d-md-flex flex-wrap open-sans-regular"
@@ -71,7 +72,9 @@
         >
       </div>
       <router-link to="/" class="d-none d-sm-flex" v-if="showLogout"
-        ><v-btn color="black open-sans-regular" @click="logout">Logout</v-btn></router-link
+        ><v-btn color="black open-sans-regular" @click="logout"
+          >Logout</v-btn
+        ></router-link
       >
       <p class="mx-2 roboto-medium" v-if="authStore.isLoggedIn">{{ userName }}</p>
     </v-app-bar>
@@ -82,9 +85,11 @@
 import axios from 'axios';
 import { computed, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+import { useProductsStore } from '@/stores/products';
+const productsStore = useProductsStore();
 import { useRouter } from 'vue-router';
 const router = useRouter();
-const authStore = useAuthStore();
 const searchQuery = ref('');
 const items = [
   { title: 'Products', to: '/' },
@@ -123,8 +128,11 @@ const filteredItems = computed(() => {
 });
 
 const filteredSearchResults = () => {
-  if (!searchQuery.value) return [];
-  console.log('searchQuery.value', searchQuery.value);
+  if (!searchQuery.value) {
+    productsStore.setSearchFilter('');
+    return [];
+  }
+  productsStore.setSearchFilter(searchQuery.value);
 };
 
 const userName = computed(() => {
