@@ -10,12 +10,26 @@ const getProductsController = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 3; // Default to 3 products per page if not provided
   const categoryId = req.query.categoryId;
+  const search = req.query.search; // The search filter term
   try {
     // Building the query object
     const query = { userId: userId };
     // Adding categoryId to the query object
     if (categoryId) {
       query.categoryId = mongoose.Types.ObjectId.createFromHexString(categoryId);
+    }
+    // Adding search filter to the query object
+    if (search) {
+      query.name = { $regex: search, $options: 'i' }; // Case-insensitive regex search
+    }
+
+    // If a search filter is applied, fetch all matching products without pagination
+    if (search) {
+      const products = await Product.find(query).populate('userId');
+      return res.status(200).json({
+        products,
+        totalPages: 1, // Single page as all matching products are returned
+      });
     }
     // Fetching the total number of products
     const totalProducts = await Product.countDocuments(query);
