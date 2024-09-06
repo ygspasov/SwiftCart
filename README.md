@@ -113,7 +113,7 @@ Through the Admin Products and Products pages, users can add new product categor
 
 ### Search
 
-The user can search for products that match certain keyword thrown the search bar on the main menu.
+Users can search for products that match certain keyword through the search bar on the main menu.
 
 ![Search](./src/assets/images/readme/search.jpg)
 
