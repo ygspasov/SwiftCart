@@ -134,3 +134,5 @@ The app displays action notifications for each action the user takes, such as si
 The app comes with a responsive design and a hamburger menu.
 
 ![Responsive](./src/assets/images/readme/responsive.jpg)
+
+The app is deployed at https://swiftcart-riwx.onrender.com/. Have it mind that the free instance will spin down with inactivity, which can delay requests by 50 seconds or more.
