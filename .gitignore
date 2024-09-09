@@ -29,7 +29,4 @@ coverage
 
 *.tsbuildinfo
 
-# images
-/backend/src/assets/images
-/backend/src/assets/invoices
 

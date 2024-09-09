@@ -103,6 +103,22 @@ Next to each order on the Orders page, there is a link for generating an invoice
 
 ![Invoice](./src/assets/images/readme/invoice.jpg)
 
+### Categories
+
+Through the Admin Products and Products pages, users can add new product categories, view existing categories, or filter products by category. The Add Category option is only available through the Admin Products page and is accessible only to logged-in users.
+
+![Categories](./src/assets/images/readme/categories.jpg)
+
+[Categories video](https://www.youtube.com/watch?v=7Utb-WioLCY&list=PLYh-4NOt0x6wnyyJB_fTXA5-voP_uOx-G)
+
+### Search
+
+Users can search for products that match certain keyword through the search bar on the main menu.
+
+![Search](./src/assets/images/readme/search.jpg)
+
+[Search video](https://www.youtube.com/watch?v=UQJiz_lppjc&list=PLYh-4NOt0x6wnyyJB_fTXA5-voP_uOx-G&index=2&pp=gAQBiAQB)
+
 ### Pagination
 
 Currently, the pagination is set to display 6 products per page, and is available at the Products and Admin Products pages.
@@ -118,3 +134,5 @@ The app displays action notifications for each action the user takes, such as si
 The app comes with a responsive design and a hamburger menu.
 
 ![Responsive](./src/assets/images/readme/responsive.jpg)
+
+The app is deployed at https://swiftcart-riwx.onrender.com/. Have it mind that the free instance will spin down with inactivity, which can delay requests by 50 seconds or more.

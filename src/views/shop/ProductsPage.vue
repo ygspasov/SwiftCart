@@ -2,12 +2,15 @@
   <div>
     <v-container>
       <ShopAlerts :alert="alertsStore.alert" />
+      <CategorySection
+        @category-selected="fetchProductsByCategory"
+        v-if="!productsStore.searchFilter"
+      />
       <v-row align="baseline" justify="center">
         <ProductsGrid :products="products" />
       </v-row>
     </v-container>
-
-    <v-container>
+    <v-container v-if="products.length">
       <v-row justify="center" align="baseline">
         <v-col cols="8">
           <v-container class="max-width">
@@ -25,35 +28,67 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, provide } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlertsStore } from '@/stores/alerts';
+const alertsStore = useAlertsStore();
+import { useProductsStore } from '@/stores/products';
+const productsStore = useProductsStore();
 import ShopAlerts from '@/components/ShopAlerts.vue';
 import axios from 'axios';
 import ProductsGrid from '@/components/ProductsGrid.vue';
+import CategorySection from '@/components/CategorySection.vue';
 
-const alertsStore = useAlertsStore();
 const router = useRouter();
-
+provide(/* key */ 'admin', /* value */ false);
 const products = ref([]);
-const page = ref(
-  router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page) : 1
+let page = ref(
+  router.currentRoute.value.query.page
+    ? parseInt(router.currentRoute.value.query.page)
+    : 1
 );
 const totalPages = ref(1);
-
-const getProducts = async (page) => {
+const fetchProductsByCategory = (categoryId) => {
+  // Fetching products by the selected category
+  getProducts(1, categoryId);
+};
+const getProducts = async (page, categoryId = null) => {
   try {
-    //Set how many products should load on a single page
+    //Setting how many products should load on a single page
     const limitPerPage = 6;
-    const result = await axios.get(`/api/products?page=${page}&limit=${limitPerPage}`);
+    // Constructing the query string with page, limit, and an optional categoryId
+    let query = `/api/products?page=${page}&limit=${limitPerPage}`;
+    if (categoryId) {
+      query += `&categoryId=${categoryId}`;
+    }
+    if (productsStore.searchFilter) {
+      query = `/api/products?search=${productsStore.searchFilter}`;
+    }
+    const result = await axios.get(query);
     products.value = result.data.products;
     totalPages.value = result.data.totalPages;
+    productsStore.setProducts(result.data.products);
   } catch (err) {
     console.log('Error fetching products:', err);
   }
 };
 
-// Watch for changes to the route's query parameter and update products
+// Watching for changes in the search filter and fetching products
+watch(
+  () => productsStore.searchFilter,
+  (newFilter) => {
+    if (newFilter) {
+      // Fetch all products that match the search filter, bypassing pagination
+      getProducts(1);
+    } else {
+      // If no search filter, load products with pagination
+      getProducts(page.value);
+    }
+  },
+  { immediate: true }
+);
+
+// Watching for changes to the route's query parameter and update products
 watch(
   () => router.currentRoute.value.query.page,
   (newPage) => {

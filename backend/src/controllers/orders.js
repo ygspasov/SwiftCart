@@ -63,6 +63,9 @@ const updateCartProductQuantityController = async (req, res) => {
 };
 
 const getOrdersController = async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: 'Session expired. Please log in again.' });
+  }
   try {
     Order.find({ 'user.userId': req.user._id }).then((orders) => {
       res.status(200).json(orders);

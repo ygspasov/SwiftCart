@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Product } from '../models/product.js';
+import mongoose from 'mongoose';
 import { Order } from '../models/order.js';
 import moment from 'moment';
 import PDFDocument from 'pdfkit';
@@ -8,12 +9,31 @@ import PDFDocument from 'pdfkit';
 const getProductsController = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
   const limit = parseInt(req.query.limit) || 6; // Default to 6 products per page if not provided
-
+  const categoryId = req.query.categoryId;
+  const search = req.query.search; // The search filter term
   try {
+    const query = {};
+    // Adding categoryId to the query object
+    if (categoryId) {
+      query.categoryId = mongoose.Types.ObjectId.createFromHexString(categoryId);
+    }
+    // Adding search filter to the query object
+    if (search) {
+      query.name = { $regex: search, $options: 'i' }; // Case-insensitive regex search
+    }
+
+    // If a search filter is applied, fetch all matching products without pagination
+    if (search) {
+      const products = await Product.find(query).populate('userId');
+      return res.status(200).json({
+        products,
+        totalPages: 1, // Single page as all matching products are returned
+      });
+    }
     // Fetching the total number of products
-    const totalProducts = await Product.countDocuments();
+    const totalProducts = await Product.countDocuments(query);
     // Fetching products for the current page
-    const products = await Product.find()
+    const products = await Product.find(query)
       .populate('userId')
       .skip((page - 1) * limit)
       .limit(limit);
@@ -43,6 +63,9 @@ const getProductIdController = async (req, res) => {
 };
 
 const getCartController = async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: 'Session expired. Please log in again.' });
+  }
   try {
     await req.user.populate('cart.items.productId').then((cartItems) => {
       res.status(200).json(cartItems);

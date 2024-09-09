@@ -34,10 +34,6 @@ router.get('/api/checkout', (req, res) => {
   res.send('Checkout');
 });
 
-router.get('/', (req, res) => {
-  res.send('Home page');
-});
-
 router.get('/api/orders/:orderId', getInvoiceController);
 
 export { router as shopRouter };

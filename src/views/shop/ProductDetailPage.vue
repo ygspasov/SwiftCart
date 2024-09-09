@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-img
           class="mx-auto"
-          :width="600"
+          :width="400"
           aspect-ratio="16/9"
           cover
           :src="product.imageUrl"
@@ -13,12 +13,12 @@
     </v-row>
     <v-row class="d-flex justify-center my-3" no-gutters>
       <v-col class="" md="3"
-        ><div class="text-left text-h6">{{ product.name }}</div></v-col
+        ><div class="text-left text-h6 open-sans-bold">{{ product.name }}</div></v-col
       ><v-col class="" md="3"
         ><div class="text-right font-weight-bold">${{ product.price }}</div></v-col
       >
     </v-row>
-    <v-row class="d-flex justify-center my-3" no-gutters
+    <v-row class="d-flex justify-center my-3 open-sans-regular" no-gutters
       ><v-col class="" md="6"
         ><v-btn class="w-100" color="black" @click="addToCart">Add to Cart</v-btn></v-col
       ></v-row

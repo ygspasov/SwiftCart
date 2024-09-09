@@ -7,6 +7,7 @@ import MongoDBStore from 'connect-mongodb-session';
 import { shopRouter } from './routes/shop.js';
 import { adminRouter } from './routes/admin.js';
 import { authRouter } from './routes/auth.js';
+import { categoriesRouter } from './routes/categories.js';
 import { User } from './models/user.js';
 import { config } from 'dotenv';
 config();
@@ -80,7 +81,7 @@ app.use(bodyParser.json());
 app.use(upload.single('image'));
 app.use('/images', express.static('backend/src/assets/images'));
 app.use('/invoices', express.static('backend/src/assets/invoices'));
-app.use(shopRouter, adminRouter, authRouter);
+app.use(shopRouter, adminRouter, authRouter, categoriesRouter);
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../../dist')));
