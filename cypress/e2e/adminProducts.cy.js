@@ -1,7 +1,9 @@
 import login from './support/login.js';
 describe('GET homepage products', () => {
   beforeEach(() => {
-    login();
+    cy.session('loginSession', () => {
+      login();
+    });
   });
   it('check admin products url', () => {
     cy.visit('/admin/admin-products');

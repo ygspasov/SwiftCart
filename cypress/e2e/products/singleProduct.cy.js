@@ -1,7 +1,9 @@
 import login from '../support/login.js';
 describe('Test single product', () => {
   beforeEach(() => {
-    login();
+    cy.session('loginSession', () => {
+      login();
+    });
   });
   it('check the url', () => {
     cy.visit('/cart');

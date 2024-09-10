@@ -1,4 +1,8 @@
+import login from './support/login.js';
 describe('Navbar', () => {
+  beforeEach(() => {
+    login();
+  });
   it('Should check the existence of the header and the text "SwiftCart" in it', () => {
     cy.visit('/');
     cy.get('header').should('exist');
