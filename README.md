@@ -87,7 +87,7 @@ Clicking on "View Details" for an individual product takes the user to a single 
 
 ### The Cart
 
-Each time the user adds a product to the cart, they are redirected to the Cart page where they can examine all of their chosen products, view their price, quantity, and the total price of all the items they chose to purchase. It is also possible to adjust the quantity of the each items, which updates the price of that item as well as the cart's total price. A user can remove a product from their cart before ordering.
+Each time the user adds a product to the cart, they are redirected to the Cart page where they can examine all of their chosen products, view their price, quantity, and the total price of all the items they chose to purchase. It is also possible to adjust the quantity of each item, which updates the price of that item as well as the cart's total price. A user can remove a product from their cart before ordering.
 
 ![Cart](./src/assets/images/readme/cart.jpg)
 
@@ -135,4 +135,4 @@ The app comes with a responsive design and a hamburger menu.
 
 ![Responsive](./src/assets/images/readme/responsive.jpg)
 
-The app is deployed at https://swiftcart-riwx.onrender.com/. Have it mind that the free instance will spin down with inactivity, which can delay requests by 50 seconds or more.
+The app is deployed at https://swiftcart-riwx.onrender.com/. Have it in mind that the free Render instance will spin down with inactivity, which can delay requests by 50 seconds or more.
