@@ -57,6 +57,9 @@ const RemoveCartItem = async () => {
       .then((res) => {
         alertsStore.setAlert('success', res.data.message);
         loadCart();
+        setTimeout(() => {
+          alertsStore.clearAlert();
+        }, 3000);
       });
   } catch (err) {
     console.log('Error removing item:', err);
